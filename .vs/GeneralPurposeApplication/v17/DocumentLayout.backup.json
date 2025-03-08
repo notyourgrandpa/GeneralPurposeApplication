@@ -42,7 +42,8 @@
               "RelativeToolTip": "generalpurposeapplication.client\\.vscode\\launch.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-08T05:23:23.42Z"
+              "WhenOpened": "2025-03-08T05:23:23.42Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -67,7 +68,8 @@
               "RelativeToolTip": "generalpurposeapplication.client\\src\\proxy.conf.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-03-08T05:22:04.311Z"
+              "WhenOpened": "2025-03-08T05:22:04.311Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -79,7 +81,8 @@
               "RelativeToolTip": "GeneralPurposeApplication.Server\\Properties\\launchSettings.json",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAABUAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-08T05:20:23.434Z"
+              "WhenOpened": "2025-03-08T05:20:23.434Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -91,7 +94,8 @@
               "RelativeToolTip": "generalpurposeapplication.client\\README.md",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2025-03-08T05:09:16.78Z"
+              "WhenOpened": "2025-03-08T05:09:16.78Z",
+              "EditorCaption": ""
             }
           ]
         }
