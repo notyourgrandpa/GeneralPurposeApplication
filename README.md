@@ -12,3 +12,27 @@ A collection of applications I develop.
 This repository contains various applications I have developed/been developing using .NET and Angular.  
 
 ## Getting Started  
+1. Clone the repository:  
+   ```sh
+   git clone https://github.com/your-username/GeneralPurposeApplication.git
+   cd GeneralPurposeApplication
+   ```
+2. Install dependencies
+   ```sh
+
+   cd generalpurposeapplication.client
+   ```
+   ```sh
+   npm install
+   ```
+
+3. Run the application:
+   - Start the backend (ASP.NET Core):
+      ```sh
+      dotnet run
+      ```
+   - Start the frontend (Angular)
+      ```sh
+      ng serve
+      ```
+    
