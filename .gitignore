@@ -20,3 +20,10 @@
 /.vs/GeneralPurposeApplication/v17/.suo
 /.vs/GeneralPurposeApplication/v17/.futdcache.v2
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.csproj.CoreCompileInputs.cache
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.assets.cache
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.csproj.AssemblyReference.cache
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.csproj.FileListAbsolute.txt
+/GeneralPurposeApplication.Server/obj/GeneralPurposeApplication.Server.csproj.nuget.dgspec.json
+/GeneralPurposeApplication.Server/obj/GeneralPurposeApplication.Server.csproj.nuget.g.targets
+/GeneralPurposeApplication.Server/obj/project.assets.json
+/GeneralPurposeApplication.Server/obj/project.nuget.cache
