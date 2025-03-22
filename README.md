@@ -9,8 +9,9 @@ A collection of applications I develop.
 - **Angular** (Version 17.0.3)  
 
 ## Description  
-This repository contains various simple applications I have developed/been developing using .NET and Angular.
-All applications listed are those I think will be useful on my/other's everyday life.
+-This repository contains various simple applications I have developed/been developing using .NET and Angular.
+-All applications listed are those I think will be useful on my/other's everyday life.
+-This will be part of my study and knowledge acquisition for Angular
 
 ## Applications
 1. Kita - Variety Store Management System - Under Development
