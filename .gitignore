@@ -28,3 +28,7 @@
 /GeneralPurposeApplication.Server/obj/project.assets.json
 /GeneralPurposeApplication.Server/obj/project.nuget.cache
 /GeneralPurposeApplication.Server/obj/GeneralPurposeApplication.Server.csproj.nuget.g.props
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.genruntimeconfig.cache
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.build.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.MvcApplicationPartsAssemblyInfo.cs
+*.targets
