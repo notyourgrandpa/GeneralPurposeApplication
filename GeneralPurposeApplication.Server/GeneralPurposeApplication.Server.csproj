@@ -7,6 +7,7 @@
     <SpaRoot>..\generalpurposeapplication.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+    <UserSecretsId>c9d48afd-2fb2-461d-9480-f7acd0235867</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
