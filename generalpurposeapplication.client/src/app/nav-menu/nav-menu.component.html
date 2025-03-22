@@ -1,7 +1,7 @@
 <div class="nav-container" [class.nav-minimized]="isMinimized">
   <div class="nav-header">
     <div class="logo-container">
-      <img src="" alt="Logo" class="logo">
+      <img src="/assets/img/application.png" alt="Logo" class="logo">
       <span class="brand-name" *ngIf="!isMinimized">KYGM</span>
     </div>
     <button class="toggle-btn" (click)="toggleMinimize()">
@@ -25,7 +25,7 @@
   <div class="nav-footer">
     <div class="user-info">
       <div class="avatar">
-        <img src="assets/user-avatar.jpg" alt="User">
+        <img src="/assets/img/user-avatar.png" alt="User">
       </div>
       <div class="user-details" *ngIf="!isMinimized">
         <span class="user-name">John Doe</span>
