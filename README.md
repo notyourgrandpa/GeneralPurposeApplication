@@ -48,6 +48,13 @@ A collection of applications I develop.
    npm install
    ```
 
+3. Migrate (Or use provided sample database)
+   ```
+   dotnet ef migrations add "Initial" -o "Data/Migrations"
+   ```
+   ```
+   dotnet ef database update
+   ```
 3. Run the application:
    - Start the backend (ASP.NET Core):
       ```sh
