@@ -5,31 +5,39 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.Metrics;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeneralPurposeApplication.Server.Data.Models
 {
+    [Table("Products")]
+    [Index(nameof(Name))]
     public class Product
     {
         [Key]
-        [Required]
         public int Id { get; set; }
 
-        [Required]
         [MaxLength(100)]
         public required string Name { get; set; }
 
-        public required int CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public required decimal CostPrice { get; set; }
+        public decimal CostPrice { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public required decimal SellingPrice { get; set; }
+        public decimal SellingPrice { get; set; }
 
         public bool IsActive { get; set; } = true;
 
         public DateTime DateAdded { get; set; } = DateTime.Now;
 
         public DateTime LastUpdated { get; set; } = DateTime.Now;
+
+        [ForeignKey(nameof(CategoryId))]
+        public required Category Category { get; set; }
+
+        public ICollection<InventoryLog> InventoryLogs { get; set; } = new List<InventoryLog>();
+        public ICollection<SalesTransactionItem> SalesTransactionItems { get; set; } =  new List<SalesTransactionItem>();
     }
 }
