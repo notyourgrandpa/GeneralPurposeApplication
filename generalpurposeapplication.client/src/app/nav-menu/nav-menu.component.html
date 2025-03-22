@@ -1,15 +1,40 @@
-<header>
-  <mat-toolbar color="primary">
-    <button mat-icon-button [routerLink]="['/']">
-      <mat-icon>
-        home
-      </mat-icon>
+<div class="nav-container" [class.nav-minimized]="isMinimized">
+  <div class="nav-header">
+    <div class="logo-container">
+      <img src="" alt="Logo" class="logo">
+      <span class="brand-name" *ngIf="!isMinimized">KYGM</span>
+    </div>
+    <button class="toggle-btn" (click)="toggleMinimize()">
+      <i class="arrow-icon" [class.left]="!isMinimized" [class.right]="isMinimized"></i>
     </button>
-    <a mat-flat-button color="primary" [routerLink]="['/fetch-data']">
-      Fetch Data
-    </a>
-    <a mat-flat-button color="primary" [routerLink]="['/health-check']">
-      Health Check
-    </a>
-  </mat-toolbar>
-</header>
+  </div>
+
+  <div class="nav-content">
+    <ul class="nav-links">
+      <li class="nav-item"
+          [routerLink]="['/fetch-data']"
+          routerLinkActive="active"
+          (click)="setActiveItem('dashboard')">
+        <i class="nav-icon dashboard-icon"></i>
+        <span class="nav-text" *ngIf="!isMinimized">Fetch-data</span>
+        <div class="tooltip" *ngIf="isMinimized">Fetch-data</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="nav-footer">
+    <div class="user-info">
+      <div class="avatar">
+        <img src="assets/user-avatar.jpg" alt="User">
+      </div>
+      <div class="user-details" *ngIf="!isMinimized">
+        <span class="user-name">John Doe</span>
+        <span class="user-role">Administrator</span>
+      </div>
+    </div>
+    <button class="logout-btn" [class.icon-only]="isMinimized" (click)="logout()">
+      <i class="logout-icon"></i>
+      <span *ngIf="!isMinimized">Logout</span>
+    </button>
+  </div>
+</div>

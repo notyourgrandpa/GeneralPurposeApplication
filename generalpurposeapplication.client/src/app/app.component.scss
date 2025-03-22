@@ -1,0 +1,17 @@
+.content-container {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 25px;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.content-container {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+}
