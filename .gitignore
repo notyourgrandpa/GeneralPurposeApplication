@@ -32,5 +32,9 @@
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.build.json
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.MvcApplicationPartsAssemblyInfo.cs
 *.targets
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.GeneratedMSBuildEditorConfig.editorconfig
+/GeneralPurposeApplication.Server/obj/Debug/net9.0/GeneralPurposeApplication.Server.assets.cache
+/GeneralPurposeApplication.Server/obj/Debug/net9.0/GeneralPurposeApplication.Server.csproj.AssemblyReference.cache
+/GeneralPurposeApplication.Server/obj/Debug/net9.0/GeneralPurposeApplication.Server.GlobalUsings.g.cs
 *.cache
 /GeneralPurposeApplication.Server/obj/Debug/net9.0

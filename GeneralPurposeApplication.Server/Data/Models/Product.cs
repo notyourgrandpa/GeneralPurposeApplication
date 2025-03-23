@@ -35,7 +35,7 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public DateTime LastUpdated { get; set; } = DateTime.Now;
 
         [ForeignKey(nameof(CategoryId))]
-        public required Category Category { get; set; }
+        public Category? Category { get; set; }
 
         public ICollection<InventoryLog> InventoryLogs { get; set; } = new List<InventoryLog>();
         public ICollection<SalesTransactionItem> SalesTransactionItems { get; set; } =  new List<SalesTransactionItem>();
