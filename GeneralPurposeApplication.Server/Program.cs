@@ -40,12 +40,16 @@ app.MapControllers();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSpa(spa =>
+    app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api"), appBuilder =>
     {
-        spa.Options.SourcePath = "../GeneralPurposeApplication.Client";
-        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+        appBuilder.UseSpa(spa =>
+        {
+            spa.Options.SourcePath = "../GeneralPurposeApplication.Client";
+            spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+        });
     });
 }
+
 else
 {
     app.MapFallbackToFile("index.html");
