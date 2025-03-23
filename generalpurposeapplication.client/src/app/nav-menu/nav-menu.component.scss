@@ -161,10 +161,14 @@
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ecf0f1"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>');
 }
 
-.nav-footer {
-  padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+.products-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23ecf0f1" viewBox="0 0 24 24"><path d="M20.54 5.23l-8-4a1 1 0 00-.88 0l-8 4A1 1 0 003 6.09v11.82a1 1 0 00.55.89l8 4a1 1 0 00.9 0l8-4a1 1 0 00.55-.89V6.09a1 1 0 00-.46-.86zM12 4.15l6.74 3.37L12 10.89 5.26 7.52zm-7 4.58l6 3v7.82l-6-3zm8 10.82v-7.82l6-3v7.82z"/></svg>');
+ }
 
 .user-info {
   display: flex;
@@ -237,7 +241,6 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-
 /* Scrollbar styling */
 .nav-content::-webkit-scrollbar {
   width: 5px;

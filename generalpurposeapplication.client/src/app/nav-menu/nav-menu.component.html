@@ -19,6 +19,14 @@
         <span class="nav-text" *ngIf="!isMinimized">Fetch-data</span>
         <div class="tooltip" *ngIf="isMinimized">Fetch-data</div>
       </li>
+      <li class="nav-item"
+          [routerLink]="['/products']"
+          routerLinkActive="active"
+          (click)="setActiveItem('dashboard')">
+        <i class="nav-icon products-icon"></i>
+        <span class="nav-text" *ngIf="!isMinimized">Products</span>
+        <div class="tooltip" *ngIf="isMinimized">Products</div>
+      </li>
     </ul>
   </div>
 
