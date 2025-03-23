@@ -25,7 +25,23 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            // Returning anonymous object for now. Will change it to DTO for refactor
+            var products = await _context.Products
+                .Include(x => x.Category)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    CategoryName = p.Category!.Name,
+                    p.CostPrice,
+                    p.SellingPrice,
+                    p.IsActive,
+                    p.DateAdded,
+                    p.LastUpdated
+                })
+            .ToListAsync();
+
+            return Ok(products);
         }
 
         // GET: api/Products/5
