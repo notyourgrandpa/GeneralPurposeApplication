@@ -32,3 +32,5 @@
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.build.json
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.MvcApplicationPartsAssemblyInfo.cs
 *.targets
+*.cache
+/GeneralPurposeApplication.Server/obj/Debug/net9.0
