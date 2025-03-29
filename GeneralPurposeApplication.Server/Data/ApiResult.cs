@@ -5,6 +5,8 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
+using System.Reflection;
 
 namespace GeneralPurposeApplication.Server.Data
 {
@@ -14,35 +16,71 @@ namespace GeneralPurposeApplication.Server.Data
         /// <summary>
         /// Private constructor called by the CreateAsync method.
         /// </summary>
-        private ApiResult(List<T> data, int count, int pageIndex, int pageSize)
+        private ApiResult(List<T> data, int count, int pageIndex, int pageSize, string? sortColumn, string? sortOrder)
         {
             Data = data;
             PageIndex = pageIndex;
             PageSize = pageSize;
             TotalCount = count;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            SortColumn = sortColumn;
+            SortOrder = sortOrder;
         }
         #region Methods
         /// <summary>
-        /// Pages a IQueryable source.
+        /// Pages and/or sorts a IQueryable source.
         /// </summary>
         /// <param name="source">An IQueryable source of generic type</param>
-        /// <param name="pageIndex">Zero-based current page index 
-        /// (0 = first page)</param>
+        /// <param name="pageIndex">Zero-based current page index (0 = first page)</param>
         /// <param name="pageSize">The actual size of each 
         /// page</param>
+        /// <param name="sortColumn">The sorting column name</param>
+        /// <param name="sortOrder">The sorting order ("ASC" or  "DESC")</param>
         /// <returns>
-        /// A object containing the paged result 
-        /// and all the relevant paging navigation info.
+        /// A object containing the paged result and all the relevant paging navigation info.
         /// </returns>
-        public static async Task<ApiResult<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
+        public static async Task<ApiResult<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize, string? sortColumn = null,string? sortOrder = null)
         {
             var count = await source.CountAsync();
+            if (!string.IsNullOrEmpty(sortColumn) && IsValidProperty(sortColumn))
+            {
+                sortOrder = !string.IsNullOrEmpty(sortOrder)
+                    && sortOrder.ToUpper() == "ASC"
+                    ? "ASC"
+                    : "DESC";
+                source = source.OrderBy(string.Format("{0} {1}", sortColumn, sortOrder)
+                    );
+            }
             source = source
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize);
+
             var data = await source.ToListAsync();
-            return new ApiResult<T>(data, count, pageIndex, pageSize);
+
+            return new ApiResult<T>(data, count, pageIndex, pageSize, sortColumn, sortOrder);
+
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Checks if the given property name exists to protect against SQL injection attacks
+        /// </summary>
+        public static bool IsValidProperty(
+            string propertyName,
+            bool throwExceptionIfNotFound = true)
+        {
+            var prop = typeof(T).GetProperty(
+                propertyName,
+                BindingFlags.IgnoreCase |
+                BindingFlags.Public |
+                BindingFlags.Instance);
+            if (prop == null && throwExceptionIfNotFound)
+                throw new NotSupportedException(
+                    string.Format(
+                        $"ERROR: Property '{propertyName}' does not exist.")
+                    );
+            return prop != null;
         }
         #endregion
         #region Properties
@@ -87,6 +125,15 @@ namespace GeneralPurposeApplication.Server.Data
                 return ((PageIndex + 1) < TotalPages);
             }
         }
+
+        /// <summary>
+        /// Sorting Column name (or null if none set)
+        /// </summary>
+        public string? SortColumn { get; set; }
+        /// <summary>
+        /// Sorting Order ("ASC", "DESC" or null if none set)
+        /// </summary>
+        public string? SortOrder { get; set; }
         #endregion
     }
 }
