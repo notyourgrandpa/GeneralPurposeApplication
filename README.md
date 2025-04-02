@@ -16,7 +16,7 @@ A collection of applications I develop.
 ## Applications
 1. Kita - Variety Store Management System - Under Development
    - _My mother have a sari-sari store. If I make a sari-sari store management system, it might help her._
-   - For Sari-Sari store owners to track item stocks, as well as track daily revenues
+   - For Sari-Sari store owners to track item stocks, as well as track daily revenues.
 
 2. Motorcycle Maintenance Tracker - PLANNED
    - _I can't remember when I last changed my engine oil. I should make an application for this!!!_
@@ -29,9 +29,15 @@ A collection of applications I develop.
 
 4. Water me, Plantito - PLANNED
    - _I love watering my plant, I love taking care of my plants, I love my plants! I should create an app because I love plants!!!!!!!!!!_
-   - Track plant watering intervals
-   - Note every plant details
-   - Contains plants dictionary. It might contain informations like "Beware, this plant is p%^&%^*^&"
+   - Track plant watering intervals.
+   - Note every plant details.
+   - Contains plants dictionary. It might contain informations like "Beware, this plant is p%^&%^*^&."
+
+5. Budget tracker??? - PLANNED
+   - _I need an application to allocate my funds per day so I can budget my money more efficiently._
+   - Allocate funds per day.
+   - Calendar view for each added budget allocation.
+   - Chartts for viewing budget allocation and how much spent.
   
 ## Getting Started  
 1. Clone the repository:  
