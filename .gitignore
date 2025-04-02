@@ -38,3 +38,8 @@
 /GeneralPurposeApplication.Server/obj/Debug/net9.0/GeneralPurposeApplication.Server.GlobalUsings.g.cs
 *.cache
 /GeneralPurposeApplication.Server/obj/Debug/net9.0
+/GeneralPurposeApplication.Server/obj/Release/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/.vs/slnx.sqlite
+/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GlobalUsings.g.cs
+/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GeneratedMSBuildEditorConfig.editorconfig
+/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.AssemblyInfo.cs
