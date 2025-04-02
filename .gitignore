@@ -39,7 +39,8 @@
 *.cache
 /GeneralPurposeApplication.Server/obj/Debug/net9.0
 /GeneralPurposeApplication.Server/obj/Release/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.AssemblyInfo.cs
-/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GeneratedMSBuildEditorConfig.editorconfig
-/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GlobalUsings.g.cs
 /.vs/slnx.sqlite
+/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GlobalUsings.g.cs
+/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GeneratedMSBuildEditorConfig.editorconfig
+/GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.AssemblyInfo.cs
+/.vs/slnx.sqlite-journal
