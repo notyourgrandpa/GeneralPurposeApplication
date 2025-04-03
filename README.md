@@ -11,7 +11,7 @@ A collection of applications I develop.
 ## Description  
 - This repository contains various simple applications I have developed/been developing using .NET and Angular.
 - All applications listed are those I think will be useful on my/other's everyday life.
-- This will be part of my study and knowledge acquisition for Angular
+- This will be part of my study, knowledge acquisition, and familiarization for Angular and TypeScript
 
 ## Applications
 1. Kita - Variety Store Management System - Under Development
