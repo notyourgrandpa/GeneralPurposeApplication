@@ -62,3 +62,4 @@
 /GeneralPurposeApplication.Server/GeneralPurposeApplication.Server.csproj.user
 *.wsuo
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/spa.proxy.json
+/GeneralPurposeApplication.Server/GeneralPurposeApplication.Server.csproj.user.Backup.tmp
