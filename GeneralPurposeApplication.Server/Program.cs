@@ -1,4 +1,4 @@
-global using GeneralPurposeApplication.Server;
+﻿global using GeneralPurposeApplication.Server;
 using GeneralPurposeApplication.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -15,10 +15,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Add ApplicationDbContext and SQL Server support
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
- );
+);
 
 var app = builder.Build();
 
@@ -33,9 +43,14 @@ else
     app.UseStaticFiles();
 }
 
+// 🔥 Apply the CORS middleware
+app.UseCors();
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
 app.UseHealthChecks(new PathString("/api/health"), new CustomHealthCheckOptions());
+
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())
@@ -49,7 +64,6 @@ if (app.Environment.IsDevelopment())
         });
     });
 }
-
 else
 {
     app.MapFallbackToFile("index.html");
