@@ -44,3 +44,13 @@
 /GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GeneratedMSBuildEditorConfig.editorconfig
 /GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.AssemblyInfo.cs
 /.vs/slnx.sqlite-journal
+/.vs/GeneralPurposeApplication/config/applicationhost.config
+/.vs/VSWorkspaceState.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/spa.proxy.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets/msbuild.build.GeneralPurposeApplication.Server.props
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.build.endpoints.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.references.upToDateCheck.txt
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.removed.txt
+/GeneralPurposeApplication.slnLaunch.user
+/GeneralPurposeApplication.Server/GeneralPurposeApplication.Server.csproj.user
+*.wsuo
