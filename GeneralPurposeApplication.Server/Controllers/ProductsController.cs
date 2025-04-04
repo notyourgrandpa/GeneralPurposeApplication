@@ -25,10 +25,15 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/Cities/?pageIndex=0&pageSize=10
         // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ActionResult<ApiResult<Product>>> GetProducts(int pageIndex = 0, int pageSize = 10, string? sortColumn = null,
-        string? sortOrder = null)
+        public async Task<ActionResult<ApiResult<Product>>> GetProducts(
+            int pageIndex = 0, 
+            int pageSize = 10, 
+            string? sortColumn = null,
+            string? sortOrder = null, 
+            string? filterColumn = null, 
+            string? filterQuery = null)
         {
-            return await ApiResult<Product>.CreateAsync(_context.Products.AsNoTracking(), pageIndex, pageSize, sortColumn, sortOrder);
+            return await ApiResult<Product>.CreateAsync(_context.Products.AsNoTracking(), pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
         }
 
         // GET: api/Products/5
