@@ -44,6 +44,13 @@
 /GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.GeneratedMSBuildEditorConfig.editorconfig
 /GeneralPurposeApplication.Server/obj/Release/net8.0/GeneralPurposeApplication.Server.AssemblyInfo.cs
 /.vs/slnx.sqlite-journal
+/.vs/GeneralPurposeApplication/v17
+/.vs/GeneralPurposeApplication/v17/.wsuo
+*.user
+/.vs/VSWorkspaceState.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.build.endpoints.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets.references.upToDateCheck.txt
 /.vs/GeneralPurposeApplication/config/applicationhost.config
 /.vs/VSWorkspaceState.json
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/spa.proxy.json
