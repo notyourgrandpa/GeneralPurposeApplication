@@ -12,10 +12,13 @@ export class FetchDataComponent {
   public forecasts?: WeatherForecast[];
 
   constructor(http: HttpClient) {
-    http.get<WeatherForecast[]>(environment.baseUrl + 'api/weatherforecast').
-      subscribe(result => {
-        this.forecasts = result;
-      }, error => console.error(error));
+    http.get<WeatherForecast[]>(environment.baseUrl + 'api/weatherforecast')
+      .subscribe({
+        next: result => {
+          this.forecasts = result;
+        },
+        error: error => console.error(error)
+      });
   }
 }
 
