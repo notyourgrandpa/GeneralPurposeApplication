@@ -1,0 +1,63 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h1>{{title}}</h1>
+  <p *ngIf="!product"><em>Loading…</em></p>
+  <div [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Name -->
+    <mat-form-field>
+      <mat-label>Name:</mat-label>
+      <input matInput formControlName="name" required
+             placeholder="Type a name">
+    </mat-form-field>
+
+    <!-- Cost Price -->
+    <mat-form-field>
+      <mat-label>Cost Price:</mat-label>
+      <input matInput formControlName="costPrice" required
+             placeholder="Insert cost price">
+    </mat-form-field>
+
+    <!-- Selling Price -->
+    <mat-form-field>
+      <mat-label>Selling Price:</mat-label>
+      <input matInput formControlName="sellingPrice" required
+             placeholder="Insert selling price">
+    </mat-form-field>
+
+    <!-- Is Active -->
+    <mat-form-field appearance="fill">
+      <mat-label>Is Active</mat-label>
+      <mat-select formControlName="isActive" required>
+        <mat-option [value]="true">Active</mat-option>
+        <mat-option [value]="false">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Date Added -->
+    <mat-form-field appearance="fill">
+      <mat-label>Date Added</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="dateAdded" required>
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Last Updated -->
+    <mat-form-field appearance="fill">
+      <mat-label>Last Updated</mat-label>
+      <input matInput [matDatepicker]="picker2" formControlName="lastUpdated" required>
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+
+    <div>
+      <button mat-flat-button color="primary"
+              type="submit">
+        Save
+      </button>
+      <button mat-flat-button color="secondary"
+              [routerLink]="['/products']">
+        Cancel
+      </button>
+    </div>
+  </div>
+</form>
