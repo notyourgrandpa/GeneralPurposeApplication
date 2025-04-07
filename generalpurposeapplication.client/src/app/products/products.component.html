@@ -2,6 +2,11 @@
 <p>Here's a list of products: </p>
 <p *ngIf="!products"><em>Loading...</em></p>
 
+<button mat-flat-button color="primary"
+        class="btn-add" *ngIf="products" [routerLink]="['/product']">
+  Add a new Product
+</button>
+
 <mat-form-field [hidden]="!products">
   <input matInput #filter (keyup)="loadData(filter.value)"
          placeholder="Filter by name (or part of it)...">
@@ -14,7 +19,7 @@
        [matSortActive]="defaultSortColumn"
        [matSortDirection]="defaultSortOrder">
 
-    <!-- Id Column -->
+  <!-- Id Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
     <td mat-cell *matCellDef="let product">{{product.id}}</td>

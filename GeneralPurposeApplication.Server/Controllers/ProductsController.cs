@@ -60,7 +60,18 @@ namespace GeneralPurposeApplication.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            var existingProduct = await _context.Products.FindAsync(id);
+
+            if(existingProduct == null)
+            {
+                return NotFound();
+            }
+
+            existingProduct.Name = product.Name;
+            existingProduct.CostPrice = product.CostPrice;
+            existingProduct.SellingPrice = product.SellingPrice;
+            existingProduct.IsActive = product.IsActive;
+            existingProduct.LastUpdated = DateTime.UtcNow;
 
             try
             {
