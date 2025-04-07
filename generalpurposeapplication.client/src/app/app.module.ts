@@ -14,6 +14,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HealthCheckComponent } from './health-check/health-check.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductEditComponent } from './products/product-edit.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ProductEditComponent } from './products/product-edit.component';
     FetchDataComponent,
     HealthCheckComponent,
     ProductsComponent,
-    ProductEditComponent
+    ProductEditComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
