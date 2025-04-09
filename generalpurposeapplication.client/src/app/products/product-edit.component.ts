@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Product } from './product';
@@ -38,13 +40,11 @@ export class ProductEditComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       name: new FormControl(''),
-      categoryId: new FormControl(''),
-      costPrice: new FormControl(''),
-      sellingPrice: new FormControl(''),
-      isActive: new FormControl(''),
-      dateAdded: new FormControl(''),
-      lastUpdated: new FormControl('')
-    });
+      categoryId: new FormControl('', Validators.required),
+      costPrice: new FormControl('', Validators.required),
+      sellingPrice: new FormControl('', Validators.required),
+      isActive: new FormControl('', Validators.required)
+    }, null, this.isDupeProduct());
     this.loadData();
   }
 
@@ -131,6 +131,21 @@ export class ProductEditComponent implements OnInit {
             error: (error) => console.error(error)
           });
       }
+    }
+  }
+
+  isDupeProduct(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      var product = <Product>{};
+      product.id = (this.id) ? this.id : 0;
+      product.name = this.form.controls['name'].value;
+      product.categoryId = +this.form.controls['categoryId'].value;
+      product.costPrice = +this.form.controls['costPrice'].value;
+      product.sellingPrice = +this.form.controls['sellingPrice'].value;
+      var url = environment.baseUrl + 'api/Products/IsDupeProduct';
+      return this.http.post<boolean>(url, product).pipe(map(result => {
+        return (result ? { isDupeProduct: true } : null);
+      }));
     }
   }
 }

@@ -123,5 +123,18 @@ namespace GeneralPurposeApplication.Server.Controllers
         {
             return _context.Products.Any(e => e.Id == id);
         }
+
+        [HttpPost]
+        [Route("IsDupeProduct")]
+        public bool IsDupeProduct(Product product)
+        {
+            return _context.Products.AsNoTracking().Any(
+                e => e.Name == product.Name
+                && e.CategoryId == product.CategoryId
+                && e.SellingPrice == product.SellingPrice
+                && e.CostPrice == product.CostPrice
+                && e.Id != product.Id
+            );
+        }
     }
 }

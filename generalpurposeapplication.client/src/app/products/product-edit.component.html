@@ -1,58 +1,81 @@
+<h1>{{title}}</h1>
+<p *ngIf="id && !product"><em>Loading…</em></p>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <h1>{{title}}</h1>
-  <p *ngIf="id && !product"><em>Loading…</em></p>
-  <div [formGroup]="form" (ngSubmit)="onSubmit()">
 
-    <!-- Name -->
-    <mat-form-field>
-      <mat-label>Name:</mat-label>
-      <input matInput formControlName="name" required
-             placeholder="Type a name">
-    </mat-form-field>
+  <p>
+    <mat-error *ngIf="form.invalid && form.hasError('isDupeProduct')">
+      <strong>ERROR</strong>:
+      A product with the same <i>name</i>, <i>selling price</i>,
+      <i>cost price</i> and <i>category</i> already exists.
+    </mat-error>
+  </p>
 
-    <!-- Category -->
-    <mat-form-field *ngIf="categories">
-      <mat-label>Select a Category...</mat-label>
-      <mat-select id="categoryId" formControlName="categoryId">
-        <mat-option *ngFor="let category of categories"
-                    [value]="category.id">
-          {{category.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <!-- Name -->
+  <mat-form-field>
+    <mat-label>Name:</mat-label>
+    <input matInput formControlName="name" required
+           placeholder="Type a name">
+    <mat-error *ngIf="form.controls['name'].errors?.['required']">
+      Name is required.
+    </mat-error>
+  </mat-form-field>
 
-    <!-- Cost Price -->
-    <mat-form-field>
-      <mat-label>Cost Price:</mat-label>
-      <input matInput formControlName="costPrice" required
-             placeholder="Insert cost price">
-    </mat-form-field>
+  <!-- Category -->
+  <mat-form-field *ngIf="categories">
+    <mat-label>Select a Category...</mat-label>
+    <mat-select id="categoryId" formControlName="categoryId">
+      <mat-option *ngFor="let category of categories"
+                  [value]="category.id">
+        {{category.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.controls['categoryId'].errors?.['required']">
+      Please select a category.
+    </mat-error>
+  </mat-form-field>
 
-    <!-- Selling Price -->
-    <mat-form-field>
-      <mat-label>Selling Price:</mat-label>
-      <input matInput formControlName="sellingPrice" required
-             placeholder="Insert selling price">
-    </mat-form-field>
+  <!-- Cost Price -->
+  <mat-form-field>
+    <mat-label>Cost Price:</mat-label>
+    <input matInput formControlName="costPrice" required
+           placeholder="Insert cost price">
+    <mat-error *ngIf="form.controls['costPrice'].errors?.['required']">
+      Cost Price is required.
+    </mat-error>
+  </mat-form-field>
 
-    <!-- Is Active -->
-    <mat-form-field appearance="fill">
-      <mat-label>Is Active</mat-label>
-      <mat-select formControlName="isActive" required>
-        <mat-option [value]="true">Active</mat-option>
-        <mat-option [value]="false">Inactive</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <!-- Selling Price -->
+  <mat-form-field>
+    <mat-label>Selling Price:</mat-label>
+    <input matInput formControlName="sellingPrice" required
+           placeholder="Insert selling price">
+    <mat-error *ngIf="form.controls['sellingPrice'].errors?.['required']">
+      Selling Price is required.
+    </mat-error>
+  </mat-form-field>
 
-    <div>
-      <button mat-flat-button color="primary"
-              type="submit">
-        {{ this.id ? "Save" : "Create" }}
-      </button>
-      <button mat-flat-button color="secondary"
-              [routerLink]="['/products']">
-        Cancel
-      </button>
-    </div>
+  <!-- Is Active -->
+  <mat-form-field appearance="fill">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="isActive" required>
+      <mat-option [value]="true">Active</mat-option>
+      <mat-option [value]="false">Inactive</mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.controls['isActive'].errors?.['required']">
+      Status is required.
+    </mat-error>
+  </mat-form-field>
+
+  <div>
+    <button mat-flat-button color="primary"
+            type="submit"
+            [disabled]="!form.valid">
+      {{ this.id ? "Save" : "Create" }}
+    </button>
+    <button mat-flat-button color="secondary"
+            [routerLink]="['/products']">
+      Cancel
+    </button>
   </div>
 </form>

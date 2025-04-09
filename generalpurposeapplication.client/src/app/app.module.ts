@@ -15,6 +15,7 @@ import { HealthCheckComponent } from './health-check/health-check.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductEditComponent } from './products/product-edit.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { CategoryEditComponent } from './categories/category-edit.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { CategoriesComponent } from './categories/categories.component';
     HealthCheckComponent,
     ProductsComponent,
     ProductEditComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    CategoryEditComponent
   ],
   imports: [
     BrowserModule,
