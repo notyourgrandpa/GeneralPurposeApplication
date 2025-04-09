@@ -14,7 +14,8 @@ import { MatSort } from '@angular/material/sort';
 })
 export class ProductsComponent implements OnInit {
   public displayedColumns: string[] = [
-    'id', 'name',
+    'id',
+    'name',
     'categoryName',
     'costPrice',
     'sellingPrice',

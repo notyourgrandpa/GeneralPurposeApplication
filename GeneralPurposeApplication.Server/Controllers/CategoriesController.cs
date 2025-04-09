@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.Models;
+using System.Linq.Dynamic.Core;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -109,6 +110,30 @@ namespace GeneralPurposeApplication.Server.Controllers
         private bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        [Route("IsDupeField")]
+        public bool IsDupeField(int categoryId, string fieldName, string fieldValue)
+        {
+            //// Default approach (using strongly-typed LAMBA expressions)
+            //switch (fieldName)
+            //{
+            //    case "name":
+            //        return _context.Categories.Any(
+            //            c => c.Name == fieldValue && c.Id != categoryId);
+
+            //    default:
+            //        return false;
+            //}
+
+            // Alternative approach (using System.Linq.Dynamic.Core)
+            return (ApiResult<Category>.IsValidProperty(fieldName, true))
+                ? _context.Categories.Any(
+                    string.Format("{0} == @0 && Id != @1", fieldName),
+                    fieldValue,
+                    categoryId)
+                : false;
         }
     }
 }
