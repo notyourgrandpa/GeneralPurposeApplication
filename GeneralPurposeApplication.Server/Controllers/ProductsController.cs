@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Data.DTOs;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -25,7 +26,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/Cities/?pageIndex=0&pageSize=10
         // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ActionResult<ApiResult<Product>>> GetProducts(
+        public async Task<ActionResult<ApiResult<ProductDTO>>> GetProducts(
             int pageIndex = 0, 
             int pageSize = 10, 
             string? sortColumn = null,
@@ -33,7 +34,27 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null, 
             string? filterQuery = null)
         {
-            return await ApiResult<Product>.CreateAsync(_context.Products.AsNoTracking(), pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            return await ApiResult<ProductDTO>.CreateAsync(
+                _context.Products
+                .AsNoTracking()
+                .Select(x => new ProductDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    CategoryId = x.CategoryId,
+                    CategoryName = x.Category!.Name,
+                    CostPrice = x.CostPrice,
+                    SellingPrice = x.SellingPrice,
+                    IsActive = x.IsActive,
+                    DateAdded = x.DateAdded,
+                    LastUpdated = x.LastUpdated
+                }), 
+                pageIndex, 
+                pageSize,
+                sortColumn,
+                sortOrder, 
+                filterColumn, 
+                filterQuery);
         }
 
         // GET: api/Products/5
