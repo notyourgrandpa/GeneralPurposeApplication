@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Product } from './product';
 import { Category } from './../categories/category';
+import { BaseFormComponent } from './../base-form.component'
 
 @Component({
   selector: 'app-product-edit',
@@ -15,12 +16,9 @@ import { Category } from './../categories/category';
   styleUrl: './product-edit.component.scss'
 })
 
-export class ProductEditComponent implements OnInit {
+export class ProductEditComponent extends BaseFormComponent implements OnInit {
   // the view title
   title?: string;
-
-  // the form model
-  form!: FormGroup;
 
   // the product object to edit or create
   product?: Product;
@@ -36,6 +34,7 @@ export class ProductEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient) {
+    super();
   }
   ngOnInit() {
     this.form = new FormGroup({

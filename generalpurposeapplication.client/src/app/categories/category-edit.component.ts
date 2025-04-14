@@ -5,17 +5,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Category } from './category';
+import { BaseFormComponent } from '../base-form.component';
 
 @Component({
   selector: 'app-category-edit',
   templateUrl: './category-edit.component.html',
   styleUrl: './category-edit.component.scss'
 })
-export class CategoryEditComponent implements OnInit{
+export class CategoryEditComponent extends BaseFormComponent implements OnInit{
   // the view title
   title?: string;
-  // the form model
-  form!: FormGroup;
   // the category object to edit or create
   category?: Category;
   // the category object id, as fetched from the active route:
@@ -23,11 +22,8 @@ export class CategoryEditComponent implements OnInit{
   id?: number;
   // the categories array for the select
   categories?: Category[];
-  constructor(
-    private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient) {
+  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router, private http: HttpClient) {
+    super();
   }
   ngOnInit() {
     this.form = this.fb.group({

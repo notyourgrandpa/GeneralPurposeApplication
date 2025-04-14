@@ -16,8 +16,8 @@
     <mat-label>Name:</mat-label>
     <input matInput formControlName="name" required
            placeholder="Type a name">
-    <mat-error *ngIf="form.controls['name'].errors?.['required']">
-      Name is required.
+    <mat-error *ngFor="let error of getErrors(form.get('name')!,'Name')">
+      {{error}}
     </mat-error>
   </mat-form-field>
 
@@ -30,8 +30,8 @@
         {{category.name}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="form.controls['categoryId'].errors?.['required']">
-      Please select a category.
+    <mat-error *ngFor="let error of getErrors(form.get('categoryId')!,'Category')">
+      {{error}}
     </mat-error>
   </mat-form-field>
 
@@ -40,8 +40,8 @@
     <mat-label>Cost Price:</mat-label>
     <input matInput formControlName="costPrice" required
            placeholder="Insert cost price">
-    <mat-error *ngIf="form.controls['costPrice'].errors?.['required']">
-      Cost Price is required.
+    <mat-error *ngFor="let error of getErrors(form.get('costPrice')!,'Cost Price')">
+      {{error}}
     </mat-error>
   </mat-form-field>
 
@@ -50,8 +50,8 @@
     <mat-label>Selling Price:</mat-label>
     <input matInput formControlName="sellingPrice" required
            placeholder="Insert selling price">
-    <mat-error *ngIf="form.controls['sellingPrice'].errors?.['required']">
-      Selling Price is required.
+    <mat-error *ngFor="let error of getErrors(form.get('sellingPrice')!,'Selling Price')">
+      {{error}}
     </mat-error>
   </mat-form-field>
 
@@ -62,8 +62,8 @@
       <mat-option [value]="true">Active</mat-option>
       <mat-option [value]="false">Inactive</mat-option>
     </mat-select>
-    <mat-error *ngIf="form.controls['isActive'].errors?.['required']">
-      Status is required.
+    <mat-error *ngFor="let error of getErrors(form.get('isActive')!,'Status')">
+      {{error}}
     </mat-error>
   </mat-form-field>
 
