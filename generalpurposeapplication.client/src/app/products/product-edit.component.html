@@ -40,7 +40,8 @@
     <mat-label>Cost Price:</mat-label>
     <input matInput formControlName="costPrice" required
            placeholder="Insert cost price">
-    <mat-error *ngFor="let error of getErrors(form.get('costPrice')!,'Cost Price')">
+    <mat-error *ngFor="let error of getErrors(form.get('costPrice')!,'Cost Price',
+               { 'pattern' : 'requires a positive or negative number with 0-2 decimal values.'})">
       {{error}}
     </mat-error>
   </mat-form-field>
@@ -50,7 +51,8 @@
     <mat-label>Selling Price:</mat-label>
     <input matInput formControlName="sellingPrice" required
            placeholder="Insert selling price">
-    <mat-error *ngFor="let error of getErrors(form.get('sellingPrice')!,'Selling Price')">
+    <mat-error *ngFor="let error of getErrors(form.get('sellingPrice')!,'Selling Price',
+               { 'pattern' : 'requires a positive or negative number with 0-2 decimal values.'})">
       {{error}}
     </mat-error>
   </mat-form-field>

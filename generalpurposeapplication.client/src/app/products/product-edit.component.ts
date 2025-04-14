@@ -40,8 +40,8 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl(''),
       categoryId: new FormControl('', Validators.required),
-      costPrice: new FormControl('', Validators.required),
-      sellingPrice: new FormControl('', Validators.required),
+      costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
+      sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       isActive: new FormControl('', Validators.required)
     }, null, this.isDupeProduct());
     this.loadData();
