@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.Models;
 using System.Linq.Dynamic.Core;
+using GeneralPurposeApplication.Server.Data.DTOs;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -24,7 +25,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<ApiResult<Category>>> GetCategories(
+        public async Task<ActionResult<ApiResult<CategoryDTO>>> GetCategories(
             int pageIndex = 0,
             int pageSize = 10,
             string? sortColumn = null,
@@ -32,7 +33,21 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null,
             string? filterQuery = null)
         {
-            return await ApiResult<Category>.CreateAsync(_context.Categories.AsNoTracking(), pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            return await ApiResult<CategoryDTO>.CreateAsync(
+                _context.Categories
+                    .AsNoTracking()
+                    .Select(x => new CategoryDTO
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        TotalProducts = x.Products!.Count
+                    }),
+                pageIndex,
+                pageSize,
+                sortColumn,
+                sortOrder,
+                filterColumn,
+                filterQuery);
         }
 
         // GET: api/Categories/5

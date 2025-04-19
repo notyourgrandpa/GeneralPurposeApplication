@@ -17,7 +17,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class CategoriesComponent implements OnInit {
   public displayedColumns: string[] = [
     'id',
-    'name'
+    'name',
+    'totalProducts'
   ];
   public categories!: MatTableDataSource<Category>;
 
