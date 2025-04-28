@@ -36,7 +36,9 @@
   <!-- Category Column -->
   <ng-container matColumnDef="categoryName">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-    <td mat-cell *matCellDef="let product">{{product.categoryName}}</td>
+    <td mat-cell *matCellDef="let product">
+      <a [routerLink]="['/category', product.categoryId]">{{product.categoryName}}</a>
+    </td>
   </ng-container>
 
   <!-- Cost Price Column -->
