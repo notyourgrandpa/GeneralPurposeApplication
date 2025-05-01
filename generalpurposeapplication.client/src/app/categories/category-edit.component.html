@@ -10,7 +10,7 @@
       <mat-error *ngFor="let error of getErrors(form.get('name')!,'Name')">
         {{error}}
       </mat-error>
-</mat-form-field>
+    </mat-form-field>
     <div>
       <button mat-flat-button color="primary"
               type="submit" [disabled]="!form.valid">
@@ -22,4 +22,24 @@
       </button>
     </div>
   </form>
+</div>
+
+<!-- Form debug info panel -->
+<div class="info">
+  <div class="info-header">Form Debug Info</div>
+  <div class="info-body">
+    <div class="info-label">
+      Form Value:
+    </div>
+    <div class="info-value">
+      {{ form.value | json }}
+    </div>
+    <hr />
+    <div class="info-label">
+      Form Status:
+    </div>
+    <div class="info-value">
+      {{ form.status | json }}
+    </div>
+  </div>
 </div>
