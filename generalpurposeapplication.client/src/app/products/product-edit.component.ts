@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+//import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
+//import { environment } from '../../environments/environment';
 import { Product } from './product';
 import { Category } from './../categories/category';
 import { BaseFormComponent } from './../base-form.component'
+
+import { ProductService } from './product.service';
 
 @Component({
   selector: 'app-product-edit',
@@ -33,7 +35,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private http: HttpClient) {
+    private productService: ProductService) {
     super();
   }
   ngOnInit() {
@@ -58,8 +60,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
     if (this.id) {
       // EDIT MODE
       // fetch the product from the server
-      var url = environment.baseUrl + 'api/Products/' + this.id;
-      this.http.get<Product>(url).subscribe({
+      this.productService.get(this.id).subscribe({
         next: (result) => {
           this.product = result;
           this.title = "Edit - " + this.product.name;
@@ -77,20 +78,15 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
 
   loadCategories() {
     // fetch all the categories from the server
-    var url = environment.baseUrl + 'api/Categories';
-    var params = new HttpParams()
-      .set("pageIndex", "0")
-      .set("pageSize", "9999")
-      .set("sortColumn", "name");
-
-    this.http.get<any>(url, { params }).subscribe({
-      next: (result) => {
-        this.categories = result.data;
-        console.log("Categories: ");
-        console.log(result.data);
-      },
-      error: (error) => console.error(error)
-    });
+    this.productService.getCategories(0, 9999, "name", "asc", null, null)
+      .subscribe({
+        next: (result) => {
+          this.categories = result.data;
+          console.log("Categories: ");
+          console.log(result.data);
+        },
+        error: (error) => console.error(error)
+      });
   }
   
   onSubmit() {
@@ -104,9 +100,8 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
 
       if (this.id) {
         // EDIT mode
-        var url = environment.baseUrl + 'api/Products/' + product.id;
-        this.http
-          .put<Product>(url, product)
+        this.productService
+          .put(product)
           .subscribe({
             next: (result) => {
               console.log("Product " + product!.id + " has been updated.");
@@ -118,9 +113,8 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
       }
       else {
         // ADD NEW mode
-        var url = environment.baseUrl + 'api/Products';
-        this.http
-          .post<Product>(url, product)
+        this.productService
+          .post(product)
           .subscribe({
             next: (result) => {
               console.log("Product " + result.id + " has been created.");
@@ -141,8 +135,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
       product.categoryId = +this.form.controls['categoryId'].value;
       product.costPrice = +this.form.controls['costPrice'].value;
       product.sellingPrice = +this.form.controls['sellingPrice'].value;
-      var url = environment.baseUrl + 'api/Products/IsDupeProduct';
-      return this.http.post<boolean>(url, product).pipe(map(result => {
+      return this.productService.isDupeProduct(product).pipe(map(result => {
         return (result ? { isDupeProduct: true } : null);
       }));
     }
