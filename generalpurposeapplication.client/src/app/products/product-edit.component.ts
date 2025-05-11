@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 //import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 //import { environment } from '../../environments/environment';
 import { Product } from './product';
@@ -18,7 +18,7 @@ import { ProductService } from './product.service';
   styleUrl: './product-edit.component.scss'
 })
 
-export class ProductEditComponent extends BaseFormComponent implements OnInit {
+export class ProductEditComponent extends BaseFormComponent implements OnInit, OnDestroy {
   // the view title
   title?: string;
 
@@ -29,8 +29,13 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
   // and not NULL when we're editing an existing one.
   id?: number;
 
-  // the categories array for the select
-  categories: Category[] = [];
+  // the countries observable for the select (using async pipe)
+  categories?: Observable<Category[]>;
+
+  // Activity Log (for debugging purposes)
+  //activityLog: string = '';
+
+  private destroySubject = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,6 +43,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
     private productService: ProductService) {
     super();
   }
+
   ngOnInit() {
     this.form = new FormGroup({
       name: new FormControl(''),
@@ -46,7 +52,46 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
       sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       isActive: new FormControl('', Validators.required)
     }, null, this.isDupeProduct());
+
+    // react to form changes
+    this.form.valueChanges
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Form Model has been loaded.");
+        }
+        else {
+          this.log("Form was updated by the user.");
+        }
+      });
+
+    // react to changes in the form.name control
+    this.form.get("name")!.valueChanges
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Name has been loaded with initial values.");
+        }
+        else {
+          this.log("Name was updated by the user.");
+        }
+      });
+
     this.loadData();
+  }
+
+  ngOnDestroy() {
+    // emit a value with the takeUntil notifier
+    this.destroySubject.next(true);
+    // complete the subject
+    this.destroySubject.complete();
+  }
+
+  log(str: string) {
+    console.log("["
+      +
+      new Date().toLocaleString()
+      + 
   }
 
   loadData() {
@@ -77,16 +122,10 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit {
   }
 
   loadCategories() {
-    // fetch all the categories from the server
-    this.productService.getCategories(0, 9999, "name", "asc", null, null)
-      .subscribe({
-        next: (result) => {
-          this.categories = result.data;
-          console.log("Categories: ");
-          console.log(result.data);
-        },
-        error: (error) => console.error(error)
-      });
+    // fetch all the countries from the server
+    this.categories = this.productService
+      .getCategories(0, 9999, "name", "asc", null, null)
+      .pipe(map(x => x.data));
   }
   
   onSubmit() {
