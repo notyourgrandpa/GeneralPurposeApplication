@@ -22,10 +22,10 @@
   </mat-form-field>
 
   <!-- Category -->
-  <mat-form-field *ngIf="categories">
+  <mat-form-field *ngIf="categories  | async as result">
     <mat-label>Select a Category...</mat-label>
     <mat-select id="categoryId" formControlName="categoryId">
-      <mat-option *ngFor="let category of categories"
+      <mat-option *ngFor="let category of result"
                   [value]="category.id">
         {{category.name}}
       </mat-option>
@@ -81,3 +81,37 @@
     </button>
   </div>
 </form>
+
+
+<!-- Form debug info panel -->
+<!--<div class="info">
+  <div class="info-header">Form Debug Info</div>
+  <div class="info-body">
+    <div class="info-label">
+      Form Value:
+    </div>
+    <div class="info-value">
+      {{ form.value | json }}
+    </div>
+    <hr />
+    <div class="info-label">
+      Form Status:
+    </div>
+    <div class="info-value">
+      {{ form.status | json }}
+    </div>
+  </div>
+</div>-->
+
+
+<!-- Form activity log panel -->
+<!--<div class="info">
+  <div class="info-header">Form Activity Log</div>
+  <div class="info-body">
+    <div class="info-value">
+      <span *ngIf="activityLog"
+            [innerHTML]="activityLog">
+      </span>
+    </div>
+  </div>
+</div>-->
