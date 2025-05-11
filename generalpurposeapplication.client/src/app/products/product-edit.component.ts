@@ -91,7 +91,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
     console.log("["
       +
       new Date().toLocaleString()
-      + 
+      + "] " + str);
   }
 
   loadData() {
