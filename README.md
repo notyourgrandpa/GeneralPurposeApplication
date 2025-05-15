@@ -17,6 +17,7 @@ A collection of applications I develop.
 | EF Core Sql Server | 8.0.14      | Database provider for EF Core  |
 | Moq                | 13.0.1      | Mocking framework              |
 | EPPlus             | 4.5.3.3     | Spreadsheet library            |
+| EF Core InMemory   | 8.0.14      | Database Mock                  |
 
 ## Description  
 - This repository contains various simple applications I have developed/been developing using .NET and Angular.
