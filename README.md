@@ -10,12 +10,13 @@ A collection of applications I develop.
 
 ## Dependencies
 
-| Package           | Version     | Description                    |
-|-------------------|-------------|--------------------------------|
-| Serilog           | 2.12.0      | Logging framework              |
-| EF Core           | 8.0.14      | ORM for .NET Core              |
-| Moq               | 13.0.1      | Mocking framework              |
-| EPPlus            | 4.5.3.3     | Spreadsheet library            |
+| Package            | Version     | Description                    |
+|--------------------|-------------|--------------------------------|
+| Serilog            | 2.12.0      | Logging framework              |
+| EF Core            | 8.0.14      | ORM for .NET Core              |
+| EF Core Sql Server | 8.0.14      | Database provider for EF Core  |
+| Moq                | 13.0.1      | Mocking framework              |
+| EPPlus             | 4.5.3.3     | Spreadsheet library            |
 
 ## Description  
 - This repository contains various simple applications I have developed/been developing using .NET and Angular.
