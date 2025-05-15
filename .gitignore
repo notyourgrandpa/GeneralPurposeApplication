@@ -77,3 +77,6 @@
 /GeneralPurposeApplication.Tests/bin/Release/net9.0/CoverletSourceRootsMapping_GeneralPurposeApplication.Tests
 /GeneralPurposeApplication.Tests/obj/GeneralPurposeApplication.Tests.csproj.nuget.dgspec.json
 /GeneralPurposeApplication.Tests/obj/GeneralPurposeApplication.Tests.csproj.nuget.g.props
+/GeneralPurposeApplication.Tests/bin/Debug/net9.0/af/Humanizer.resources.dll
+bin/
+obj/
