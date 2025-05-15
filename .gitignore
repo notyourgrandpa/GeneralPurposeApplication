@@ -63,3 +63,17 @@
 *.wsuo
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/spa.proxy.json
 /GeneralPurposeApplication.Server/GeneralPurposeApplication.Server.csproj.user.Backup.tmp
+/GeneralPurposeApplication.Tests/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+/GeneralPurposeApplication.Tests/obj/Debug/net9.0/GeneralPurposeApplication.Tests.AssemblyInfo.cs
+/GeneralPurposeApplication.Tests/obj/Debug/net9.0/GeneralPurposeApplication.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/GeneralPurposeApplication.Tests/obj/Debug/net9.0/GeneralPurposeApplication.Tests.GlobalUsings.g.cs
+/GeneralPurposeApplication.Tests/bin/Debug/net9.0/.msCoverageSourceRootsMapping_GeneralPurposeApplication.Tests
+/GeneralPurposeApplication.Tests/bin/Debug/net9.0/CoverletSourceRootsMapping_GeneralPurposeApplication.Tests
+/GeneralPurposeApplication.Tests/obj/Release/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+/GeneralPurposeApplication.Tests/obj/Release/net9.0/GeneralPurposeApplication.Tests.AssemblyInfo.cs
+/GeneralPurposeApplication.Tests/obj/Release/net9.0/GeneralPurposeApplication.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/GeneralPurposeApplication.Tests/obj/Release/net9.0/GeneralPurposeApplication.Tests.GlobalUsings.g.cs
+/GeneralPurposeApplication.Tests/bin/Release/net9.0/.msCoverageSourceRootsMapping_GeneralPurposeApplication.Tests
+/GeneralPurposeApplication.Tests/bin/Release/net9.0/CoverletSourceRootsMapping_GeneralPurposeApplication.Tests
+/GeneralPurposeApplication.Tests/obj/GeneralPurposeApplication.Tests.csproj.nuget.dgspec.json
+/GeneralPurposeApplication.Tests/obj/GeneralPurposeApplication.Tests.csproj.nuget.g.props
