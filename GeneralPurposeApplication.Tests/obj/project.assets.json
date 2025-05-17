@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {
+    "net8.0": {
       "Azure.Core/1.38.0": {
         "type": "package",
         "dependencies": {
@@ -3629,12 +3629,12 @@
       "System.Linq.Dynamic.Core/1.6.0.2": {
         "type": "package",
         "compile": {
-          "lib/net9.0/System.Linq.Dynamic.Core.dll": {
+          "lib/net8.0/System.Linq.Dynamic.Core.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net9.0/System.Linq.Dynamic.Core.dll": {
+          "lib/net8.0/System.Linq.Dynamic.Core.dll": {
             "related": ".pdb;.xml"
           }
         }
@@ -13422,7 +13422,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net9.0": [
+    "net8.0": [
       "GeneralPurposeApplication.Server >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.12.0",
       "Moq >= 4.20.72",
@@ -13432,28 +13432,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lenovo-pc\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\macay\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Users\\Lenovo-pc\\Desktop\\GeneralPurposeApplication\\GeneralPurposeApplication.Tests\\GeneralPurposeApplication.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\macay\\source\\repos\\GeneralPurposeApplication\\GeneralPurposeApplication.Tests\\GeneralPurposeApplication.Tests.csproj",
       "projectName": "GeneralPurposeApplication.Tests",
-      "projectPath": "D:\\Users\\Lenovo-pc\\Desktop\\GeneralPurposeApplication\\GeneralPurposeApplication.Tests\\GeneralPurposeApplication.Tests.csproj",
-      "packagesPath": "C:\\Users\\Lenovo-pc\\.nuget\\packages\\",
-      "outputPath": "D:\\Users\\Lenovo-pc\\Desktop\\GeneralPurposeApplication\\GeneralPurposeApplication.Tests\\obj\\",
+      "projectPath": "C:\\Users\\macay\\source\\repos\\GeneralPurposeApplication\\GeneralPurposeApplication.Tests\\GeneralPurposeApplication.Tests.csproj",
+      "packagesPath": "C:\\Users\\macay\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\macay\\source\\repos\\GeneralPurposeApplication\\GeneralPurposeApplication.Tests\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Lenovo-pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\macay\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net9.0"
+        "net8.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -13461,11 +13456,11 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Users\\Lenovo-pc\\Desktop\\GeneralPurposeApplication\\GeneralPurposeApplication.Server\\GeneralPurposeApplication.Server.csproj": {
-              "projectPath": "D:\\Users\\Lenovo-pc\\Desktop\\GeneralPurposeApplication\\GeneralPurposeApplication.Server\\GeneralPurposeApplication.Server.csproj"
+            "C:\\Users\\macay\\source\\repos\\GeneralPurposeApplication\\GeneralPurposeApplication.Server\\GeneralPurposeApplication.Server.csproj": {
+              "projectPath": "C:\\Users\\macay\\source\\repos\\GeneralPurposeApplication\\GeneralPurposeApplication.Server\\GeneralPurposeApplication.Server.csproj"
             }
           }
         }
@@ -13479,12 +13474,11 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.200"
+      }
     },
     "frameworks": {
-      "net9.0": {
-        "targetAlias": "net9.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "dependencies": {
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
@@ -13523,7 +13517,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.409/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
