@@ -67,3 +67,4 @@
 
 bin/
 obj/
+/GeneralPurposeApplication.Tests/obj/project.assets.json
