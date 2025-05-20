@@ -6,12 +6,26 @@ A collection of applications I develop.
 - **TypeScript** (Version 5.2)  
 - **NuGet Package Manager** (Version 6.8.0)  
 - **Node.js** (Version 20.10.0)  
-- **Angular** (Version 17.0.3)  
+- **Angular** (Version 17.0.3)
+
+## Dependencies
+
+| Package            | Version     | Description                    |
+|--------------------|-------------|--------------------------------|
+| Serilog            | 2.12.0      | Logging framework              |
+| EF Core            | 8.0.14      | ORM for .NET Core              |
+| EF Core Sql Server | 8.0.14      | Database provider for EF Core  |
+| Moq                | 13.0.1      | Mocking framework              |
+| EPPlus             | 4.5.3.3     | Spreadsheet library            |
+| EF Core InMemory   | 8.0.14      | Database Mock                  |
 
 ## Description  
 - This repository contains various simple applications I have developed/been developing using .NET and Angular.
 - All applications listed are those I think will be useful on my/other's everyday life.
 - This will be part of my study, knowledge acquisition, and familiarization for Angular and TypeScript
+
+
+
 
 ## Applications
 1. Kita - Variety Store Management System - Under Development
