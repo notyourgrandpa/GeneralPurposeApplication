@@ -63,3 +63,7 @@
 *.wsuo
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/spa.proxy.json
 /GeneralPurposeApplication.Server/GeneralPurposeApplication.Server.csproj.user.Backup.tmp
+/GeneralPurposeApplication.Tests/bin/Debug/net8.0/.msCoverageSourceRootsMapping_GeneralPurposeApplication.Tests
+
+bin/
+obj/
