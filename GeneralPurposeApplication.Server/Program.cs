@@ -64,6 +64,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
    .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddScoped<JwtHandler>();
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
