@@ -54,7 +54,7 @@ A collection of applications I develop.
    - Chartts for viewing budget allocation and how much spent.
   
 6. What's the Fodo for today???? - PLANNED
-   - _I want to track my food stocks on my refrigerator; I need an app for this.
+   - _I want to track my food stocks on my refrigerator; I need an app for this._
    - List the ingredients when planming to from the list of food stocks
    - Automatically manage the food stocks based on the added ingredients for the planned meal
    - Ingredients for planned meal are not on the stock? Add a temporary ingredients for that
