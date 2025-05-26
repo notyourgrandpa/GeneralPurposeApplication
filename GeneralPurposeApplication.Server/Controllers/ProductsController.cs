@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Data.DTOs;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -73,6 +75,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
@@ -115,6 +118,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
@@ -125,6 +129,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         // DELETE: api/Products/5
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {

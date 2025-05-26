@@ -9,6 +9,7 @@ using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.Models;
 using System.Linq.Dynamic.Core;
 using GeneralPurposeApplication.Server.Data.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -67,6 +68,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "RegisteredUser")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.Id)
@@ -97,6 +99,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
@@ -107,6 +110,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         // DELETE: api/Categories/5
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {

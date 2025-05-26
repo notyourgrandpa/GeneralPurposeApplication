@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using System.Security;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
+    //[Authorize(Roles = "Administrator")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class SeedController : ControllerBase
