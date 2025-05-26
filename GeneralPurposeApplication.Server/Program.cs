@@ -1,13 +1,11 @@
 ﻿global using GeneralPurposeApplication.Server;
 using GeneralPurposeApplication.Server.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 using GeneralPurposeApplication.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using GeneralPurposeApplication.Server.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
