@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using GeneralPurposeApplication.Server.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GeneralPurposeApplication.Server.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext() : base()
         {
