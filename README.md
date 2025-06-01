@@ -65,7 +65,7 @@ A collection of applications I develop.
    git clone https://github.com/your-username/GeneralPurposeApplication.git
    cd GeneralPurposeApplication
    ```
-2. Install dependencies
+2. Install dependencies:
    ```sh
 
    cd generalpurposeapplication.client
@@ -74,14 +74,32 @@ A collection of applications I develop.
    npm install
    ```
 
-3. Migrate (Or use provided sample database)
+3. Migrate (Or use provided sample database):
    ```
    dotnet ef migrations add "Initial" -o "Data/Migrations"
    ```
    ```
    dotnet ef database update
    ```
-3. Run the application:
+4. Populate database using Seed (If taken Migrate Path):  
+   * Creating default users requires "DefaultPasswords" on secrets.json/appsettings.json):
+   - secrets.json/appsettings.json:
+   ```
+      "DefaultPasswords": {
+        "RegisteredUser": "Sampl3Pa$$_User",
+        "Administrator": "Sampl3Pa$$_Admin"
+      }
+   ```
+   - Create default users:
+   ```
+   https://localhost:8701/api/Seed/CreateDefaultUsers
+   ```
+   - Create products from Excel file:
+   ```
+   https://localhost:8701/api/Seed/Import:
+   ```
+   
+6. Run the application:
    - Start the backend (ASP.NET Core):
       ```sh
       dotnet run
