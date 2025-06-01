@@ -80,3 +80,4 @@
 /GeneralPurposeApplication.Tests/bin/Debug/net9.0/af/Humanizer.resources.dll
 bin/
 obj/
+/GeneralPurposeApplication.Tests/obj/project.assets.json
