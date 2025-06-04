@@ -32,9 +32,10 @@
 						],
 						"tsConfig": "tsconfig.app.json",
 						"assets": [
-							"src/favicon.ico",
-							"src/assets"
-						],
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest"
+            ],
 						"styles": [
 							"@angular/material/prebuilt-themes/deeppurple-amber.css",
 							"src/styles.scss"
@@ -42,21 +43,22 @@
 						"scripts": []
 					},
 					"configurations": {
-						"production": {
-							"budgets": [
-								{
-									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
-								},
-								{
-									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
-								}
-							],
-							"outputHashing": "all"
-						},
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
+            },
 						"development": {
 							"optimization": false,
 							"extractLicenses": false,
@@ -101,9 +103,10 @@
 						],
 						"tsConfig": "tsconfig.spec.json",
 						"assets": [
-							"src/favicon.ico",
-							"src/assets"
-						],
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest"
+            ],
 						"styles": [
 							"@angular/material/prebuilt-themes/deeppurple-amber.css",
 							"src/styles.scss"
