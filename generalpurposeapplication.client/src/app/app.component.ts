@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
       heartbeatInterval: 10000
     };
     this.isOffline = this.connectionService.monitor(options)
-      .pipe(map(state => !state.hasNetworkConnection || state.
+      .pipe(map(state => !state.hasNetworkConnection || !state.
         hasInternetAccess));
   }
 
