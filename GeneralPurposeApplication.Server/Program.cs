@@ -8,7 +8,7 @@ using GeneralPurposeApplication.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
+using Microsoft.AspNetCore.Cors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +85,14 @@ builder.Services.AddAuthentication(opt =>
      };
  });
 
+builder.Services.AddCors(options =>
+    options.AddPolicy(name: "AngularPolicy",
+        cfg => {
+            cfg.AllowAnyHeader();
+            cfg.AllowAnyMethod();
+            cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
+        }));
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
@@ -100,16 +108,18 @@ else
     app.UseStaticFiles();
 }
 
-// 🔥 Apply the CORS middleware
-app.UseCors();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("AngularPolicy");
 
 app.UseHealthChecks(new PathString("/api/health"), new CustomHealthCheckOptions());
 
 app.MapControllers();
+
+app.MapMethods("/api/heartbeat", new[] { "HEAD" },
+   () => Results.Ok());
 
 if (app.Environment.IsDevelopment())
 {
