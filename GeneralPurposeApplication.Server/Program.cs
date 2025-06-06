@@ -111,6 +111,9 @@ app.UseHealthChecks(new PathString("/api/health"), new CustomHealthCheckOptions(
 
 app.MapControllers();
 
+app.MapMethods("/api/heartbeat", new[] { "HEAD" },
+   () => Results.Ok());
+
 if (app.Environment.IsDevelopment())
 {
     app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api"), appBuilder =>
