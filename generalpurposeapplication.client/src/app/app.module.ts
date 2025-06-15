@@ -23,6 +23,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { ConnectionServiceModule } from 'ng-connection-service';
+import { GraphQLModule } from './graphql.module';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { ConnectionServiceModule } from 'ng-connection-service';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    ConnectionServiceModule
+    ConnectionServiceModule,
+    GraphQLModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
