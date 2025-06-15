@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Cors;
+using GeneralPurposeApplication.Server.Data.GraphQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,6 +94,13 @@ builder.Services.AddCors(options =>
             cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
         }));
 
+builder.Services.AddGraphQLServer()
+   .AddAuthorization()
+   .AddQueryType<Query>()
+   .AddMutationType<Mutation>()
+   .AddFiltering()
+   .AddSorting();
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
@@ -117,6 +125,8 @@ app.UseCors("AngularPolicy");
 app.UseHealthChecks(new PathString("/api/health"), new CustomHealthCheckOptions());
 
 app.MapControllers();
+
+app.MapGraphQL("/api/graphql");
 
 app.MapMethods("/api/heartbeat", new[] { "HEAD" },
    () => Results.Ok());
