@@ -28,6 +28,7 @@ namespace GeneralPurposeApplication.Server.Data
             FilterColumn = filterColumn;
             FilterQuery = filterQuery;
         }
+
         #region Methods
         /// <summary>
         /// Pages, sorts and/or filters a IQueryable source.
