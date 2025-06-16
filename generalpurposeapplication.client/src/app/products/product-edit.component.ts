@@ -141,7 +141,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
 
       if (this.id) {
         // EDIT mode
-        this.productService
+        this.productGraphQlService
           .put(product)
           .subscribe({
             next: (result) => {
@@ -154,7 +154,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
       }
       else {
         // ADD NEW mode
-        this.productService
+        this.productGraphQlService
           .post(product)
           .subscribe({
             next: (result) => {
