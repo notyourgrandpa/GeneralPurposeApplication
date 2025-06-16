@@ -16,9 +16,9 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         /// Add a new Product
         /// </summary>
         [Serial]
-        [Authorize(Roles = ["RegisteredUser"])]
+        //[Authorize(Roles = ["RegisteredUser"])]
         public async Task<Product> AddProduct(
-            [Service] ApplicationDbContext context, ProductDTO productDTO)
+            [Service] ApplicationDbContext context, ProductCreateInputDTO productDTO)
         {
             var product = new Product()
             {
@@ -26,7 +26,9 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
                 SellingPrice = productDTO.SellingPrice,
                 CostPrice = productDTO.CostPrice,
                 IsActive = productDTO.IsActive,
-                CategoryId = productDTO.CategoryId
+                CategoryId = productDTO.CategoryId,
+                DateAdded = DateTime.UtcNow,
+                LastUpdated = DateTime.UtcNow
             };
             context.Products.Add(product);
             await context.SaveChangesAsync();
@@ -36,20 +38,24 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         /// Update an existing Product
         /// </summary>
         [Serial]
-        [Authorize(Roles = ["RegisteredUser"])]
+        //[Authorize(Roles = ["RegisteredUser"])]
         public async Task<Product> UpdateProduct(
-            [Service] ApplicationDbContext context, ProductDTO productDTO)
+            [Service] ApplicationDbContext context, ProductUpdateInputDTO productDTO)
         {
             var product = await context.Products
                            .Where(c => c.Id == productDTO.Id)
                            .FirstOrDefaultAsync();
             if (product == null)
+            {
                 // todo: handle errors
                 throw new NotSupportedException();
+            }
+
             product.Name = productDTO.Name;
             product.SellingPrice = productDTO.SellingPrice;
             product.CostPrice = productDTO.CostPrice;
             product.IsActive = productDTO.IsActive;
+            product.CategoryId = productDTO.CategoryId;
             product.LastUpdated = DateTime.UtcNow;
             context.Products.Update(product);
             await context.SaveChangesAsync();

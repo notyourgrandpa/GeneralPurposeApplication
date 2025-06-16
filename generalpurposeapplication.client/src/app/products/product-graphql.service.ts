@@ -106,15 +106,57 @@ export class ProductGraphQlService
         result.data.products.nodes[0]));
   }
 
-  put(item: Product): Observable<Product> {
-    var url = this.getUrl("api/products/" + item.id);
-    return this.http.put<Product>(url, item);
-  }
+  put(input: Product): Observable<Product> {
+    return this.apollo
+      .mutate({
+        mutation: gql`
+          mutation UpdateProduct($product: ProductDTOInput!) {
+            updateProduct(productDTO: $product) {
+              id
+              name
+              sellingPrice
+              costPrice
+              isActive
+              categoryId
+          }
+        }
+      `,
+        variables: {
+          product: input
+        }
+      }).pipe(map((result: any) =>
+        result.data.updateProduct));
+  } 
 
   post(item: Product): Observable<Product> {
-    var url = this.getUrl("api/products");
-    return this.http.post<Product>(url, item);
+    const dto = {
+      name: item.name,
+      sellingPrice: item.sellingPrice,
+      costPrice: item.costPrice,
+      isActive: item.isActive,
+      categoryId: item.categoryId
+    };
+
+    return this.apollo.mutate({
+      mutation: gql`
+      mutation AddProduct($product: ProductDTOInput!) {
+        addProduct(productDTO: $product) { 
+          id
+          name
+          sellingPrice
+          costPrice
+          isActive
+          categoryId
+        }
+      }
+    `,
+      variables: {
+        product: dto
+      }
+    }).pipe(map((result: any) =>
+      result.data.addProduct));
   }
+
 
   getCategories(
     pageIndex: number,
