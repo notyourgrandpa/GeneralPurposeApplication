@@ -118,14 +118,14 @@ export class ProductGraphQlService
               costPrice
               isActive
               categoryId
+            }
           }
-        }
-      `,
+        `,
         variables: {
           product: input
         }
       }).pipe(map((result: any) =>
-        result.data.updateProduct));
+      result.data.updateProduct));
   } 
 
   post(item: Product): Observable<Product> {
