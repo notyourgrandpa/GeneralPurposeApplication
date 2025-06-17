@@ -25,7 +25,7 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
             => context.Products;
 
         /// <summary>
-        /// Gets all Cities (with ApiResult and DTO support).
+        /// Gets all Products (with ApiResult and DTO support).
         /// </summary>
         [Serial]
         public async Task<ApiResult<ProductDTO>> GetProductsApiResult(

@@ -82,9 +82,9 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         /// Add a new Category
         /// </summary>
         [Serial]
-        [Authorize(Roles = ["RegisteredUser"])]
+        //[Authorize(Roles = ["RegisteredUser"])]
         public async Task<Category> AddCategory(
-            [Service] ApplicationDbContext context, CategoryDTO categoryDTO)
+            [Service] ApplicationDbContext context, CategoryCreateInputDTO categoryDTO)
         {
             var category = new Category()
             {
@@ -98,9 +98,9 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         /// Update an existing Category
         /// </summary>
         [Serial]
-        [Authorize(Roles = ["RegisteredUser"])]
+        //[Authorize(Roles = ["RegisteredUser"])]
         public async Task<Category> UpdateCategory(
-            [Service] ApplicationDbContext context, CategoryDTO categoryDTO)
+            [Service] ApplicationDbContext context, CategoryUpdateInputDTO categoryDTO)
         {
             var category = await context.Categories
                            .Where(c => c.Id == categoryDTO.Id)
