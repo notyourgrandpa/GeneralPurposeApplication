@@ -67,5 +67,34 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         [UseFiltering]
         [UseSorting]
         public IQueryable<Category> GetCategories([Service] ApplicationDbContext context) => context.Categories;
+
+        /// <summary>
+        /// Gets all Categories (with ApiResult and DTO support).
+        /// </summary>
+        [Serial]
+        public async Task<ApiResult<CategoryDTO>> GetCategoriesApiResult(
+           [Service] ApplicationDbContext context,
+        int pageIndex = 0,
+        int pageSize = 10,
+        string? sortColumn = null,
+        string? sortOrder = null,
+        string? filterColumn = null,
+        string? filterQuery = null)
+        {
+            return await ApiResult<CategoryDTO>.CreateAsync(
+                       context.Categories.AsNoTracking()
+                           .Select(c => new CategoryDTO()
+                           {
+                               Id = c.Id,
+                               Name = c.Name,
+                               TotalProducts = c.Products!.Count()
+                           }),
+                       pageIndex,
+                       pageSize,
+                       sortColumn,
+                       sortOrder,
+                       filterColumn,
+                       filterQuery);
+        }
     }
 }

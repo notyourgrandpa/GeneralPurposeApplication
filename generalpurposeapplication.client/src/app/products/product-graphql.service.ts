@@ -107,10 +107,18 @@ export class ProductGraphQlService
   }
 
   put(input: Product): Observable<Product> {
+    const dto = {
+      id: input.id,
+      name: input.name,
+      sellingPrice: input.sellingPrice,
+      costPrice: input.costPrice,
+      isActive: input.isActive,
+      categoryId: input.categoryId
+    }
     return this.apollo
       .mutate({
         mutation: gql`
-          mutation UpdateProduct($product: ProductDTOInput!) {
+          mutation UpdateProduct($product: ProductUpdateInputDTOInput!) {
             updateProduct(productDTO: $product) {
               id
               name
@@ -122,10 +130,9 @@ export class ProductGraphQlService
           }
         `,
         variables: {
-          product: input
+          product: dto
         }
-      }).pipe(map((result: any) =>
-      result.data.updateProduct));
+      }).pipe(map((result: any) => result.data.updateProduct));
   } 
 
   post(item: Product): Observable<Product> {
@@ -139,7 +146,7 @@ export class ProductGraphQlService
 
     return this.apollo.mutate({
       mutation: gql`
-      mutation AddProduct($product: ProductDTOInput!) {
+      mutation AddProduct($product: ProductCreateInputDTOInput!) {
         addProduct(productDTO: $product) { 
           id
           name
