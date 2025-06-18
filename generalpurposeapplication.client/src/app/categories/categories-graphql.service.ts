@@ -23,19 +23,53 @@ export class CategoryGraphQlService
     filterColumn: string | null,
     filterQuery: string | null
   ): Observable<ApiResult<Category>> {
-    var url = this.getUrl("api/Categories");
-    var params = new HttpParams()
-      .set("pageIndex", pageIndex.toString())
-      .set("pageSize", pageSize.toString())
-      .set("sortColumn", sortColumn)
-      .set("sortOrder", sortOrder);
-    if (filterColumn && filterQuery) {
-      params = params
-        .set("filterColumn", filterColumn)
-        .set("filterQuery", filterQuery);
-    }
-    return this.http.get<ApiResult<Category>>(url, { params });
+    return this.apollo
+      .query({
+        query: gql`
+          query GetCategoriesApiResult(
+              $pageIndex: Int!,
+              $pageSize: Int!,
+              $sortColumn: String,
+              $sortOrder: String,
+              $filterColumn: String,
+              $filterQuery: String) {
+            categoriesApiResult(
+              pageIndex: $pageIndex
+              pageSize: $pageSize
+              sortColumn: $sortColumn
+              sortOrder: $sortOrder
+              filterColumn: $filterColumn
+              filterQuery: $filterQuery
+            ) { 
+               data { 
+                 id
+                 name
+                 totalProducts
+               },
+                pageIndex
+                pageSize
+                totalCount
+                totalPages
+                sortColumn
+                sortOrder
+                filterColumn
+                filterQuery
+              }
+          }
+        `,
+        variables: {
+          pageIndex,
+          pageSize,
+          sortColumn,
+          sortOrder,
+          filterColumn,
+          filterQuery
+        }
+      })
+      .pipe(map((result: any) =>
+        result.data.categoriesApiResult));
   }
+
   get(id: number): Observable<Category> {
     return this.apollo
       .query({
@@ -58,15 +92,14 @@ export class CategoryGraphQlService
   }
 
   put(input: Category): Observable<Category> {
-    //const dto = {
-    //  id: input.id,
-    //  name: input.name
-    //};
-
+    const dto = {
+      id: input.id,
+      name: input.name
+    }
     return this.apollo
       .mutate({
         mutation: gql`
-          mutation UpdateCategory($category: CategoryInputDTO!){
+          mutation UpdateCategory($category: CategoryUpdateInputDTOInput!){
             updateCategory(categoryDTO: $category){
               id
               name
@@ -74,7 +107,7 @@ export class CategoryGraphQlService
           }
         `,
         variables: {
-          category: input
+          category: dto
         }
       }).pipe(map((result: any) =>
         result.data.updateCategory));
@@ -87,7 +120,7 @@ export class CategoryGraphQlService
     return this.apollo
     .mutate({
       mutation: gql
-        `mutation AddCategory($category: CategoryInputDTO!){
+        `mutation AddCategory($category: CategoryCreateInputDTOInput!){
           addCategory(categoryDTO: $category){
             id
             name
@@ -98,7 +131,7 @@ export class CategoryGraphQlService
         category: dto
       }
     }).pipe(map((result: any) =>
-      result.data.addProduct));
+      result.data.addCategory));
   }
 
   isDupeField(categoryId: number, fieldName: string, fieldValue: string):

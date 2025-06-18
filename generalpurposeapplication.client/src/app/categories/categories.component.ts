@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { Category } from './category';
 import { CategoryService } from './category.service';
+import { CategoryGraphQlService } from './categories-graphql.service'
 
 @Component({
   selector: 'app-categories',
@@ -37,7 +38,7 @@ export class CategoriesComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private categoryService: CategoryService) {
+  constructor(private categoryService: CategoryService, private categoryGraphQlService: CategoryGraphQlService) {
   }
 
   ngOnInit() {
@@ -78,7 +79,7 @@ export class CategoriesComponent implements OnInit {
       ? this.filterQuery
       : null;
 
-    this.categoryService.getData(
+    this.categoryGraphQlService.getData(
       event.pageIndex,
       event.pageSize,
       sortColumn,
