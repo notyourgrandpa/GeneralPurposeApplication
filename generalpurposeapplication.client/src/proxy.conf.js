@@ -9,7 +9,8 @@ const PROXY_CONFIG = [
       "/api",
     ],
     target,
-    secure: false
+    secure: false,
+    ws: true //Support for websocket - angular
   }
 ]
 
