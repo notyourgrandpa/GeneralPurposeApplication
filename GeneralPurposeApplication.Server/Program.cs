@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Cors;
 using GeneralPurposeApplication.Server.Data.GraphQL;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,14 +40,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
+    options.AddPolicy(name: "AngularPolicy",
+        cfg => {
+            cfg.AllowAnyHeader();
+            cfg.AllowAnyMethod();
+            cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
+        }));
+
+builder.Services.AddSignalR();
 
 // Add ApplicationDbContext and SQL Server support
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -130,6 +131,14 @@ app.MapGraphQL("/api/graphql");
 
 app.MapMethods("/api/heartbeat", new[] { "HEAD" },
    () => Results.Ok());
+
+app.MapHub<HealthCheckHub>("/api/health-hub");
+
+app.MapGet("/api/broadcast/update2", async (IHubContext<HealthCheckHub> hub) =>
+{
+    await hub.Clients.All.SendAsync("Update", "test");
+    return Results.Text("Update message sent.");
+});
 
 if (app.Environment.IsDevelopment())
 {
