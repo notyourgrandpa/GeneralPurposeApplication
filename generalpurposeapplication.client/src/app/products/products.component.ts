@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { ProductService } from './product.service';
+import { ProductGraphQlService } from './product-graphql.service';
 import { ApiResult } from '../base.service';
 
 @Component({
@@ -44,7 +45,9 @@ export class ProductsComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private productService: ProductService) {
+  constructor(
+    private productService: ProductService,
+    private productGraphqlService: ProductGraphQlService) {
   }
 
   ngOnInit() {
@@ -85,7 +88,7 @@ export class ProductsComponent implements OnInit {
       ? this.filterQuery
       : null;
 
-    this.productService.getData(
+    this.productGraphqlService.getData(
       event.pageIndex,
       event.pageSize,
       sortColumn,

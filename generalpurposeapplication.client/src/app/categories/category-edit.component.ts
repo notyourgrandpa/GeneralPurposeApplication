@@ -7,6 +7,7 @@ import { Observable, map } from 'rxjs';
 import { Category } from './category';
 import { BaseFormComponent } from '../base-form.component';
 import { CategoryService } from './category.service';
+import { CategoryGraphQlService } from './categories-graphql.service'
 
 @Component({
   selector: 'app-category-edit',
@@ -23,7 +24,13 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
   id?: number;
   // the categories array for the select
   categories?: Category[];
-  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router, private categoryService: CategoryService) {
+  constructor(
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private categoryService: CategoryService,
+    private categoryGraphQlService: CategoryGraphQlService
+  ) {
     super();
   }
   ngOnInit() {
@@ -63,7 +70,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
       category.name = this.form.controls['name'].value;
       if (this.id) {
         // EDIT mode
-        this.categoryService
+        this.categoryGraphQlService
           .put(category)
           .subscribe({
             next: (result) => {
@@ -76,7 +83,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
       }
       else {
         // ADD NEW mode
-        this.categoryService
+        this.categoryGraphQlService
           .post(category)
           .subscribe({
             next: (result) => {

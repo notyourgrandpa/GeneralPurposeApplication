@@ -11,6 +11,7 @@ import { Category } from './../categories/category';
 import { BaseFormComponent } from './../base-form.component'
 
 import { ProductService } from './product.service';
+import { ProductGraphQlService } from './product-graphql.service';
 
 @Component({
   selector: 'app-product-edit',
@@ -40,7 +41,8 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private productService: ProductService) {
+    private productService: ProductService,
+    private productGraphQlService: ProductGraphQlService) {
     super();
   }
 
@@ -105,7 +107,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
     if (this.id) {
       // EDIT MODE
       // fetch the product from the server
-      this.productService.get(this.id).subscribe({
+      this.productGraphQlService.get(this.id).subscribe({
         next: (result) => {
           this.product = result;
           this.title = "Edit - " + this.product.name;
@@ -139,7 +141,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
 
       if (this.id) {
         // EDIT mode
-        this.productService
+        this.productGraphQlService
           .put(product)
           .subscribe({
             next: (result) => {
@@ -152,7 +154,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
       }
       else {
         // ADD NEW mode
-        this.productService
+        this.productGraphQlService
           .post(product)
           .subscribe({
             next: (result) => {
