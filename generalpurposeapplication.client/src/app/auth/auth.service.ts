@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { LoginRequest } from './login-request';
 import { LoginResult } from './login-result';
+import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,10 @@ export class AuthService
       .pipe(tap(loginResult => {
         if (loginResult.success && loginResult.token) {
           localStorage.setItem(this.tokenKey, loginResult.token);
+          // Store user info if available
+          if (loginResult.user) {
+            this.setCurrentUser(loginResult.user);
+          }
           this.setAuthStatus(true);
         }
       }));
@@ -47,10 +52,34 @@ export class AuthService
 
   logout() {
     localStorage.removeItem(this.tokenKey);
+    this.clearCurrentUser();
     this.setAuthStatus(false);
   }
 
+
   private setAuthStatus(isAuthenticated: boolean): void {
     this._authStatus.next(isAuthenticated);
+  }
+
+  getCurrentUser(): User | null {
+    const userJson = localStorage.getItem('currentUser');
+    if (!userJson) {
+      return null;
+    }
+    try {
+      return JSON.parse(userJson) as User;
+    } catch {
+      return null;
+    }
+  }
+
+  // Call this after successful login
+  setCurrentUser(user: User): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  // Call this on logout
+  clearCurrentUser(): void {
+    localStorage.removeItem('currentUser');
   }
 }

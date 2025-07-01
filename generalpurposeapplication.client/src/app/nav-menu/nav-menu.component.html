@@ -35,30 +35,34 @@
         <span class="nav-text" *ngIf="!isMinimized">Categories</span>
         <div class="tooltip" *ngIf="isMinimized">Categories</div>
       </li>
-      <li class="nav-item"
-          [routerLink]="['/login']"
-          routerLinkActive="active"
-          (click)="setActiveItem('dashboard')">
-        <i class="nav-icon login-icon"></i>
-        <span class="nav-text" *ngIf="!isMinimized">Login</span>
-        <div class="tooltip" *ngIf="isMinimized">Login</div>
-      </li>
     </ul>
   </div>
 
   <div class="nav-footer">
-    <div class="user-info">
+    <div class="user-info" *ngIf="isLoggedIn && user; else guestInfo">
       <div class="avatar">
-        <img src="/assets/img/user-avatar.png" alt="User">
+        <img [src]="user.avatarUrl || '/assets/img/user-avatar.png'" alt="User">
       </div>
       <div class="user-details" *ngIf="!isMinimized">
-        <span class="user-name">John Doe</span>
-        <span class="user-role">Administrator</span>
+        <span class="user-name">{{ user.name }}</span>
+        <span class="user-role">{{ user.role }}</span>
       </div>
     </div>
-    <button class="logout-btn" [class.icon-only]="isMinimized" (click)="onLogout()">
-      <i class="logout-icon"></i>
-      <span *ngIf="!isMinimized">Logout</span>
+    <ng-template #guestInfo>
+      <div class="avatar">
+        <img src="/assets/img/user-avatar.png" alt="Guest">
+      </div>
+      <div class="user-details" *ngIf="!isMinimized">
+        <span class="user-name">Guest</span>
+        <span class="user-role">Not logged in</span>
+      </div>
+    </ng-template>
+    <button class="logout-btn" [class.icon-only]="isMinimized" (click)="isLoggedIn ? onLogout() : onLogin()">
+      <i class="logout-icon" *ngIf="isLoggedIn"></i>
+      <i class="login-icon" *ngIf="!isLoggedIn"></i>
+      <span *ngIf="!isMinimized">
+        {{ isLoggedIn ? 'Logout' : 'Login' }}
+      </span>
     </button>
   </div>
 </div>

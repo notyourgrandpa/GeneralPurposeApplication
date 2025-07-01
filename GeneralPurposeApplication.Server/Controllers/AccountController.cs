@@ -3,6 +3,7 @@ using GeneralPurposeApplication.Server.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using GeneralPurposeApplication.Server.Data.DTOs;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -33,11 +34,20 @@ namespace GeneralPurposeApplication.Server.Controllers
             }
             var secToken = await _jwtHandler.GetTokenAsync(user);
             var jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
+            var userDto = new UserDTO
+            {
+                Id = user.Id,
+                Name = user.UserName!,
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "",
+                Email = user.Email,
+                AvatarUrl = null
+            };
             return Ok(new ApiLoginResult()
             {
                 Success = true,
                 Message = "Login successful",
-                Token = jwt
+                Token = jwt,
+                User = userDto
             });
         }
     }
