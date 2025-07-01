@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeneralPurposeApplication.Server.Data.DTOs;
 
 namespace GeneralPurposeApplication.Server.Data
 {
@@ -20,5 +21,10 @@ namespace GeneralPurposeApplication.Server.Data
         /// The JWT token if the login attempt is successful, or NULL if not
         /// </summary>
         public string? Token { get; set; }
+
+        /// <summary>
+        /// Stores User information
+        /// </summary>
+        public UserDTO? User { get; set; }
     }
 }

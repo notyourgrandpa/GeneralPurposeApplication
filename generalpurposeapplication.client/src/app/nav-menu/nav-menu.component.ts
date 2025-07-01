@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/cor
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { User } from "../auth/user.model";
 
 @Component({
   selector: 'app-nav-menu',
@@ -15,6 +16,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
 
   isMinimized = false;
   activeItem = 'dashboard';
+  user: User | null = null;
 
   @Output() sidenavToggled = new EventEmitter<boolean>();
 
@@ -24,11 +26,16 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroySubject))
       .subscribe(result => {
         this.isLoggedIn = result;
+        this.user = result ? this.authService.getCurrentUser() : null;
       })
   }
 
   onLogout(): void {
     this.authService.logout();
+    this.router.navigate(["/login"]);
+  }
+
+  onLogin(): void {
     this.router.navigate(["/login"]);
   }
 
@@ -39,6 +46,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       this.isMinimized = JSON.parse(savedState);
     }
     this.isLoggedIn = this.authService.isAuthenticated();
+    this.user = this.isLoggedIn ? this.authService.getCurrentUser() : null;
   }
 
   ngOnDestroy() {
