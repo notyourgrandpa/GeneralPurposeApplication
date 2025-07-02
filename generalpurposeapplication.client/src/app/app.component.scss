@@ -1,31 +1,33 @@
-.content-container {
-  min-height: 100vh;
-  box-sizing: border-box;
-  padding: 25px;
-}
-
+/* app.component.scss */
 .app-container {
-  display: flex;
   height: 100vh;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.content-container {
+.main-content {
   flex: 1;
-  padding: 20px;
   overflow: auto;
+
+  &.with-nav {
+    /* Styles when navigation is shown (user logged in) */
+    /* The nav-menu component will handle its own layout */
+  }
+
+  &.without-nav {
+    /* Styles when no navigation (login page, etc.) */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-.alert {
-  position: relative;
-  padding: .75rem 1.25rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
-  border-radius: .25rem;
-
-  &.alert-warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeeba;
+/* Ensure login and other public pages take full space */
+:host ::ng-deep .without-nav {
+  app-login {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 }

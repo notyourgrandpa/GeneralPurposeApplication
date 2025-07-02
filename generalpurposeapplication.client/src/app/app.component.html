@@ -1,15 +1,18 @@
-
 <div class="app-container">
-  <app-nav-menu *ngIf="!isLoginRoute"></app-nav-menu>
+  <app-nav-menu>
+  </app-nav-menu>
 
-
-  <div class="content-container">
-    <div class="alert alert-warning" *ngIf="isOffline | async">
-      <strong>WARNING</strong>: the app is currently <i>offline</i>:
-      some features that rely upon the back-end might not work as
-      expected. This message will automatically disappear as soon
-      as the internet connection becomes available again.
-    </div>
+  <!-- Main content area - conditional layout based on auth status -->
+  <main class="main-content"
+        [class.with-nav]="isAuthenticated$ | async"
+        [class.without-nav]="!(isAuthenticated$ | async)">
     <router-outlet></router-outlet>
-  </div>
+  </main>
 </div>
+
+<!-- Debug info (remove in production) -->
+<!--<div style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; font-size: 12px;">
+  <div>Auth Status: {{ (isAuthenticated$ | async) ? 'Logged In' : 'Not Logged In' }}</div>
+  <div>Current URL: {{ getCurrentUrl() }}</div>
+  <div>Is Login Route: {{ isLoginRoute }}</div>
+</div>-->
