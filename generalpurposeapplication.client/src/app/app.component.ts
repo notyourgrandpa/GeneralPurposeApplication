@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, NavigationStart, NavigationError } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { filter } from 'rxjs/operators';
-
 import { ConnectionService, ConnectionServiceOptions, ConnectionState } from 'ng-connection-service';
 import { Observable, map } from 'rxjs';
 import { environment } from '../environments/environment';
@@ -14,23 +13,40 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
   public isOffline: Observable<boolean>;
-
   isLoginRoute = false;
+  public isExpanded = false;
+
   constructor(
     public router: Router,
     private authService: AuthService,
-    private connectionService: ConnectionService) {
+    private connectionService: ConnectionService
+  ) {
     const options: ConnectionServiceOptions = {
       enableHeartbeat: true,
       heartbeatUrl: environment.baseUrl + 'api/heartbeat',
       heartbeatInterval: 10000
     };
+
     this.isOffline = this.connectionService.monitor(options)
-      .pipe(map(state => !state.hasNetworkConnection || !state.
-        hasInternetAccess));
+      .pipe(map(state => !state.hasNetworkConnection || !state.hasInternetAccess));
+
+    // Debug router events
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        console.log('Navigation started to:', event.url);
+      } else if (event instanceof NavigationEnd) {
+        console.log('Navigation ended at:', event.url);
+      } else if (event instanceof NavigationError) {
+        console.error('Navigation error:', event.error);
+      }
+    });
   }
 
   ngOnInit(): void {
+    console.log('App component initialized');
+    console.log('Current auth status:', this.authService.isAuthenticated());
+    console.log('Current URL:', this.router.url);
+
     this.authService.init();
 
     this.router.events
@@ -41,9 +57,20 @@ export class AppComponent implements OnInit {
       });
   }
 
-  public isExpanded = false;
-
-  public toggleMenu() {
+  public toggleMenu(): void {
     this.isExpanded = !this.isExpanded;
+  }
+
+  public getCurrentUrl(): string {
+    return this.router.url;
+  }
+
+  public onSidenavToggled(opened: boolean): void {
+    console.log('Sidenav toggled:', opened);
+  }
+
+  // Public getter for template access (better practice)
+  get isAuthenticated$(): Observable<boolean> {
+    return this.authService.authStatus;
   }
 }

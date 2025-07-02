@@ -17,6 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { MatCardModule } from '@angular/material/card';
     MatTooltipModule,
     LayoutModule,
     MatCardModule,
+    MatExpansionModule
   ],
   exports: [
     MatButtonModule,
@@ -58,6 +60,7 @@ import { MatCardModule } from '@angular/material/card';
     MatTooltipModule,
     LayoutModule,
     MatCardModule,
+    MatExpansionModule
   ]
 })
 export class AngularMaterialModule { }
