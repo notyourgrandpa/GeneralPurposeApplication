@@ -193,8 +193,9 @@
 .user-info {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 12px;
+  padding-left: 10px;
 }
 
 .avatar {
@@ -274,3 +275,4 @@
 .nav-content::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
