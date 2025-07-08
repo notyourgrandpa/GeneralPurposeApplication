@@ -1,64 +1,165 @@
-<div class="nav-container" [class.nav-minimized]="isMinimized">
-  <div class="nav-header">
-    <div class="logo-container">
-      <img src="/assets/img/application.png" alt="Logo" class="logo">
-      <span class="brand-name" *ngIf="!isMinimized">KYGM</span>
-    </div>
-    <button class="toggle-btn" (click)="toggleMinimize()">
-      <i class="arrow-icon" [class.left]="!isMinimized" [class.right]="isMinimized"></i>
-    </button>
-  </div>
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidenav -->
+  <mat-sidenav #sidenav
+               class="sidenav"
+               fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false"
+               [disableClose]="(isHandset$ | async) === false">
 
-  <div class="nav-content">
-    <ul class="nav-links">
-      <li class="nav-item"
-          [routerLink]="['/fetch-data']"
-          routerLinkActive="active"
-          (click)="setActiveItem('dashboard')">
-        <i class="nav-icon dashboard-icon"></i>
-        <span class="nav-text" *ngIf="!isMinimized">Fetch-data</span>
-        <div class="tooltip" *ngIf="isMinimized">Fetch-data</div>
-      </li>
-      <li class="nav-item"
-          [routerLink]="['/products']"
-          routerLinkActive="active"
-          (click)="setActiveItem('dashboard')">
-        <i class="nav-icon products-icon"></i>
-        <span class="nav-text" *ngIf="!isMinimized">Products</span>
-        <div class="tooltip" *ngIf="isMinimized">Products</div>
-      </li>
-      <li class="nav-item"
-          [routerLink]="['/categories']"
-          routerLinkActive="active"
-          (click)="setActiveItem('dashboard')">
-        <i class="nav-icon cate-icon"></i>
-        <span class="nav-text" *ngIf="!isMinimized">Categories</span>
-        <div class="tooltip" *ngIf="isMinimized">Categories</div>
-      </li>
-      <li class="nav-item"
-          [routerLink]="['/login']"
-          routerLinkActive="active"
-          (click)="setActiveItem('dashboard')">
-        <i class="nav-icon cate-icon"></i>
-        <span class="nav-text" *ngIf="!isMinimized">Login</span>
-        <div class="tooltip" *ngIf="isMinimized">Login</div>
-      </li>
-    </ul>
-  </div>
-
-  <div class="nav-footer">
-    <div class="user-info">
-      <div class="avatar">
-        <img src="/assets/img/user-avatar.png" alt="User">
+    <!-- Sidenav Header -->
+    <div class="sidenav-header">
+      <div class="app-info">
+        <mat-icon class="app-icon" color="primary">business</mat-icon>
+        <span class="app-title" *ngIf="!(isHandset$ | async) || sidenav.opened">
+          {{ appTitle }}
+        </span>
       </div>
-      <div class="user-details" *ngIf="!isMinimized">
-        <span class="user-name">John Doe</span>
-        <span class="user-role">Administrator</span>
+
+      <!-- User Profile Section -->
+      <div class="user-section" *ngIf="isLoggedIn && user">
+        <div class="user-avatar">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <div class="user-info" *ngIf="!(isHandset$ | async) || sidenav.opened">
+          <span class="user-name">{{ user.name || user.email }}</span>
+          <span class="user-role">{{ user.role || 'User' }}</span>
+        </div>
       </div>
     </div>
-    <button class="logout-btn" [class.icon-only]="isMinimized" (click)="onLogout()">
-      <i class="logout-icon"></i>
-      <span *ngIf="!isMinimized">Logout</span>
-    </button>
+
+    <mat-divider></mat-divider>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu" role="navigation">
+      <mat-nav-list>
+        <ng-container *ngFor="let item of menuItems">
+
+          <!-- Menu item without children -->
+          <mat-list-item *ngIf="!item.children"
+                         class="nav-item"
+                         [class.active]="isActive(item.route!)"
+                         [matTooltip]="item.label"
+                         [matTooltipDisabled]="!(isHandset$ | async)"
+                         matTooltipPosition="right"
+                         (click)="navigate(item.route!)">
+
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <span matListItemTitle>{{ item.label }}</span>
+            <mat-icon matListItemMeta *ngIf="isActive(item.route!)" class="active-indicator">
+              chevron_right
+            </mat-icon>
+          </mat-list-item>
+
+          <!-- Menu item with children -->
+          <ng-container *ngIf="item.children">
+            <!-- Parent item -->
+            <mat-list-item class="nav-item parent-item"
+                           [class.active]="isParentActive(item)"
+                           [class.expanded]="item.expanded"
+                           (click)="toggleSubmenu(item)">
+
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label }}</span>
+              <mat-icon matListItemMeta
+                        class="expand-icon"
+                        [@rotate]="item.expanded ? 'expanded' : 'collapsed'">
+                expand_more
+              </mat-icon>
+            </mat-list-item>
+
+            <!-- Submenu items -->
+            <div class="submenu-container"
+                 [@expandCollapse]="item.expanded ? 'expanded' : 'collapsed'">
+              <mat-nav-list class="submenu">
+                <mat-list-item *ngFor="let child of item.children"
+                               class="nav-item submenu-item"
+                               [class.active]="isActive(child.route!)"
+                               [matTooltip]="child.label"
+                               [matTooltipDisabled]="!(isHandset$ | async)"
+                               matTooltipPosition="right"
+                               (click)="navigate(child.route!)">
+
+                  <mat-icon matListItemIcon class="submenu-icon">{{ child.icon }}</mat-icon>
+                  <span matListItemTitle>{{ child.label }}</span>
+                  <mat-icon matListItemMeta *ngIf="isActive(child.route!)" class="active-indicator">
+                    chevron_right
+                  </mat-icon>
+                </mat-list-item>
+              </mat-nav-list>
+            </div>
+          </ng-container>
+        </ng-container>
+      </mat-nav-list>
+    </nav>
+
+    <!-- Sidenav Footer -->
+    <div class="sidenav-footer">
+      <mat-divider></mat-divider>
+
+      <!-- Auth Actions -->
+      <div class="auth-actions">
+        <button *ngIf="!isLoggedIn"
+                mat-stroked-button
+                color="primary"
+                class="auth-button"
+                (click)="onLogin()">
+          <mat-icon>login</mat-icon>
+          <span *ngIf="!(isHandset$ | async) || sidenav.opened">Login</span>
+        </button>
+
+        <button *ngIf="isLoggedIn"
+                mat-stroked-button
+                color="warn"
+                class="auth-button"
+                (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          <span *ngIf="!(isHandset$ | async) || sidenav.opened">Logout</span>
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="main-content">
+    <!-- Top Toolbar for Mobile -->
+    <mat-toolbar *ngIf="isHandset$ | async" color="primary" class="mobile-toolbar">
+      <button type="button"
+              aria-label="Toggle sidenav"
+              mat-icon-button
+              (click)="toggleSidenav()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="toolbar-title">{{ appTitle }}</span>
+
+      <!-- User menu for mobile -->
+      <div class="toolbar-spacer"></div>
+      <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Router Outlet -->
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- User Menu for Mobile -->
+<mat-menu #userMenu="matMenu">
+  <div class="mobile-user-info" *ngIf="user">
+    <span class="user-name">{{ user.name || user.email }}</span>
+    <span class="user-role">{{ user.role || 'User' }}</span>
   </div>
-</div>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="navigate('/settings/profile')">
+    <mat-icon>person</mat-icon>
+    <span>Profile</span>
+  </button>
+  <button mat-menu-item (click)="onLogout()">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
+</mat-menu>

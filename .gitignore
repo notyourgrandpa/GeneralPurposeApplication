@@ -68,3 +68,6 @@
 bin/
 obj/
 /GeneralPurposeApplication.Tests/obj/project.assets.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.GlobalUsings.g.cs
+/GeneralPurposeApplication.Tests/obj/project.assets.json
+.vs/
