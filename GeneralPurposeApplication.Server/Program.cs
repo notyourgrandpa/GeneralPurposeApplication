@@ -153,7 +153,13 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.MapFallbackToFile("index.html");
+    //app.MapFallbackToFile("index.html");
+     else
+    {
+        app.UseExceptionHandler("/Error");
+        app.MapGet("/Error", () => Results.Problem());
+        app.UseHsts();
+    }
 }
 
 app.Run();
