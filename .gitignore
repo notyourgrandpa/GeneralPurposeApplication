@@ -71,4 +71,5 @@ obj/
 /GeneralPurposeApplication.Server/obj/Debug/net8.0/GeneralPurposeApplication.Server.GlobalUsings.g.cs
 /GeneralPurposeApplication.Tests/obj/project.assets.json
 .vs/
+/generalpurposeapplication.client/generalpurposeapplication.client.esproj.user
 /GeneralPurposeApplication.Tests/obj/project.assets.json
