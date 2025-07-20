@@ -83,7 +83,10 @@ $animation-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
   .nav-menu {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 8px 0;
+    padding-right: 16px;
+    margin: 0;
 
     .mat-mdc-nav-list {
       padding: 0;
@@ -175,7 +178,7 @@ $animation-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 }
 
-// Separate media query for dark theme preference
+/*// Separate media query for dark theme preference
 @media (prefers-color-scheme: dark) {
   .sidenav {
     background: #1e1e1e;
@@ -206,6 +209,10 @@ $animation-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
     }
 
     .nav-menu {
+      overflow-x: hidden; // prevent horizontal scroll
+      padding-right: 16px;
+      margin: 0;
+
       .nav-item {
         &:hover {
           background: rgba(255, 255, 255, 0.05);
@@ -266,7 +273,7 @@ $animation-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
       color: rgba(255, 255, 255, 0.6);
     }
   }
-}
+}*/
 
 // Main content
 .main-content {
