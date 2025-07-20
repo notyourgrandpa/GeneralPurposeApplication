@@ -9,9 +9,12 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Product } from './product';
 import { Category } from './../categories/category';
 import { BaseFormComponent } from './../base-form.component'
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 import { ProductService } from './product.service';
 import { ProductGraphQlService } from './product-graphql.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-edit',
@@ -42,7 +45,9 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private productGraphQlService: ProductGraphQlService) {
+    private productGraphQlService: ProductGraphQlService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog) {
     super();
   }
 
@@ -167,6 +172,33 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
       }
     }
   }
+
+  onDelete(): void {
+    if (!this.id) return;
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Product',
+        message: 'Are you sure you want to delete this product?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.productService.delete(this.id!).subscribe({
+          next: () => {
+            this.snackBar.open('Product deleted successfully.', 'Close', { duration: 3000 });
+            this.router.navigate(['/products']);
+          },
+          error: (err) => {
+            this.snackBar.open('Failed to delete the product.', 'Close', { duration: 3000 });
+            console.error('Delete failed', err);
+          }
+        });
+      }
+    });
+  }
+
 
   isDupeProduct(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
