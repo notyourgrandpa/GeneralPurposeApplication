@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTooltipModule,
     LayoutModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule
   ],
   exports: [
     MatButtonModule,
@@ -60,7 +62,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTooltipModule,
     LayoutModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule
   ]
 })
 export class AngularMaterialModule { }

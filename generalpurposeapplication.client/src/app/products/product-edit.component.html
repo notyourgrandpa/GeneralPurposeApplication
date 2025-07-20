@@ -79,6 +79,14 @@
             [routerLink]="['/products']">
       Cancel
     </button>
+
+    <button *ngIf="id"
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="onDelete()">
+      Delete
+    </button>
   </div>
 </form>
 

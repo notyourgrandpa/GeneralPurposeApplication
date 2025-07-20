@@ -24,6 +24,7 @@ import { environment } from '../environments/environment';
 
 import { ConnectionServiceModule } from 'ng-connection-service';
 import { GraphQLModule } from './graphql.module';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { GraphQLModule } from './graphql.module';
     ProductEditComponent,
     CategoriesComponent,
     CategoryEditComponent,
-    LoginComponent
+    LoginComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

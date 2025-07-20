@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     const options: ConnectionServiceOptions = {
       enableHeartbeat: true,
       heartbeatUrl: environment.baseUrl + 'api/heartbeat',
-      heartbeatInterval: 10000
+      heartbeatInterval: 100000
     };
 
     this.isOffline = this.connectionService.monitor(options)

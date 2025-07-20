@@ -49,6 +49,11 @@ export class ProductService
     return this.http.post<Product>(url, item);
   }
 
+  delete(id: number): Observable<Product> {
+    var url = this.getUrl("api/products/" + id);
+    return this.http.delete<Product>(url);
+  }
+
   getCategories(
     pageIndex: number,
     pageSize: number,
