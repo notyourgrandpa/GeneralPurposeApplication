@@ -21,7 +21,8 @@ export class CategoriesComponent implements OnInit {
   public displayedColumns: string[] = [
     'id',
     'name',
-    'totalProducts'
+    'totalProducts',
+    'action'
   ];
   public categories!: MatTableDataSource<Category>;
 
@@ -95,5 +96,10 @@ export class CategoriesComponent implements OnInit {
         },
         error: (error) => console.error(error)
       });
+  }
+
+  onDelete(id: number): void {
+    if (!id) return;
+    this.categoryService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 }

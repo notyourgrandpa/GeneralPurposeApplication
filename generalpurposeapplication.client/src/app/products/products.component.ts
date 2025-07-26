@@ -28,7 +28,8 @@ export class ProductsComponent implements OnInit {
     'sellingPrice',
     'isActive',
     'dateAdded',
-    'lastUpdated'
+    'lastUpdated',
+    'actions'
   ];
   public products!: MatTableDataSource<Product>;
 
@@ -104,5 +105,9 @@ export class ProductsComponent implements OnInit {
         },
         error: (error) => console.error(error)
       });
+  }
+
+  onDelete(id: number): void {
+    this.productService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 }

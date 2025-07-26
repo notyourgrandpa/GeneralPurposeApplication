@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BaseService, ApiResult } from '../base.service';
-import { Observable } from 'rxjs';
+import { Observable, catchError, filter, of, switchMap, tap } from 'rxjs';
 import { Product } from './product'; 
 import { Category } from '../categories/category';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +16,11 @@ import { Category } from '../categories/category';
 export class ProductService
   extends BaseService<Product> {
   constructor(
-    http: HttpClient) {
+    http: HttpClient,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
     super(http);
   }
   getData(
@@ -78,5 +86,33 @@ export class ProductService
   isDupeProduct(item: Product): Observable<boolean> {
     var url = this.getUrl("api/Products/IsDupeProduct");
     return this.http.post<boolean>(url, item);
+  }
+
+  confirmAndDelete(id: number, redirectTo?: string, reloadCallback?: () => void): void {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Product',
+        message: 'Are you sure you want to delete this product?'
+      }
+    }).afterClosed().pipe(
+      filter(result => result === true),
+      switchMap(() => this.delete(id)),
+      tap(() => {
+        this.snackBar.open('Product deleted successfully.', 'Close', { duration: 3000 });
+
+        if (redirectTo) {
+          this.router.navigate([redirectTo]);
+        }
+
+        if (reloadCallback) {
+          reloadCallback();
+        }
+      }),
+      catchError(err => {
+        this.snackBar.open('Failed to delete the category.', 'Close', { duration: 3000 });
+        console.error('Delete failed', err);
+        return of(null);
+      })
+    ).subscribe();
   }
 }

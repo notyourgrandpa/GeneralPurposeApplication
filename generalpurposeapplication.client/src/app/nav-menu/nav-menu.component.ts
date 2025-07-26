@@ -62,11 +62,6 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       route: '/dashboard'
     },
     {
-      label: 'Fetch Data',
-      icon: 'cloud_download',
-      route: '/fetch-data'
-    },
-    {
       label: 'Kita',
       icon: 'inventory_2',
       expanded: false,
