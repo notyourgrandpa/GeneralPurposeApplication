@@ -8,6 +8,9 @@ import { Category } from './category';
 import { BaseFormComponent } from '../base-form.component';
 import { CategoryService } from './category.service';
 import { CategoryGraphQlService } from './categories-graphql.service'
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component'
 
 @Component({
   selector: 'app-category-edit',
@@ -95,7 +98,8 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
           });
       }
     }
-  }
+  }  
+
   isDupeField(fieldName: string): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{
       [key: string]: any
@@ -108,5 +112,10 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
           return (result ? { isDupeField: true } : null);
         }));
     }
+  }
+
+  onDelete(): void {
+    if (!this.id) return;
+    this.categoryService.confirmAndDelete(this.id, '/categories');
   }
 }
