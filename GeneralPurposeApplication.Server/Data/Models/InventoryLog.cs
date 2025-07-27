@@ -24,6 +24,6 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public DateTime Date { get; set; } = DateTime.Now;
 
         [ForeignKey(nameof(ProductId))]
-        public required Product Product { get; set; }
+        public Product? Product { get; set; }
     }
 }
