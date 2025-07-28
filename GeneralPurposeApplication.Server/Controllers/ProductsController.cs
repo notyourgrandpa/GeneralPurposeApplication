@@ -77,7 +77,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(int id, ProductUpdateInputDTO product)
         {
             if (id != product.Id)
             {
@@ -120,12 +120,23 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(ProductCreateInputDTO product)
         {
-            _context.Products.Add(product);
+            var newProduct = new Product 
+            { 
+                Name = product.Name, 
+                CostPrice = product.CostPrice ,
+                SellingPrice = product.SellingPrice,
+                IsActive = product.IsActive,
+                LastUpdated = DateTime.UtcNow,
+                DateAdded = DateTime.UtcNow,
+                CategoryId = product.CategoryId,
+            };
+
+            _context.Products.Add(newProduct);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("GetProduct", new { id = newProduct.Id }, newProduct);
         }
 
         // DELETE: api/Products/5

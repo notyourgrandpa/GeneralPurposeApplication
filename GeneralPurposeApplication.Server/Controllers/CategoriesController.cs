@@ -69,14 +69,21 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(Roles = "RegisteredUser")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(int id, CategoryUpdateInputDTO category)
         {
             if (id != category.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            var existingCategory = _context.Categories.Find(id);
+
+            if (existingCategory == null)
+            {
+                return NotFound();
+            }
+
+            existingCategory.Name = category.Name;
 
             try
             {
@@ -101,12 +108,17 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Category>> PostCategory(CategoryCreateInputDTO category)
         {
-            _context.Categories.Add(category);
+            var newCategory = new Category 
+            { 
+                Name = category.Name 
+            };
+
+            _context.Categories.Add(newCategory);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
         }
 
         // DELETE: api/Categories/5
