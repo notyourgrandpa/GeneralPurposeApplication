@@ -23,7 +23,8 @@ export class AuthService
   }
 
   isAuthenticated(): boolean {
-    return this.getToken() !== null;
+    const token = this.getToken();
+    return token !== null && !this.isTokenExpired(token);
   }
 
   getToken(): string | null {
@@ -82,4 +83,20 @@ export class AuthService
   clearCurrentUser(): void {
     localStorage.removeItem('currentUser');
   }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      const [, payloadBase64] = token.split('.');
+      const payloadJson = atob(payloadBase64);
+      const payload = JSON.parse(payloadJson);
+
+      if (!payload.exp) return true;
+
+      const now = Math.floor(Date.now() / 1000); // current time in seconds
+      return payload.exp < now;
+    } catch (e) {
+      return true;
+    }
+  }
+
 }

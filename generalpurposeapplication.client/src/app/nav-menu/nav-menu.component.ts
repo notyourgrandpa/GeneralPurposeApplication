@@ -181,6 +181,5 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   // Handle responsive behavior
   @HostListener('window:resize', ['$event'])
   onResize(): void {
-    // Additional resize logic if needed
   }
 }
