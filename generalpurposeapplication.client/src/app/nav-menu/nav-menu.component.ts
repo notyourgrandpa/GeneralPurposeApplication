@@ -68,7 +68,8 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       children: [
         { label: 'All Products', icon: 'list', route: '/products' },
         { label: 'Add Product', icon: 'add', route: '/product' },
-        { label: 'Categories', icon: 'category', route: '/categories' }
+        { label: 'Categories', icon: 'category', route: '/categories' },
+        { label: 'Inventory Logs', icon: 'receipt_long', route: '/inventory-logs' }
       ]
     },
     {
@@ -181,6 +182,5 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   // Handle responsive behavior
   @HostListener('window:resize', ['$event'])
   onResize(): void {
-    // Additional resize logic if needed
   }
 }

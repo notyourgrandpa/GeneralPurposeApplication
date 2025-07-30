@@ -164,6 +164,10 @@ export class ProductGraphQlService
       result.data.addProduct));
   }
 
+  override delete(id: number): Observable<Product> {
+    throw new Error('Method not implemented.');
+  }
+
 
   getCategories(
     pageIndex: number,

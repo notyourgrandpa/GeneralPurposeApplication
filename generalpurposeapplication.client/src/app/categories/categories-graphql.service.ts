@@ -134,6 +134,10 @@ export class CategoryGraphQlService
       result.data.addCategory));
   }
 
+  override delete(id: number): Observable<Category> {
+    throw new Error('Method not implemented.');
+  }
+
   isDupeField(categoryId: number, fieldName: string, fieldValue: string):
     Observable<boolean> {
     var params = new HttpParams()
