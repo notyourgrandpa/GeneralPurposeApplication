@@ -10,6 +10,7 @@ import { CategoryEditComponent } from './categories/category-edit.component';
 import { LoginComponent } from './auth/login.component';
 
 import { AuthGuard } from './auth/auth.guard';
+import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'categories', component: CategoriesComponent },
   { path: 'category/:id', component: CategoryEditComponent, canActivate: [AuthGuard] },
   { path: 'category', component: CategoryEditComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'inventory-logs', component: InventoryLogsComponent }
 ];
 
 @NgModule({
