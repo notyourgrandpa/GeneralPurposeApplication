@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
-    public class InventoryLogsController: ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class InventoryLogsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
@@ -19,11 +21,13 @@ namespace GeneralPurposeApplication.Server.Controllers
         {
             _context = context;
         }
-
+        // GET: api/InventoryLogs
+        // GET: api/InventoryLogs/?pageIndex=0&pageSize=10
+        // GET: api/InventoryLogs/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
         public async Task<ApiResult<InventoryLogDTO>> GetInventoryLogs(
-            int pageIndex = 0, 
-            int pageSize = 10, 
+            int pageIndex = 0,
+            int pageSize = 10,
             string? sortColumn = null,
             string? sortOrder = null,
             string? filterColumn = null,
@@ -48,7 +52,7 @@ namespace GeneralPurposeApplication.Server.Controllers
                 filterQuery);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<InventoryLog>> GetInventoryLogAsync(int id)
         {
             var inventoryLog = await _context.InventoryLogs.FindAsync(id);
