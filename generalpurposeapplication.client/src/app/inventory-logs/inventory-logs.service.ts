@@ -1,16 +1,21 @@
 import { Injectable } from "@angular/core";
 import { ApiResult, BaseService } from "../base.service";
 import { InventoryLog } from "./inventory-logs";
-import { Observable } from "rxjs";
+import { Observable, catchError, filter, of, switchMap, tap } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Product } from "../products/product";
+import { MatDialog } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { ConfirmDialogComponent } from "../shared/confirm-dialog/confirm-dialog.component";
+import { Router } from "@angular/router";
+
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class InventoryLogService extends BaseService<InventoryLog>{
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private dialog: MatDialog, private snackBar: MatSnackBar, private router: Router) {
     super(http);
   }
 
@@ -21,7 +26,7 @@ export class InventoryLogService extends BaseService<InventoryLog>{
     sortOrder: string,
     filterColumn: string | null,
     filterQuery: string | null): Observable<ApiResult<InventoryLog>> {
-    var url = this.getUrl("api/products");
+    var url = this.getUrl("api/InventoryLogs");
     var params = new HttpParams()
       .set("pageIndex", pageIndex.toString())
       .set("pageSize", pageSize.toString())
@@ -50,5 +55,55 @@ export class InventoryLogService extends BaseService<InventoryLog>{
   override delete(id: number): Observable<InventoryLog> {
     var url = this.getUrl("api/inventoryLogs/" + id);
     return this.http.delete<InventoryLog>(url);
+  }
+
+  getProducts(
+    pageIndex: number,
+    pageSize: number,
+    sortColumn: string,
+    sortOrder: string,
+    filterColumn: string | null,
+    filterQuery: string | null
+  ): Observable<ApiResult<Product>> {
+    var url = this.getUrl("api/Products");
+    var params = new HttpParams()
+      .set("pageIndex", pageIndex.toString())
+      .set("pageSize", pageSize.toString())
+      .set("sortColumn", sortColumn)
+      .set("sortOrder", sortOrder);
+    if (filterColumn && filterQuery) {
+      params = params
+        .set("filterColumn", filterColumn)
+        .set("filterQuery", filterQuery);
+    }
+    return this.http.get<ApiResult<Product>>(url, { params });
+  }
+
+  confirmAndDelete(id: number, redirectTo?: string, reloadCallback?: () => void): void {
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Inventory Log',
+        message: 'Are you sure you want to delete this inventory log?'
+      }
+    }).afterClosed().pipe(
+      filter(result => result === true),
+      switchMap(() => this.delete(id)),
+      tap(() => {
+        this.snackBar.open('Inventory Log deleted successfully.', 'Close', { duration: 3000 });
+
+        if (redirectTo) {
+          this.router.navigate([redirectTo]);
+        }
+
+        if (reloadCallback) {
+          reloadCallback();
+        }
+      }),
+      catchError(err => {
+        this.snackBar.open('Failed to delete the inventory.', 'Close', { duration: 3000 });
+        console.error('Delete failed', err);
+        return of(null);
+      })
+    ).subscribe();
   }
 }
