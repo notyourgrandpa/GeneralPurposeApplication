@@ -60,6 +60,12 @@ A collection of applications I develop.
    - Automatically manage the food stocks based on the added ingredients for the planned meal
    - Ingredients for planned meal are not on the stock? Add a temporary ingredients for that
   
+## Documentation
+
+- [User Guide](GUIDE.md)
+- [FAQ](FAQ.md)
+- [Troubleshooting](TROUBLESHOOTING.md)
+  
 ## Getting Started  
 1. Clone the repository:  
    ```sh
