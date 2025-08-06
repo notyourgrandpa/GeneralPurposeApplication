@@ -1,0 +1,101 @@
+<h1>{{title}}</h1>
+<p *ngIf="id && !inventoryLog"><em>Loading…</em></p>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <!--<p>
+    <mat-error *ngIf="form.invalid && form.hasError('isDupeProduct')">
+      <strong>ERROR</strong>:
+      A product with the same <i>name</i>, <i>selling price</i>,
+      <i>cost price</i> and <i>product</i> already exists.
+    </mat-error>
+  </p>-->
+
+  <!-- Product -->
+  <mat-form-field *ngIf="products  | async as result">
+    <mat-label>Select a Product...</mat-label>
+    <mat-select id="productId" formControlName="productId">
+      <mat-option *ngFor="let product of result"
+                  [value]="product.id">
+        {{product.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngFor="let error of getErrors(form.get('productId')!,'Product')">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Quantity Change -->
+  <mat-form-field>
+    <mat-label>Quantity Change:</mat-label>
+    <input matInput formControlName="quantityChange" required
+           placeholder="Insert quantity change">
+    <mat-error *ngFor="let error of getErrors(form.get('quantityChange')!,'Quantity Change',
+               { 'pattern' : 'requires a positive or negative number with 0-2 decimal values.'})">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Remarks -->
+  <mat-form-field>
+    <mat-label>Remarks:</mat-label>
+    <input matInput formControlName="remarks" required
+           placeholder="Insert remarks">
+    <mat-error *ngFor="let error of getErrors(form.get('remarks')!,'Remarks')">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+
+  <div>
+    <button mat-flat-button color="primary"
+            type="submit"
+            [disabled]="!form.valid">
+      {{ this.id ? "Save" : "Create" }}
+    </button>
+    <button mat-flat-button color="secondary"
+            [routerLink]="['/products']">
+      Cancel
+    </button>
+
+    <button *ngIf="id"
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="onDelete()">
+      Delete
+    </button>
+  </div>
+</form>
+
+
+<!-- Form debug info panel -->
+<!--<div class="info">
+  <div class="info-header">Form Debug Info</div>
+  <div class="info-body">
+    <div class="info-label">
+      Form Value:
+    </div>
+    <div class="info-value">
+      {{ form.value | json }}
+    </div>
+    <hr />
+    <div class="info-label">
+      Form Status:
+    </div>
+    <div class="info-value">
+      {{ form.status | json }}
+    </div>
+  </div>
+</div>-->
+<!-- Form activity log panel -->
+<!--<div class="info">
+  <div class="info-header">Form Activity Log</div>
+  <div class="info-body">
+    <div class="info-value">
+      <span *ngIf="activityLog"
+            [innerHTML]="activityLog">
+      </span>
+    </div>
+  </div>
+</div>-->

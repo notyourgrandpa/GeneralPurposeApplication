@@ -26,6 +26,7 @@ import { ConnectionServiceModule } from 'ng-connection-service';
 import { GraphQLModule } from './graphql.module';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
+import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { InventoryLogsComponent } from './inventory-logs/inventory-logs.componen
     CategoryEditComponent,
     LoginComponent,
     ConfirmDialogComponent,
-    InventoryLogsComponent
+    InventoryLogsComponent,
+    InventoryLogEditComponent
   ],
   imports: [
     BrowserModule,
