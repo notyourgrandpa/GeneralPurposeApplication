@@ -42,7 +42,8 @@ namespace GeneralPurposeApplication.Server.Controllers
                         ProductId = x.ProductId,
                         QuantityChange = x.QuantityChange,
                         Remarks = x.Remarks,
-                        Date = x.Date
+                        Date = x.Date,
+                        ProductName = x.Product!.Name
                     }),
                 pageIndex,
                 pageSize,

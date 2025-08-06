@@ -11,6 +11,7 @@ import { LoginComponent } from './auth/login.component';
 
 import { AuthGuard } from './auth/auth.guard';
 import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
+import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -23,7 +24,9 @@ const routes: Routes = [
   { path: 'category/:id', component: CategoryEditComponent, canActivate: [AuthGuard] },
   { path: 'category', component: CategoryEditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'inventory-logs', component: InventoryLogsComponent }
+  { path: 'inventory-logs', component: InventoryLogsComponent },
+  { path: 'inventory-log/:id', component: InventoryLogEditComponent, canActivate: [AuthGuard] },
+  { path: 'inventory-log', component: InventoryLogEditComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
