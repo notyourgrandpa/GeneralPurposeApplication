@@ -57,7 +57,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let inventoryLog">
-        <button mat-icon-button color="primary" [routerLink]="['/inventoryLog', inventoryLog.id]" matTooltip="Edit">
+        <button mat-icon-button color="primary" [routerLink]="['/inventory-log', inventoryLog.id]" matTooltip="Edit">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button color="warn" (click)="onDelete(inventoryLog.id)" matTooltip="Delete">
