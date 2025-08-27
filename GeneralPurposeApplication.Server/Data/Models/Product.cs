@@ -34,6 +34,8 @@ namespace GeneralPurposeApplication.Server.Data.Models
 
         public DateTime LastUpdated { get; set; } = DateTime.Now;
 
+        public int Stock { get; set; } = 0;
+
         [ForeignKey(nameof(CategoryId))]
         public Category? Category { get; set; }
 

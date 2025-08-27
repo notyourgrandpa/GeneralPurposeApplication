@@ -17,7 +17,8 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.ProductId);
-            builder.Property(x => x.QuantityChange);
+            builder.Property(x => x.Quantity);
+            builder.Property(x => x.ChangeType);
             builder.Property(x => x.Remarks);
             builder.Property(x => x.Date);
             builder

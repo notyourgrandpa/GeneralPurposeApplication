@@ -40,7 +40,8 @@ namespace GeneralPurposeApplication.Server.Controllers
                     {
                         Id = x.Id,
                         ProductId = x.ProductId,
-                        QuantityChange = x.QuantityChange,
+                        Quantity = x.Quantity,
+                        ChangeType = x.ChangeType,
                         Remarks = x.Remarks,
                         Date = x.Date,
                         ProductName = x.Product!.Name
@@ -69,17 +70,51 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<InventoryLog>> CreateInventoryLog(InventoryLogCreateInputDto inventoryLogDto)
         {
-            var inventoryLog = new InventoryLog
+
+            if (inventoryLogDto.Quantity <= 0)
+                return BadRequest("Quantity must be greater than zero.");
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
             {
-                ProductId = inventoryLogDto.ProductId,
-                QuantityChange = inventoryLogDto.QuantityChange,
-                Remarks = inventoryLogDto.Remarks
-            };
+                var inventoryLog = new InventoryLog
+                {
+                    ProductId = inventoryLogDto.ProductId,
+                    Quantity = inventoryLogDto.Quantity,
+                    ChangeType = inventoryLogDto.ChangeType,
+                    Remarks = inventoryLogDto.Remarks
+                };
 
-            _context.InventoryLogs.Add(inventoryLog);
-            await _context.SaveChangesAsync();
+                _context.InventoryLogs.Add(inventoryLog);
 
-            return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, inventoryLog);
+                var product = await _context.Products.FindAsync(inventoryLog.ProductId);
+
+                if (product == null)
+                    return NotFound($"Product {inventoryLog.ProductId} not found.");
+
+                if (inventoryLog.ChangeType == InventoryChangeType.StockIn)
+                    product.Stock += inventoryLog.Quantity;
+                else if (inventoryLog.ChangeType == InventoryChangeType.StockOut)
+                {
+                    if (product.Stock < inventoryLog.Quantity)
+                        throw new InvalidOperationException("Not enough stock available.");
+                    product.Stock -= inventoryLog.Quantity;
+                }
+                else if (inventoryLog.ChangeType == InventoryChangeType.Adjustment)
+                    product.Stock = inventoryLog.Quantity;
+
+                product.LastUpdated = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, inventoryLog);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         [HttpPut]
@@ -93,7 +128,8 @@ namespace GeneralPurposeApplication.Server.Controllers
                 return NotFound();
 
             inventoryLog.ProductId = inventoryLogDto.ProductId;
-            inventoryLog.QuantityChange = inventoryLogDto.QuantityChange;
+            inventoryLog.Quantity = inventoryLogDto.Quantity;
+            inventoryLog.ChangeType = inventoryLogDto.ChangeType;
             inventoryLog.Remarks = inventoryLogDto.Remarks;
 
             try

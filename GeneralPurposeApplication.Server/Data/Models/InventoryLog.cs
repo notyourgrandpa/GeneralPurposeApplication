@@ -15,9 +15,13 @@ namespace GeneralPurposeApplication.Server.Data.Models
         [Key]
         public int Id { get; set; }
 
-        public int ProductId { get; set; }       
-        
-        public int QuantityChange { get; set; }
+        public int ProductId { get; set; }
+
+        [Range(1, int.MaxValue)]
+        public int Quantity { get; set; }
+
+        [Required]
+        public InventoryChangeType ChangeType { get; set; }
 
         public string? Remarks { get; set; }
 
@@ -25,5 +29,12 @@ namespace GeneralPurposeApplication.Server.Data.Models
 
         [ForeignKey(nameof(ProductId))]
         public Product? Product { get; set; }
+    }
+
+    public enum InventoryChangeType
+    {
+        StockIn = 1,
+        StockOut = 2,
+        Adjustment = 3
     }
 }
