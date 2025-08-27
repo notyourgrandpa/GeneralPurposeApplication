@@ -16,7 +16,8 @@ export class InventoryLogsComponent implements OnInit {
     'date',
     'productName',
     'quantityChange',
-    'remarks'
+    'remarks',
+    'actions'
   ];
 
   public inventoryLogs!: MatTableDataSource<InventoryLog>;
