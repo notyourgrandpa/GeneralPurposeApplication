@@ -108,7 +108,16 @@ namespace GeneralPurposeApplication.Server.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, inventoryLog);
+                await transaction.CommitAsync();
+
+                return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, new InventoryLogDTO
+                {
+                    Id = inventoryLog.Id,
+                    ProductId = inventoryLog.ProductId,
+                    Quantity = inventoryLog.Quantity,
+                    ChangeType = inventoryLog.ChangeType,
+                    Remarks = inventoryLog.Remarks
+                });
             }
             catch
             {
