@@ -49,6 +49,7 @@ export class ProductGraphQlService
                  name
                  sellingPrice 
                  costPrice
+                 stock
                  isActive
                  categoryId
                  categoryName

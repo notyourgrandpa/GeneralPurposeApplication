@@ -5,6 +5,7 @@ export interface Product {
   categoryName: string;
   costPrice: number;
   sellingPrice: number;
+  stock: number;
   isActive: boolean;
   dateAdded: Date;
   lastUpdated: Date;

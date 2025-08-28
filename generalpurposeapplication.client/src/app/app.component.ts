@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     private connectionService: ConnectionService
   ) {
     const options: ConnectionServiceOptions = {
-      enableHeartbeat: true,
+      enableHeartbeat: false,
       heartbeatUrl: environment.baseUrl + 'api/heartbeat',
       heartbeatInterval: 100000
     };
