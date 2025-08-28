@@ -15,7 +15,8 @@ export class InventoryLogsComponent implements OnInit {
   public displayedColumns: string[] = [
     'date',
     'productName',
-    'quantityChange',
+    'quantity',
+    'changeType',
     'remarks',
     'actions'
   ];

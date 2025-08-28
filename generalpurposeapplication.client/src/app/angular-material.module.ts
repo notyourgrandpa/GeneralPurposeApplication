@@ -19,6 +19,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     LayoutModule,
     MatCardModule,
     MatExpansionModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule
   ],
   exports: [
     MatButtonModule,
@@ -63,7 +65,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     LayoutModule,
     MatCardModule,
     MatExpansionModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule
   ]
 })
 export class AngularMaterialModule { }

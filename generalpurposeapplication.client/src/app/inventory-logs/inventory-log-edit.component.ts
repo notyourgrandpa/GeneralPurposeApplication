@@ -37,7 +37,8 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     this.form = new FormGroup({
       name: new FormControl(''),
       productId: new FormControl('', Validators.required),
-      quantityChange: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
+      quantity: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
+      changeType: new FormControl('', [Validators.required]),
       remarks: new FormControl('', [Validators.required])
     }, null);
 
@@ -105,7 +106,7 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     }
     else {
       // ADD NEW MODE
-      this.title = "Create a new Product";
+      this.title = "Create a new Inventory Log";
     }
   }
 
@@ -120,7 +121,8 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     var inventoryLog = (this.id) ? this.inventoryLog : <InventoryLog>{};
     if (inventoryLog) {
       inventoryLog.productId = this.form.controls['productId'].value;
-      inventoryLog.quantityChange = +this.form.controls['quantityChange'].value;
+      inventoryLog.quantity = +this.form.controls['quantity'].value;
+      inventoryLog.changeType = +this.form.controls['changeType'].value;
       inventoryLog.remarks = this.form.controls['remarks'].value;
 
       if (this.id) {
