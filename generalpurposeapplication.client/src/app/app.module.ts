@@ -27,6 +27,7 @@ import { GraphQLModule } from './graphql.module';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
 import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
+import { InventoryChangeTypePipe } from './inventory-change-type.pipe';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.c
     LoginComponent,
     ConfirmDialogComponent,
     InventoryLogsComponent,
-    InventoryLogEditComponent
+    InventoryLogEditComponent,
+    InventoryChangeTypePipe
   ],
   imports: [
     BrowserModule,
