@@ -26,6 +26,7 @@ export class ProductsComponent implements OnInit {
     'categoryName',
     'costPrice',
     'sellingPrice',
+    'stock',
     'isActive',
     'dateAdded',
     'lastUpdated',

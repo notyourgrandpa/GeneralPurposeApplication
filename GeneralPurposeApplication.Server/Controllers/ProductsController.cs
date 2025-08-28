@@ -47,9 +47,10 @@ namespace GeneralPurposeApplication.Server.Controllers
                     CategoryName = x.Category!.Name,
                     CostPrice = x.CostPrice,
                     SellingPrice = x.SellingPrice,
+                    Stock = x.Stock,
                     IsActive = x.IsActive,
                     DateAdded = x.DateAdded,
-                    LastUpdated = x.LastUpdated
+                    LastUpdated = x.LastUpdated,
                 }), 
                 pageIndex, 
                 pageSize,
