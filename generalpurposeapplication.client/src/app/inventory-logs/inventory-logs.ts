@@ -2,7 +2,8 @@ export interface InventoryLog {
   id: number;
   productId: string;
   productName: string;
-  quantityChange: number;
+  quantity: number;
+  changeType: number;
   remarks: string;
   date: Date;
 }

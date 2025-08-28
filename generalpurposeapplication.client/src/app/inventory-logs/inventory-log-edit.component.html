@@ -10,7 +10,6 @@
       <i>cost price</i> and <i>product</i> already exists.
     </mat-error>
   </p>-->
-
   <!-- Product -->
   <mat-form-field *ngIf="products  | async as result">
     <mat-label>Select a Product...</mat-label>
@@ -25,13 +24,26 @@
     </mat-error>
   </mat-form-field>
 
-  <!-- Quantity Change -->
+  <!-- Quantity -->
   <mat-form-field>
-    <mat-label>Quantity Change:</mat-label>
-    <input matInput formControlName="quantityChange" required
-           placeholder="Insert quantity change">
-    <mat-error *ngFor="let error of getErrors(form.get('quantityChange')!,'Quantity Change',
+    <mat-label>Quantity:</mat-label>
+    <input matInput formControlName="quantity" required
+           placeholder="Insert quantity">
+    <mat-error *ngFor="let error of getErrors(form.get('quantity')!,'Quantity',
                { 'pattern' : 'requires a positive or negative number with 0-2 decimal values.'})">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Change Type -->
+  <mat-form-field>
+    <mat-label>Select change type...</mat-label>
+    <mat-select id="changeType" formControlName="changeType">
+      <mat-option [value]="1">StockIn</mat-option>
+      <mat-option [value]="2">StockOut</mat-option>
+      <mat-option [value]="3">Adjustment</mat-option>
+    </mat-select>
+    <mat-error *ngFor="let error of getErrors(form.get('changeType')!,'Change Type')">
       {{error}}
     </mat-error>
   </mat-form-field>

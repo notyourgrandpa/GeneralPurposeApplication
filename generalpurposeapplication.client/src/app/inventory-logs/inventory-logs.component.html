@@ -41,11 +41,29 @@
       <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.date | date:'short'}}</td>
     </ng-container>
 
-    <!-- Change Column -->
-    <ng-container matColumnDef="quantityChange">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity Change </th>
-      <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.quantityChange}}</td>
+    <!-- Quantity Column -->
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity </th>
+      <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.quantity}}</td>
     </ng-container>
+
+    <!-- Change Type Column -->
+    <ng-container matColumnDef="changeType">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+      <td mat-cell *matCellDef="let inventoryLog">
+        <mat-chip-listbox>
+          <mat-chip highlighted
+                    [color]="
+          inventoryLog.changeType === 1 ? 'primary' :
+          inventoryLog.changeType === 2 ? 'warn' :
+          'accent'
+        ">
+            {{ inventoryLog.changeType | inventoryChangeType }}
+          </mat-chip>
+        </mat-chip-listbox>
+      </td>
+    </ng-container>
+
 
     <!-- Remarkss Column -->
     <ng-container matColumnDef="remarks">
