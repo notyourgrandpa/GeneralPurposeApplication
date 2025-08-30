@@ -4,6 +4,7 @@ using GeneralPurposeApplication.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeneralPurposeApplication.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250830080045_AddCustomFieldsToUser")]
+    partial class AddCustomFieldsToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,16 +262,14 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProcessedByUserId")
+                    b.Property<string>("ProcessedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProcessedByUserId");
 
                     b.ToTable("SalesTransactions", (string)null);
                 });
@@ -300,6 +301,28 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
                     b.HasIndex("SalesTransactionId");
 
                     b.ToTable("SalesTransactionItems", (string)null);
+                });
+
+            modelBuilder.Entity("GeneralPurposeApplication.Server.Data.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -457,17 +480,6 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("GeneralPurposeApplication.Server.Data.Models.SalesTransaction", b =>
-                {
-                    b.HasOne("GeneralPurposeApplication.Server.Data.Models.ApplicationUser", "ProcessedByUser")
-                        .WithMany("SalesTransactions")
-                        .HasForeignKey("ProcessedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProcessedByUser");
-                });
-
             modelBuilder.Entity("GeneralPurposeApplication.Server.Data.Models.SalesTransactionItem", b =>
                 {
                     b.HasOne("GeneralPurposeApplication.Server.Data.Models.Product", "Product")
@@ -536,11 +548,6 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("GeneralPurposeApplication.Server.Data.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("SalesTransactions");
                 });
 
             modelBuilder.Entity("GeneralPurposeApplication.Server.Data.Models.Category", b =>
