@@ -22,6 +22,8 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
   id?: number;
   products?: Observable<Product[]>;
 
+  selectedProductStock: number | null = null;
+
   private destroySubject = new Subject();
 
   constructor(
@@ -100,6 +102,8 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
           this.title = "Edit - Inventory Log of " + this.inventoryLog.productName;
           // update the form with the inventoryLog value
           this.form.patchValue(this.inventoryLog);
+
+          this.onProductSelected(this.inventoryLog.productId);
         },
         error: (error) => console.error(error)
       });
@@ -115,6 +119,14 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     this.products = this.inventoryLogService
       .getProducts(0, 9999, "name", "asc", null, null)
       .pipe(map(x => x.data));
+  }
+
+  onProductSelected(productId: number) {
+    // products$ is async, so subscribe here or in template
+    this.products?.subscribe((products) => {
+      const product = products.find(p => p.id === productId);
+      this.selectedProductStock = product ? product.stock : null;
+    });
   }
 
   onSubmit() {
@@ -148,7 +160,10 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
               // go back to inventory logs view
               this.router.navigate(['/inventory-logs']);
             },
-            error: (error) => console.error(error)
+            error: (err) => {
+              console.error("Error:", err.message);
+              this.snackBar.open(err.message, "Close", { duration: 3000 });
+            }
           });
       }
     }
