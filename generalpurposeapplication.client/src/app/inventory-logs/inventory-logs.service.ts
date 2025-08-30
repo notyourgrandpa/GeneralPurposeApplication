@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ApiResult, BaseService } from "../base.service";
 import { InventoryLog } from "./inventory-logs";
-import { Observable, catchError, filter, of, switchMap, tap } from "rxjs";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable, catchError, filter, of, switchMap, tap, throwError } from "rxjs";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Product } from "../products/product";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -50,8 +50,19 @@ export class InventoryLogService extends BaseService<InventoryLog>{
   }
   override post(item: InventoryLog): Observable<InventoryLog> {
     var url = this.getUrl("api/inventoryLogs");
-    return this.http.post<InventoryLog>(url, item);
+    return this.http.post<InventoryLog>(url, item).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = "An unknown error occurred.";
+        if (error.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error.status === 0) {
+          errorMessage = "Backend is not reachable.";
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
+
   override delete(id: number): Observable<InventoryLog> {
     var url = this.getUrl("api/inventoryLogs/" + id);
     return this.http.delete<InventoryLog>(url);

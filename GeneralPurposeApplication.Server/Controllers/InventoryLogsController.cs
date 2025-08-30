@@ -119,10 +119,10 @@ namespace GeneralPurposeApplication.Server.Controllers
                     Remarks = inventoryLog.Remarks
                 });
             }
-            catch
+            catch(InvalidOperationException ex)
             {
                 await transaction.RollbackAsync();
-                throw;
+                return BadRequest(new { message = ex.Message });
             }
         }
 

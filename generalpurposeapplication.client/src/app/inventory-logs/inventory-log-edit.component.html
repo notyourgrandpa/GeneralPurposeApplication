@@ -10,12 +10,13 @@
       <i>cost price</i> and <i>product</i> already exists.
     </mat-error>
   </p>-->
+ 
   <!-- Product -->
-  <mat-form-field *ngIf="products  | async as result">
+  <mat-form-field *ngIf="products | async as result">
     <mat-label>Select a Product...</mat-label>
-    <mat-select id="productId" formControlName="productId">
-      <mat-option *ngFor="let product of result"
-                  [value]="product.id">
+    <mat-select id="productId" formControlName="productId"
+                (selectionChange)="onProductSelected($event.value)">
+      <mat-option *ngFor="let product of result" [value]="product.id">
         {{product.name}}
       </mat-option>
     </mat-select>
@@ -23,6 +24,12 @@
       {{error}}
     </mat-error>
   </mat-form-field>
+
+  <!-- Stock info (read-only) -->
+  <div *ngIf="selectedProductStock !== null" class="stock-info">
+    <strong>Available stock:</strong> {{selectedProductStock}}
+  </div>
+
 
   <!-- Quantity -->
   <mat-form-field>

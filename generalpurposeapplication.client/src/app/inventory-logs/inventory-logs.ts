@@ -1,9 +1,10 @@
 export interface InventoryLog {
   id: number;
-  productId: string;
+  productId: number;
   productName: string;
   quantity: number;
   changeType: number;
   remarks: string;
   date: Date;
+  stock: number;
 }
