@@ -49,7 +49,8 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
                                CategoryId = c.Category!.Id,
                                CategoryName = c.Category!.Name,
                                LastUpdated = c.LastUpdated,
-                               DateAdded = c.DateAdded
+                               DateAdded = c.DateAdded,
+                               Stock = c.Stock
                            }),
                        pageIndex,
                        pageSize,
