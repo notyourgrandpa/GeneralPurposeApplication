@@ -73,3 +73,5 @@ obj/
 .vs/
 /generalpurposeapplication.client/generalpurposeapplication.client.esproj.user
 /GeneralPurposeApplication.Tests/obj/project.assets.json
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.GeneralPurposeApplication.Server.props
+/GeneralPurposeApplication.Server/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.GeneralPurposeApplication.Server.props
