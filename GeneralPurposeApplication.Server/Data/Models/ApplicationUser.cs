@@ -13,5 +13,7 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public string? Position { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public ICollection<SalesTransaction> SalesTransactions { get; set; }
+
     }
 }

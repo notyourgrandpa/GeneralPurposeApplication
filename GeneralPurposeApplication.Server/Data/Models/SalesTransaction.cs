@@ -19,10 +19,13 @@ namespace GeneralPurposeApplication.Server.Data.Models
 
         public required string PaymentMethod { get; set; }
 
-        public required string ProcessedBy { get; set; }
+        public string ProcessedByUserId { get; set; } = string.Empty;
 
         public DateTime Date { get; set; } = DateTime.Now;
 
         public ICollection<SalesTransactionItem> SalesTransactionItems { get; set; } = new List<SalesTransactionItem>();
+
+        [ForeignKey(nameof(ProcessedByUserId))]
+        public ApplicationUser ProcessedByUser { get; set; } = null!;
     }
 }

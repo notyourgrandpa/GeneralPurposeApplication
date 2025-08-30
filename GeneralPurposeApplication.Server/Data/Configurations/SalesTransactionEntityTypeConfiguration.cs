@@ -18,8 +18,12 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
             builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.TotalAmount).HasColumnType("decimal(10,2)");
             builder.Property(x => x.PaymentMethod).IsRequired();
-            builder.Property(x => x.ProcessedBy).IsRequired();
+            builder.Property(x => x.ProcessedByUserId).IsRequired();
             builder.Property(x => x.Date).IsRequired();
+            builder.HasOne(x => x.ProcessedByUser)
+               .WithMany(u => u.SalesTransactions)
+               .HasForeignKey(x => x.ProcessedByUserId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
