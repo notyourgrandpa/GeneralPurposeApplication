@@ -16,6 +16,7 @@ export class LoginComponent
   extends BaseFormComponent implements OnInit {
   title?: string;
   loginResult?: LoginResult;
+  returnUrl: string = '/';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -29,6 +30,8 @@ export class LoginComponent
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
+
+    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onSubmit() {
@@ -42,7 +45,7 @@ export class LoginComponent
           console.log(result);
           this.loginResult = result;
           if (result.success) {
-            this.router.navigate(["/"]);
+            this.router.navigateByUrl(this.returnUrl);
           }
         },
         error: (error) => {
