@@ -20,6 +20,7 @@ namespace GeneralPurposeApplication.Server.Data
         public DbSet<Product> Products => Set<Product>();
         public DbSet<SalesTransaction> SalesTransactions => Set<SalesTransaction>();
         public DbSet<SalesTransactionItem> SalesTransactionItems => Set<SalesTransactionItem>();
+        public DbSet<Customer> Customers => Set<Customer>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -12,6 +12,8 @@ import { LoginComponent } from './auth/login.component';
 import { AuthGuard } from './auth/auth.guard';
 import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
 import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
+import { SalesTransactionsComponent } from './sales-transactions/sales-transactions.component';
+import { SalesTransactionEditComponent } from './sales-transactions/sales-transaction-edit.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -27,6 +29,9 @@ const routes: Routes = [
   { path: 'inventory-logs', component: InventoryLogsComponent },
   { path: 'inventory-log/:id', component: InventoryLogEditComponent, canActivate: [AuthGuard] },
   { path: 'inventory-log', component: InventoryLogEditComponent, canActivate: [AuthGuard] },
+  { path: 'sales-transactions', component: SalesTransactionsComponent },
+  { path: 'sales-transaction/:id', component: SalesTransactionEditComponent, canActivate: [AuthGuard] },
+  { path: 'sales-transaction', component: SalesTransactionEditComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
