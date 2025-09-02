@@ -28,6 +28,8 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
 import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
 import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
 import { InventoryChangeTypePipe } from './inventory-change-type.pipe';
+import { SalesTransactionsComponent } from './sales-transactions/sales-transactions.component';
+import { SalesTransactionEditComponent } from './sales-transactions/sales-transaction-edit.component';
 
 
 @NgModule({
@@ -45,7 +47,9 @@ import { InventoryChangeTypePipe } from './inventory-change-type.pipe';
     ConfirmDialogComponent,
     InventoryLogsComponent,
     InventoryLogEditComponent,
-    InventoryChangeTypePipe
+    InventoryChangeTypePipe,
+    SalesTransactionsComponent,
+    SalesTransactionEditComponent
   ],
   imports: [
     BrowserModule,
