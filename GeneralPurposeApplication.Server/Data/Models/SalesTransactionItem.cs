@@ -22,7 +22,10 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public int Quantity { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal Price { get; set; }
+        public decimal UnitPrice { get; set; }
+
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Subtotal { get; set; }  // UnitPrice * Quantity
 
         [ForeignKey(nameof(SalesTransactionId))]
         public required SalesTransaction SalesTransaction { get; set; }

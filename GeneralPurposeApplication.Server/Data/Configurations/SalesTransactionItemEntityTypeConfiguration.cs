@@ -19,7 +19,8 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
             builder.Property(x => x.SalesTransactionId);
             builder.Property(x => x.ProductId);
             builder.Property(x => x.Quantity);
-            builder.Property(x => x.Price).HasColumnType("decimal(10,2)");
+            builder.Property(x => x.UnitPrice).HasColumnType("decimal(10,2)");
+            builder.Property(x => x.Subtotal).HasColumnType("decimal(10,2)");
             builder
                 .HasOne(x => x.SalesTransaction)
                 .WithMany(x => x.SalesTransactionItems)
