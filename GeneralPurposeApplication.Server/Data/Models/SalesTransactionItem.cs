@@ -28,9 +28,9 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public decimal Subtotal { get; set; }  // UnitPrice * Quantity
 
         [ForeignKey(nameof(SalesTransactionId))]
-        public required SalesTransaction SalesTransaction { get; set; }
+        public SalesTransaction? SalesTransaction { get; set; }
 
         [ForeignKey(nameof(ProductId))]
-        public required Product Product { get; set; }
+        public Product? Product { get; set; }
     }
 }
