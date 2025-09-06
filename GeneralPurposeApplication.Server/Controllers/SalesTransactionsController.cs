@@ -60,106 +60,106 @@ namespace GeneralPurposeApplication.Server.Controllers
             return inventoryLog;
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateInputDTO salesTransactionLogDto)
-        //{
+        [HttpPost]
+        public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateInputDTO salesTransactionLogDto)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-        //    //if (salesTransactionLogDto.Quantity <= 0)
-        //    //    return BadRequest("Quantity must be greater than zero.");
+            try
+            {
+                var productIds = salesTransactionLogDto.Items.Select(i => i.ProductId).ToList();
+                var validIds = await _context.Products
+                    .Where(p => productIds.Contains(p.Id))
+                    .Select(p => p.Id)
+                    .ToListAsync();
 
-        //    using var transaction = await _context.Database.BeginTransactionAsync();
+                var invalidIds = productIds.Except(validIds).ToList();
+                if (invalidIds.Any())
+                    return BadRequest($"Invalid product IDs: {string.Join(",", invalidIds)}");
 
-        //    try
-        //    {
-        //        var salesTransaction = new SalesTransaction
-        //        {
-        //            PaymentMethod = salesTransactionLogDto.PaymentMethod,
-        //            ProcessedByUserId = User.GetUserId(),
-        //            Date = DateTime.UtcNow
-        //        };
+                var salesTransaction = new SalesTransaction
+                {
+                    PaymentMethod = salesTransactionLogDto.PaymentMethod,
+                    ProcessedByUserId = User.GetUserId(),
+                    Date = DateTime.UtcNow,
+                    TotalAmount = salesTransactionLogDto.Items.Sum(i => i.Quantity * i.UnitPrice)
+                };
 
-        //        _context.SalesTransactions.Add(salesTransaction);
+                foreach(var row in salesTransactionLogDto.Items)
+                {
+                    SalesTransactionItem salesTransactionItem = new()
+                    {
+                        ProductId = row.ProductId,
+                        Quantity = row.Quantity,
+                        UnitPrice = row.UnitPrice,
+                        Subtotal = row.Quantity * row.UnitPrice
+                    };
+                    salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
+                }
 
-        //        var product = await _context.Products.FindAsync(salesTransaction.ProductId);
+                _context.SalesTransactions.Add(salesTransaction);
 
-        //        if (product == null)
-        //            return NotFound($"Product {salesTransaction.ProductId} not found.");
+                await _context.SaveChangesAsync();
 
-        //        if (salesTransaction.ChangeType == InventoryChangeType.StockIn)
-        //            product.Stock += salesTransaction.Quantity;
-        //        else if (salesTransaction.ChangeType == InventoryChangeType.StockOut)
-        //        {
-        //            if (product.Stock < salesTransaction.Quantity)
-        //                throw new InvalidOperationException("Not enough stock available.");
-        //            product.Stock -= salesTransaction.Quantity;
-        //        }
-        //        else if (salesTransaction.ChangeType == InventoryChangeType.Adjustment)
-        //            product.Stock = salesTransaction.Quantity;
+                await transaction.CommitAsync();
 
-        //        product.LastUpdated = DateTime.Now;
-
-        //        await _context.SaveChangesAsync();
-
-        //        await transaction.CommitAsync();
-
-        //        return CreatedAtAction("GetInventoryLog", new { id = salesTransaction.Id }, new SalesTransactionsDTO
-        //        {
-        //            Id = salesTransaction.Id,
-        //            //ProductId = salesTransaction.ProductId,
-        //            //Quantity = salesTransaction.Quantity,
-        //            //ChangeType = salesTransaction.ChangeType,
-        //            //Remarks = salesTransaction.Remarks
-        //        });
-        //    }
-        //    catch (InvalidOperationException ex)
-        //    {
-        //        await transaction.RollbackAsync();
-        //        return BadRequest(new { message = ex.Message });
-        //    }
-        //}
-
-        //[HttpPut]
-        //public async Task<IActionResult> PutInventory(int id, InventoryLogUpdateInputDTO salesTransactionLogDto)
-        //{
-        //    if (id != salesTransactionLogDto.Id)
-        //        return BadRequest();
-
-        //    var inventoryLog = await _context.SalesTransactions.FindAsync(id);
-        //    if (inventoryLog == null)
-        //        return NotFound();
-
-        //    inventoryLog.ProductId = inventoryLogDto.ProductId;
-        //    inventoryLog.Quantity = inventoryLogDto.Quantity;
-        //    inventoryLog.ChangeType = inventoryLogDto.ChangeType;
-        //    inventoryLog.Remarks = inventoryLogDto.Remarks;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        throw;
-
-        //    }
-        //    return NoContent();
-        //}
-
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteInvetoryLog(int id)
-        //{
-        //    var inventoryLog = await _context.SalesTransactions.FindAsync(id);
-
-        //    if (inventoryLog == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.SalesTransactions.Remove(inventoryLog);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-
-        //}
+                return CreatedAtAction("GetSalesTransaction", new { id = salesTransaction.Id }, new SalesTransactionsDTO
+                {
+                    Id = salesTransaction.Id,
+                    PaymentMethod = salesTransaction.PaymentMethod,
+                    ProcessedByUserId = salesTransaction.ProcessedByUserId,
+                    Date = salesTransaction.Date
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                await transaction.RollbackAsync();
+                return BadRequest(new { message = ex.Message });
+            }
     }
+
+    //[HttpPut]
+    //public async Task<IActionResult> PutInventory(int id, InventoryLogUpdateInputDTO salesTransactionLogDto)
+    //{
+    //    if (id != salesTransactionLogDto.Id)
+    //        return BadRequest();
+
+    //    var inventoryLog = await _context.SalesTransactions.FindAsync(id);
+    //    if (inventoryLog == null)
+    //        return NotFound();
+
+    //    inventoryLog.ProductId = inventoryLogDto.ProductId;
+    //    inventoryLog.Quantity = inventoryLogDto.Quantity;
+    //    inventoryLog.ChangeType = inventoryLogDto.ChangeType;
+    //    inventoryLog.Remarks = inventoryLogDto.Remarks;
+
+    //    try
+    //    {
+    //        await _context.SaveChangesAsync();
+    //    }
+    //    catch (DbUpdateConcurrencyException)
+    //    {
+    //        throw;
+
+    //    }
+    //    return NoContent();
+    //}
+
+    //[HttpDelete("{id}")]
+    //public async Task<IActionResult> DeleteInvetoryLog(int id)
+    //{
+    //    var inventoryLog = await _context.SalesTransactions.FindAsync(id);
+
+    //    if (inventoryLog == null)
+    //    {
+    //        return NotFound();
+    //    }
+
+    //    _context.SalesTransactions.Remove(inventoryLog);
+    //    await _context.SaveChangesAsync();
+
+    //    return NoContent();
+
+    //}
+}
 }
