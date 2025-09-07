@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,8 +25,13 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public DateTime Date { get; set; } = DateTime.Now;
 
         public ICollection<SalesTransactionItem> SalesTransactionItems { get; set; } = new List<SalesTransactionItem>();
+        public bool IsVoided { get; set; } = false;
+        public DateTime? VoidedAt { get; set; }
+        public string? VoidedByUserId { get; set; }
 
         [ForeignKey(nameof(ProcessedByUserId))]
         public ApplicationUser ProcessedByUser { get; set; } = null!;
+        [ForeignKey(nameof(VoidedByUserId))]
+        public ApplicationUser? VoidedByUser { get; set; }
     }
 }
