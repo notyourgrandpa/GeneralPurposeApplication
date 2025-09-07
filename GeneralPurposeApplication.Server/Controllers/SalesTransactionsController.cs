@@ -119,48 +119,83 @@ namespace GeneralPurposeApplication.Server.Controllers
             }
     }
 
-    //[HttpPut]
-    //public async Task<IActionResult> PutInventory(int id, InventoryLogUpdateInputDTO salesTransactionLogDto)
-    //{
-    //    if (id != salesTransactionLogDto.Id)
-    //        return BadRequest();
+        //[HttpPut]
+        //public async Task<IActionResult> PutInventory(int id, SalesTransactionUpdateInputDTO salesTransactionLogDto)
+        //{
+        //    if (id != salesTransactionLogDto.Id)
+        //        return BadRequest();
 
-    //    var inventoryLog = await _context.SalesTransactions.FindAsync(id);
-    //    if (inventoryLog == null)
-    //        return NotFound();
+        //    var salesTransaction = await _context.SalesTransactions.FindAsync(id);
+        //    if (salesTransaction == null)
+        //        return NotFound();
 
-    //    inventoryLog.ProductId = inventoryLogDto.ProductId;
-    //    inventoryLog.Quantity = inventoryLogDto.Quantity;
-    //    inventoryLog.ChangeType = inventoryLogDto.ChangeType;
-    //    inventoryLog.Remarks = inventoryLogDto.Remarks;
+        //    salesTransaction.ProductId = salesTransactionDto.ProductId;
+        //    salesTransaction.Quantity = salesTransactionDto.Quantity;
+        //    salesTransaction.ChangeType = salesTransactionDto.ChangeType;
+        //    salesTransaction.Remarks = salesTransactionDto.Remarks;
 
-    //    try
-    //    {
-    //        await _context.SaveChangesAsync();
-    //    }
-    //    catch (DbUpdateConcurrencyException)
-    //    {
-    //        throw;
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        throw;
 
-    //    }
-    //    return NoContent();
-    //}
+        //    }
+        //    return NoContent();
+        //}
 
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> DeleteInvetoryLog(int id)
-    //{
-    //    var inventoryLog = await _context.SalesTransactions.FindAsync(id);
 
-    //    if (inventoryLog == null)
-    //    {
-    //        return NotFound();
-    //    }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSalesTransaction(int id)
+        {
+            var inventoryLog = await _context.SalesTransactions.FindAsync(id);
 
-    //    _context.SalesTransactions.Remove(inventoryLog);
-    //    await _context.SaveChangesAsync();
+            if (inventoryLog == null)
+            {
+                return NotFound();
+            }
 
-    //    return NoContent();
+            _context.SalesTransactions.Remove(inventoryLog);
+            await _context.SaveChangesAsync();
 
-    //}
-}
+            return NoContent();
+
+        }
+
+        [HttpPost("{id}/void")]
+        public async Task<IActionResult> VoidSalesTransaction(int id)
+        {
+            var transaction = await _context.SalesTransactions
+                .Include(t => t.SalesTransactionItems)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (transaction == null)
+                return NotFound();
+
+            if (transaction.IsVoided)
+                return BadRequest("Transaction is already voided.");
+
+            // Mark as voided
+            transaction.IsVoided = true;
+            transaction.VoidedAt = DateTime.UtcNow;
+            transaction.VoidedByUserId = User.GetUserId();
+
+            // Reverse inventory changes (optional, depends on your system)
+            foreach (var item in transaction.SalesTransactionItems)
+            {
+                var product = await _context.Products.FindAsync(item.ProductId);
+                if (product != null)
+                {
+                    product.Stock += item.Quantity; // restore stock
+                    product.LastUpdated = DateTime.UtcNow;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Transaction voided successfully." });
+        }
+    }
 }
