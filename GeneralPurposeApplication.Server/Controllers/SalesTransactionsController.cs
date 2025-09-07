@@ -63,7 +63,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateInputDTO salesTransactionLogDto)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            //using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
             {
@@ -101,19 +101,20 @@ namespace GeneralPurposeApplication.Server.Controllers
 
                 await _context.SaveChangesAsync();
 
-                await transaction.CommitAsync();
+                //await transaction.CommitAsync();
 
                 return CreatedAtAction("GetSalesTransaction", new { id = salesTransaction.Id }, new SalesTransactionsDTO
                 {
                     Id = salesTransaction.Id,
                     PaymentMethod = salesTransaction.PaymentMethod,
                     ProcessedByUserId = salesTransaction.ProcessedByUserId,
-                    Date = salesTransaction.Date
+                    Date = salesTransaction.Date,
+                    TotalAmount = salesTransaction.TotalAmount
                 });
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                await transaction.RollbackAsync();
+                //await transaction.RollbackAsync();
                 return BadRequest(new { message = ex.Message });
             }
     }

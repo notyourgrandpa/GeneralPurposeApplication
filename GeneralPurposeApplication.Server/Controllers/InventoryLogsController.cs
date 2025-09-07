@@ -74,7 +74,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             if (inventoryLogDto.Quantity <= 0)
                 return BadRequest("Quantity must be greater than zero.");
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            //using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
             {
@@ -108,7 +108,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
                 await _context.SaveChangesAsync();
 
-                await transaction.CommitAsync();
+                //await transaction.CommitAsync();
 
                 return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, new InventoryLogDTO
                 {
@@ -121,7 +121,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             }
             catch(InvalidOperationException ex)
             {
-                await transaction.RollbackAsync();
+                //await transaction.RollbackAsync();
                 return BadRequest(new { message = ex.Message });
             }
         }
