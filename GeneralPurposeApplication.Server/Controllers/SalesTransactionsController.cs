@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class SalesTransactionsController: ControllerBase
     {
         private readonly ApplicationDbContext _context;
