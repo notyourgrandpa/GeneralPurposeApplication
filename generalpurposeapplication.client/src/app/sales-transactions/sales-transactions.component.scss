@@ -1,0 +1,30 @@
+table.mat-table {
+  width: 100%;
+}
+
+.status-label {
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  display: inline-block;
+  text-align: center;
+}
+
+.status-active {
+  background-color: #4caf50; /* green */
+}
+
+.status-inactive {
+  background-color: #f44336; /* red */
+}
+
+
+mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.btn-add {
+  float: right;
+}
