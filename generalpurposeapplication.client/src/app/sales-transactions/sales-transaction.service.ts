@@ -17,7 +17,7 @@ export class SalesTransactionService extends BaseService<SalesTransaction> {
   constructor(http: HttpClient, private snackBar: MatSnackBar, private router: Router, private dialog: MatDialog) { super(http) }
 
   override getData(pageIndex: number, pageSize: number, sortColumn: string, sortOrder: string, filterColumn: string | null, filterQuery: string | null): Observable<ApiResult<SalesTransaction>> {
-    var url = this.getUrl("/api/salesTransaction");
+    var url = this.getUrl("api/salesTransactions");
     var params = new HttpParams()
       .set("pageIndex", pageIndex.toString())
       .set("pageSize", pageSize.toString())
