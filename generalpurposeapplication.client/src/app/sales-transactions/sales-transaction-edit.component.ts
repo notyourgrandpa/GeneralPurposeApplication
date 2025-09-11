@@ -1,10 +1,130 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BaseFormComponent } from '../base-form.component';
+import { Product } from '../products/product';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductService } from '../products/product.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { SalesTransactionService } from './sales-transaction.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SalesTransaction } from './sales-transaction';
 
 @Component({
   selector: 'app-sales-transaction-edit',
   templateUrl: './sales-transaction-edit.component.html',
   styleUrl: './sales-transaction-edit.component.scss'
 })
-export class SalesTransactionEditComponent {
+export class SalesTransactionEditComponent extends BaseFormComponent implements OnInit, OnDestroy {
+  // the view title
+  title?: string;
 
+  // the product object to edit or create
+  salesTransaction?: SalesTransaction;
+
+  // the product object id, as fetched from the active route: It's NULL when we're adding a new product,
+  // and not NULL when we're editing an existing one.
+  id?: number;
+
+  // the countries observable for the select (using async pipe)
+  products?: Observable<Product[]>;
+
+  // Activity Log (for debugging purposes)
+  //activityLog: string = '';
+
+  private destroySubject = new Subject();
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private salesTransactionService: SalesTransactionService,
+    private productService: ProductService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog) {
+    super();
+  }
+
+  ngOnInit() {
+    this.form = new FormGroup({
+      name: new FormControl(''),
+      productId: new FormControl('', Validators.required),
+      //costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
+      //sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
+      //isActive: new FormControl('', Validators.required)
+    }, null);
+
+    // react to form changes
+    this.form.valueChanges
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Form Model has been loaded.");
+        }
+        else {
+          this.log("Form was updated by the user.");
+        }
+      });
+
+    // react to changes in the form.name control
+    this.form.get("name")!.valueChanges
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Name has been loaded with initial values.");
+        }
+        else {
+          this.log("Name was updated by the user.");
+        }
+      });
+
+    this.loadData();
+  }
+
+  ngOnDestroy() {
+    // emit a value with the takeUntil notifier
+    this.destroySubject.next(true);
+    // complete the subject
+    this.destroySubject.complete();
+  }
+
+  log(str: string) {
+    console.log("["
+      +
+      new Date().toLocaleString()
+      + "] " + str);
+  }
+
+  loadData() {
+
+    // load categories
+    this.loadProducts();
+
+    // retrieve the ID from the 'id' parameter
+    var idParam = this.activatedRoute.snapshot.paramMap.get('id');
+    this.id = idParam ? +idParam : 0;
+    if (this.id) {
+      // EDIT MODE
+      // fetch the product from the server
+      this.salesTransactionService.get(this.id).subscribe({
+        next: (result) => {
+          this.salesTransaction = result;
+          this.title = "Edit - " + this.salesTransaction.id;
+          // update the form with the product value
+          this.form.patchValue(this.salesTransaction);
+        },
+        error: (error) => console.error(error)
+      });
+    }
+    else {
+      // ADD NEW MODE
+      this.title = "Create a new Sales Transaction";
+    }
+  }
+
+  loadProducts() {
+    // fetch all the countries from the server
+    this.products = this.salesTransactionService
+      .getProducts(0, 9999, "name", "asc", null, null)
+      .pipe(map(x => x.data));
+  }
 }
