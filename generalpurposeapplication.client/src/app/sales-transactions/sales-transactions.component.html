@@ -2,6 +2,11 @@
 <p>Here's a list of sales transactions:'</p>
 <p *ngIf="!salesTransactions"><em>Loading...</em></p>
 
+<button mat-flat-button color="primary"
+        class="btn-add" *ngIf="salesTransactions" [routerLink]="['/sales-transaction']">
+  Add a new Sales Transaction
+</button>
+
 <mat-form-field [hidden]="!salesTransactions">
   <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
          placeholder="Filter by name (or part of it)...">
