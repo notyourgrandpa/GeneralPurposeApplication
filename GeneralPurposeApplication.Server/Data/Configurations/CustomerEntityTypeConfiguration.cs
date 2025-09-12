@@ -11,7 +11,7 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
             builder.ToTable("Customers");
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Name)
-               .IsRequired()
+               .HasDefaultValue("Walk-in")
                .HasMaxLength(100);
             builder.Property(c => c.ContactNumber)
                    .HasMaxLength(20);
