@@ -26,6 +26,14 @@ namespace GeneralPurposeApplication.Server.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer
+                {
+                    Id = 1,
+                    Name = "Walk-in"
+                }
+            );
         }
     }
 }
