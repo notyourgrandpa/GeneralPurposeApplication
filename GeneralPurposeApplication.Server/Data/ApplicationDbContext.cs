@@ -32,7 +32,7 @@ namespace GeneralPurposeApplication.Server.Data
                 {
                     Id = 1,
                     Name = "Walk-in",
-                    ContactNumber = "09096846407"
+                    ContactNumber = "None"
                 }
             );
         }
