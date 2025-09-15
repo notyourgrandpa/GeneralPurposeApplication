@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BaseFormComponent } from '../base-form.component';
 import { Product } from '../products/product';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../products/product.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SalesTransactionService } from './sales-transaction.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalesTransaction } from './sales-transaction';
+import { Customer } from '../customers/customer';
+import { CustomerService } from '../customers/customer.service';
 
 @Component({
   selector: 'app-sales-transaction-edit',
@@ -34,10 +36,13 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
 
   private destroySubject = new Subject();
 
+  filteredCustomers!: Observable<Customer[]>;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private salesTransactionService: SalesTransactionService,
+    private customerService: CustomerService,
     private productService: ProductService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog) {
@@ -46,6 +51,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
 
   ngOnInit() {
     this.form = new FormGroup({
+      customer: new FormControl('', Validators.required),
       name: new FormControl(''),
       productId: new FormControl('', Validators.required),
       //costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
@@ -76,6 +82,12 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
           this.log("Name was updated by the user.");
         }
       });
+
+    this.filteredCustomers = this.form.get('customer')!.valueChanges.pipe(
+      debounceTime(300),            // wait until user stops typing
+      distinctUntilChanged(),        // only if the text really changed
+      switchMap(term => this.customerService.search(term || ''))
+    );
 
     this.loadData();
   }
@@ -126,5 +138,9 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     this.products = this.salesTransactionService
       .getProducts(0, 9999, "name", "asc", null, null)
       .pipe(map(x => x.data));
+  }
+
+  displayCustomer(customer: Customer): string {
+    return customer ? customer.name : '';
   }
 }
