@@ -20,6 +20,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatCardModule,
     MatExpansionModule,
     MatDialogModule,
-    MatChipsModule
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatButtonModule,
@@ -66,7 +68,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatCardModule,
     MatExpansionModule,
     MatDialogModule,
-    MatChipsModule
+    MatChipsModule,
+    MatAutocompleteModule
   ]
 })
 export class AngularMaterialModule { }
