@@ -31,7 +31,8 @@ namespace GeneralPurposeApplication.Server.Data
                 new Customer
                 {
                     Id = 1,
-                    Name = "Walk-in"
+                    Name = "Walk-in",
+                    ContactNumber = "09096846407"
                 }
             );
         }
