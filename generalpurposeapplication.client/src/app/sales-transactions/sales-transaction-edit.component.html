@@ -1,1 +1,16 @@
-<p>sales-transaction-edit works!</p>
+<h1>{{title}}</h1>
+<p *ngIf="id && !product"><em>Loading…</em></p>
+
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label>Customer</mat-label>
+    <input type="text" matInput [matAutocomplete]="auto"
+           formControlName="customer" placeholder="Search customer">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomer">
+      <mat-option *ngFor="let c of filteredCustomers | async" [value]="c">
+        {{ c.name }} – {{ c.contactNumber }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
