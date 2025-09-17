@@ -130,6 +130,14 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     else {
       // ADD NEW MODE
       this.title = "Create a new Sales Transaction";
+
+      // --- Option A: if you are sure Walk-in has Id = 1
+      this.form.get('customer')!.setValue({ id: 1, name: 'Walk-in' });
+
+      // --- Option B: fetch it dynamically
+      // this.customerService.search('Walk-in')
+      //   .pipe(map(list => list.find(c => c.name === 'Walk-in')))
+      //   .subscribe(c => this.form.get('customer')!.setValue(c));
     }
   }
 
