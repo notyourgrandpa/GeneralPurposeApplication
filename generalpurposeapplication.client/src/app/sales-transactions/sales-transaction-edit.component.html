@@ -20,4 +20,15 @@
       <mat-option [value]="'GCash'">GCash</mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Search Product</mat-label>
+    <input type="text" matInput [matAutocomplete]="auto1"
+           formControlName="product" placeholder="Search product">
+    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayProduct">
+      <mat-option *ngFor="let p of filteredProducts | async" [value]="p">
+        {{ p.name }} – {{ p.sellingPrice }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </form>

@@ -115,4 +115,10 @@ export class ProductService
       })
     ).subscribe();
   }
+
+  search(term: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`/api/products/search`, {
+      params: { term }
+    });
+  }
 }

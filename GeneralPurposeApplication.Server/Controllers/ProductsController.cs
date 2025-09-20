@@ -174,5 +174,26 @@ namespace GeneralPurposeApplication.Server.Controllers
                 && e.Id != product.Id
             );
         }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> Search(string term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Ok(new List<ProductDTO>()); // empty list if no search term
+
+            var products = await _context.Products
+                .Where(c => c.Name.Contains(term))
+                .OrderBy(c => c.Name)
+                .Take(20) // limit results for performance
+                .Select(c => new ProductDTO
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    SellingPrice = c.SellingPrice
+                })
+                .ToListAsync();
+
+            return Ok(products);
+        }
     }
 }
