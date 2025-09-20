@@ -37,6 +37,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
   private destroySubject = new Subject();
 
   filteredCustomers!: Observable<Customer[]>;
+  filteredProducts!: Observable<Product[]>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -53,7 +54,8 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     this.form = new FormGroup({
       customer: new FormControl('', Validators.required),
       name: new FormControl(''),
-      productId: new FormControl('', Validators.required),
+      product: new FormControl(''),
+      paymentMethod: new FormControl('Cash', Validators.required),
       //costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       //sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       //isActive: new FormControl('', Validators.required)
@@ -87,6 +89,12 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       debounceTime(300),            // wait until user stops typing
       distinctUntilChanged(),        // only if the text really changed
       switchMap(term => this.customerService.search(term || ''))
+    );
+
+    this.filteredProducts = this.form.get('product')!.valueChanges.pipe(
+      debounceTime(300),            // wait until user stops typing
+      distinctUntilChanged(),        // only if the text really changed
+      switchMap(term => this.productService.search(term || ''))
     );
 
     this.loadData();
@@ -150,5 +158,9 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
 
   displayCustomer(customer: Customer): string {
     return customer ? customer.name : '';
+  }
+
+  displayProduct(product: Product): string {
+    return product ? `${product.name} - ${product.sellingPrice}` + "" : '';
   }
 }
