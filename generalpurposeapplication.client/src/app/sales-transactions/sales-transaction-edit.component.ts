@@ -54,8 +54,8 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     this.form = new FormGroup({
       customer: new FormControl('', Validators.required),
       name: new FormControl(''),
-      product: new FormControl(''),
       paymentMethod: new FormControl('Cash', Validators.required),
+      product: new FormControl(''),
       //costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       //sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       //isActive: new FormControl('', Validators.required)
