@@ -1,16 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BaseFormComponent } from '../base-form.component';
 import { Product } from '../products/product';
-import { Observable, Subject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, of, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../products/product.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { SalesTransactionService } from './sales-transaction.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalesTransaction } from './sales-transaction';
 import { Customer } from '../customers/customer';
 import { CustomerService } from '../customers/customer.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-sales-transaction-edit',
@@ -39,6 +41,11 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
   filteredCustomers!: Observable<Customer[]>;
   filteredProducts!: Observable<Product[]>;
 
+  productSearch = new FormControl('');
+  selectedProduct?: Product;
+
+  dataSource = new MatTableDataSource<FormGroup>();
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -46,44 +53,19 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     private customerService: CustomerService,
     private productService: ProductService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private fb: FormBuilder
+  ) {
     super();
   }
 
   ngOnInit() {
-    this.form = new FormGroup({
-      customer: new FormControl('', Validators.required),
-      name: new FormControl(''),
-      paymentMethod: new FormControl('Cash', Validators.required),
-      product: new FormControl(''),
-      //costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
-      //sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
-      //isActive: new FormControl('', Validators.required)
-    }, null);
-
-    // react to form changes
-    this.form.valueChanges
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe(() => {
-        if (!this.form.dirty) {
-          this.log("Form Model has been loaded.");
-        }
-        else {
-          this.log("Form was updated by the user.");
-        }
-      });
-
-    // react to changes in the form.name control
-    this.form.get("name")!.valueChanges
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe(() => {
-        if (!this.form.dirty) {
-          this.log("Name has been loaded with initial values.");
-        }
-        else {
-          this.log("Name was updated by the user.");
-        }
-      });
+    this.form = this.fb.group({
+      customer: ['', Validators.required],
+      paymentMethod: ['Cash', Validators.required],
+      items: this.fb.array<FormGroup>([]),
+      paidAmount: [0]
+    });
 
     this.filteredCustomers = this.form.get('customer')!.valueChanges.pipe(
       debounceTime(300),            // wait until user stops typing
@@ -91,11 +73,18 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       switchMap(term => this.customerService.search(term || ''))
     );
 
-    this.filteredProducts = this.form.get('product')!.valueChanges.pipe(
-      debounceTime(300),            // wait until user stops typing
-      distinctUntilChanged(),        // only if the text really changed
-      switchMap(term => this.productService.search(term || ''))
+    this.filteredProducts = this.productSearch.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      filter((term): term is string => typeof term === 'string' && term.trim().length > 0),
+      switchMap(term => this.productService.search(term))
     );
+
+    this.items.valueChanges.subscribe(() => {
+      this.dataSource.data = this.items.controls;
+    });
+    // initialise once
+    this.dataSource.data = this.items.controls;
 
     this.loadData();
   }
@@ -105,13 +94,6 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     this.destroySubject.next(true);
     // complete the subject
     this.destroySubject.complete();
-  }
-
-  log(str: string) {
-    console.log("["
-      +
-      new Date().toLocaleString()
-      + "] " + str);
   }
 
   loadData() {
@@ -156,11 +138,78 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       .pipe(map(x => x.data));
   }
 
+  get items(): FormArray<FormGroup> {
+    return this.form.get('items') as FormArray<FormGroup>;
+  }
+
   displayCustomer(customer: Customer): string {
     return customer ? customer.name : '';
   }
 
   displayProduct(product: Product): string {
-    return product ? `${product.name} - ${product.sellingPrice}` + "" : '';
+    return product ? `${product.name} - ${product.sellingPrice.toLocaleString()}₱` : '';
+  }
+
+  onProductSelected(event: MatAutocompleteSelectedEvent) {
+    this.selectedProduct = event.option.value as Product;
+
+    // immediately add to cart if you like:
+    // this.addProduct();
+    // or wait for Add button
+  }
+
+  addProduct() {
+    if (!this.selectedProduct) return;
+    const product = this.selectedProduct;
+
+    // Look for existing item in the cart
+    const existing = this.items.controls.find(
+      ctrl => ctrl.value.product.id === product.id
+    );
+
+    if (existing) {
+      // increment quantity and update subtotal
+      const qty = existing.value.qty + 1;
+      existing.patchValue({
+        qty,
+        subtotal: qty * product.sellingPrice
+      });
+    } else {
+      // add a new FormGroup to the FormArray
+      this.items.push(
+        this.fb.group({
+          product: [product],
+          qty: [1, [Validators.required, Validators.min(1)]],
+          price: [product.sellingPrice],
+          subtotal: [product.sellingPrice]
+        })
+      );
+    }
+
+    // clear the autocomplete input
+    this.productSearch.reset(''); 
+    this.selectedProduct = undefined;
+  }
+
+
+  removeItem(index: number) {
+    this.items.removeAt(index);
+  }
+
+  updateSubtotal(index: number) {
+    const group = this.items.at(index);
+    const qty = group.get('qty')!.value;
+    const price = group.get('price')!.value;
+    group.get('subtotal')!.setValue(qty * price, { emitEvent: false });
+  }
+
+  get total(): number {
+    return this.items.controls
+      .map(ctrl => ctrl.value.subtotal)
+      .reduce((a, b) => a + b, 0);
+  }
+
+  get change(): number {
+    return (this.form.get('paidAmount')!.value || 0) - this.total;
   }
 }
