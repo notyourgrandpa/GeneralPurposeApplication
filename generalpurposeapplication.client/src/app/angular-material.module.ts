@@ -20,7 +20,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
