@@ -161,6 +161,6 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
   }
 
   displayProduct(product: Product): string {
-    return product ? `${product.name} - ${product.sellingPrice}` + "" : '';
+    return product ? `${product.name} - ${product.sellingPrice.toLocaleString()}₱` : '';
   }
 }

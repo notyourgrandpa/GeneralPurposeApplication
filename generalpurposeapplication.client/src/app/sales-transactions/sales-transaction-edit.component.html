@@ -27,7 +27,7 @@
            formControlName="product" placeholder="Search product">
     <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayProduct">
       <mat-option *ngFor="let p of filteredProducts | async" [value]="p">
-        {{ p.name }} – {{ p.sellingPrice }}
+        {{ p.name }} – {{ p.sellingPrice | currency:'PHP': 'symbol' }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
