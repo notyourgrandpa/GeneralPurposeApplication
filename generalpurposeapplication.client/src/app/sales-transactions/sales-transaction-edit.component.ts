@@ -61,7 +61,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
 
   ngOnInit() {
     this.form = this.fb.group({
-      customer: ['', Validators.required],
+      customer: [null, Validators.required],
       paymentMethod: ['Cash', Validators.required],
       items: this.fb.array<FormGroup>([]),
       paidAmount: [0]
