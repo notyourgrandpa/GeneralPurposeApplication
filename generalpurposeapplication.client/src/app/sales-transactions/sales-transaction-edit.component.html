@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="pos-form">
+<form [formGroup]="form" class="pos-form" (ngSubmit)="onSubmit()">
   <!-- Dark header bar -->
   <header class="pos-header">
     <h1>{{ title }}</h1>
