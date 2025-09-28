@@ -92,4 +92,11 @@ export class SalesTransactionService extends BaseService<SalesTransaction> {
     ).subscribe();
   }
 
+  create(transaction: SalesTransaction): Observable<SalesTransaction> {
+    return this.http.post<SalesTransaction>('/api/salesTransactions', transaction);
+  }
+
+  update(transaction: SalesTransaction): Observable<SalesTransaction> {
+    return this.http.put<SalesTransaction>(`/api/salesTransactions/${transaction.id}`, transaction);
+  }
 }
