@@ -212,4 +212,33 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
   get change(): number {
     return (this.form.get('paidAmount')!.value || 0) - this.total;
   }
+
+  onSubmit() {
+    var salesTransaction = this.id ? this.salesTransaction : <SalesTransaction>{}
+    // edit mode
+    if (salesTransaction) {
+      var customer = this.form.get('customer')!.value;
+      salesTransaction.customerId = customer.id;
+      salesTransaction.paymentMethod = this.form.get('paymentMethod')!.value;
+
+      if (this.id) {
+        this.salesTransactionService.update(salesTransaction).subscribe({
+          next: (result) => {
+            console.log("Sales Transaction" + salesTransaction!.id + "has been updated successfully!");
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+      }
+      // create mode
+      else {
+        this.salesTransactionService.create(salesTransaction).subscribe({
+          next: (result) => {
+            console.log("Product " + result.id + " has been created successfully!");
+          }
+        });
+      }
+    }
+  }
 }

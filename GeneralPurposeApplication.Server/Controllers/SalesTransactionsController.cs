@@ -81,6 +81,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
                 var salesTransaction = new SalesTransaction
                 {
+                    CustomerId = salesTransactionLogDto.CustomerId,
                     PaymentMethod = salesTransactionLogDto.PaymentMethod,
                     ProcessedByUserId = User.GetUserId(),
                     Date = DateTime.UtcNow,

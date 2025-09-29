@@ -11,5 +11,7 @@ namespace GeneralPurposeApplication.Server.Data.DTOs
         public string ProcessedByUserId { get; set; } = null!;
         public string ProcessedByUserName { get; set; } = null!;
         public DateTime Date { get; set; }
+
+        public int CustomerId { get; set; }
     }
 }

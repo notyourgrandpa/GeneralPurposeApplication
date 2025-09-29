@@ -19,6 +19,9 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
                    .HasMaxLength(100);
             builder.Property(c => c.Address)
                    .HasMaxLength(250);
+            builder.HasMany(c => c.SalesTransactions)
+                .WithOne(t => t.Customer)
+                .HasForeignKey(c => c.CustomerId);
         }
     }
 }

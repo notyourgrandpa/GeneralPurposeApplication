@@ -28,10 +28,12 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public bool IsVoided { get; set; } = false;
         public DateTime? VoidedAt { get; set; }
         public string? VoidedByUserId { get; set; }
+        public int CustomerId { get; set; }
 
         [ForeignKey(nameof(ProcessedByUserId))]
         public ApplicationUser ProcessedByUser { get; set; } = null!;
         [ForeignKey(nameof(VoidedByUserId))]
         public ApplicationUser? VoidedByUser { get; set; }
+        public Customer Customer { get; set; } = null!;
     }
 }
