@@ -11,5 +11,7 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public string? ContactNumber { get; set; }
         public string? Email { get; set; }
         public string? Address { get; set; }
+
+        public ICollection<SalesTransaction> SalesTransactions { get; set; } = new List<SalesTransaction>();
     }
 }
