@@ -5,4 +5,5 @@ export interface SalesTransaction{
   processedByUserId: number;
   procsssedByUserName: string;
   date: Date;
+  customerId: number;
 }
