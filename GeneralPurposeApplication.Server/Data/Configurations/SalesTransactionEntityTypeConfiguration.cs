@@ -25,7 +25,10 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
                .WithMany(u => u.SalesTransactions)
                .HasForeignKey(x => x.ProcessedByUserId)
                .OnDelete(DeleteBehavior.Restrict);
-
+            builder.HasOne(x => x.Customer)
+                .WithMany(s => s.SalesTransactions)
+                .HasForeignKey(x => x.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
