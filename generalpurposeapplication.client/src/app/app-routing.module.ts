@@ -12,8 +12,8 @@ import { LoginComponent } from './auth/login.component';
 import { AuthGuard } from './auth/auth.guard';
 import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
 import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
-import { SalesTransactionsComponent } from './sales-transactions/sales-transactions.component';
-import { SalesTransactionEditComponent } from './sales-transactions/sales-transaction-edit.component';
+import { SalesTransactionsComponent } from './sales-transactions/components/sales-transactions.component';
+import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },

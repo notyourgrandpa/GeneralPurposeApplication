@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SalesTransaction } from './sales-transaction';
+import { SalesTransaction } from './models/sales-transaction';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { SalesTransactionService } from './sales-transaction.service';
+import { SalesTransactionService } from './services/sales-transaction.service';
 
 @Component({
   selector: 'app-sales-transactions',

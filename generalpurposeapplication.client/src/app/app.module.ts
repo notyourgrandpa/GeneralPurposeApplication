@@ -28,8 +28,8 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
 import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
 import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
 import { InventoryChangeTypePipe } from './inventory-change-type.pipe';
-import { SalesTransactionsComponent } from './sales-transactions/sales-transactions.component';
-import { SalesTransactionEditComponent } from './sales-transactions/sales-transaction-edit.component';
+import { SalesTransactionsComponent } from './sales-transactions/components/sales-transactions.component';
+import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit.component';
 
 
 @NgModule({
