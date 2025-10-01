@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Data } from '@angular/router';
-import { Product } from './product';
+import { Product } from '../models/product';
 //import { HttpClient, HttpParams } from '@angular/common/http';
 //import { environment } from '../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,9 +10,9 @@ import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { ProductService } from './product.service';
-import { ProductGraphQlService } from './product-graphql.service';
-import { ApiResult } from '../base.service';
+import { ProductService } from '../services/product.service';
+import { ProductGraphQlService } from '../product-graphql.service';
+import { ApiResult } from '../../base.service';
 
 @Component({
   selector: 'app-products',

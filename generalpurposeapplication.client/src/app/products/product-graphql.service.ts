@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BaseService, ApiResult } from '../base.service';
 import { Observable, map } from 'rxjs';
-import { Product } from './product';
+import { Product } from './models/product';
 import { Category } from '../categories/category';
 
 import { Apollo, gql } from 'apollo-angular';

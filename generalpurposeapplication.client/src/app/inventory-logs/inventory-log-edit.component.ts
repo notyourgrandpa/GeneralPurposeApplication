@@ -3,7 +3,7 @@ import { BaseFormComponent } from '../base-form.component';
 import { InventoryLog } from './inventory-logs';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { Product } from '../products/product';
+import { Product } from '../products/models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InventoryLogService } from './inventory-logs.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
