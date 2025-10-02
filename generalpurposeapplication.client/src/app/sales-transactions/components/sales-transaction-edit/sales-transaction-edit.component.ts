@@ -9,8 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SalesTransactionService } from '../../services/sales-transaction.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalesTransaction } from '../../models/sales-transaction';
-import { Customer } from '../../../customers/customer';
-import { CustomerService } from '../../../customers/customer.service';
+import { Customer } from '../../../customers/models/customer';
+import { CustomerService } from '../../../customers/services/customer.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 
