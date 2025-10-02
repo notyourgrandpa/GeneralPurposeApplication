@@ -4,13 +4,13 @@ import { FormGroup, FormBuilder, Validators, AsyncValidatorFn, AbstractControl }
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 //import { environment } from '../../environments/environment';
-import { Category } from './category';
-import { BaseFormComponent } from '../base-form.component';
-import { CategoryService } from './category.service';
-import { CategoryGraphQlService } from './categories-graphql.service'
+import { Category } from '../../models/category';
+import { BaseFormComponent } from '../../../base-form.component';
+import { CategoryService } from '../../services/category.service';
+import { CategoryGraphQlService } from '../../services/categories-graphql.service'
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar'
-import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component'
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component'
 
 @Component({
   selector: 'app-category-edit',
