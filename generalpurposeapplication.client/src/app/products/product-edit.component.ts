@@ -6,13 +6,13 @@ import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 //import { environment } from '../../environments/environment';
-import { Product } from './product';
-import { Category } from './../categories/category';
+import { Product } from './models/product';
+import { Category } from '../categories/models/category';
 import { BaseFormComponent } from './../base-form.component'
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
-import { ProductService } from './product.service';
+import { ProductService } from './services/product.service';
 import { ProductGraphQlService } from './product-graphql.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

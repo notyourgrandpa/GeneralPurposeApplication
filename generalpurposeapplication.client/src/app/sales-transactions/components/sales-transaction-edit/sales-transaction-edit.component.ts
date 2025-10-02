@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BaseFormComponent } from '../base-form.component';
-import { Product } from '../products/product';
+import { BaseFormComponent } from '../../../base-form.component';
+import { Product } from '../../../products/models/product';
 import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, of, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../products/product.service';
+import { ProductService } from '../../../products/services/product.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { SalesTransactionService } from './sales-transaction.service';
+import { SalesTransactionService } from '../../services/sales-transaction.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { SalesTransaction } from './sales-transaction';
-import { Customer } from '../customers/customer';
-import { CustomerService } from '../customers/customer.service';
+import { SalesTransaction } from '../../models/sales-transaction';
+import { Customer } from '../../../customers/models/customer';
+import { CustomerService } from '../../../customers/services/customer.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 

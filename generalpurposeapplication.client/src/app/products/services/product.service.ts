@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { BaseService, ApiResult } from '../base.service';
+import { BaseService, ApiResult } from '../../base.service';
 import { Observable, catchError, filter, of, switchMap, tap } from 'rxjs';
-import { Product } from './product'; 
-import { Category } from '../categories/category';
-import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { Product } from '../models/product'; 
+import { Category } from '../../categories/models/category';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';

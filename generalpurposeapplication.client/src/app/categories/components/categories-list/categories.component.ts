@@ -8,9 +8,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { Category } from './category';
-import { CategoryService } from './category.service';
-import { CategoryGraphQlService } from './categories-graphql.service'
+import { Category } from '../../models/category';
+import { CategoryService } from '../../services/category.service';
+import { CategoryGraphQlService } from '../../services/categories-graphql.service'
 
 @Component({
   selector: 'app-categories',

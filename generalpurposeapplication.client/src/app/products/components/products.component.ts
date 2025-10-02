@@ -1,34 +1,45 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Data } from '@angular/router';
+import { Product } from '../models/product';
+//import { HttpClient, HttpParams } from '@angular/common/http';
+//import { environment } from '../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
-import { InventoryLog } from './inventory-logs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { InventoryLogService } from './inventory-logs.service';
+
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
+import { ProductService } from '../services/product.service';
+import { ProductGraphQlService } from '../product-graphql.service';
+import { ApiResult } from '../../base.service';
 
 @Component({
-  selector: 'app-inventory-logs',
-  templateUrl: './inventory-logs.component.html',
-  styleUrl: './inventory-logs.component.scss'
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrl: './products.component.scss'
 })
-export class InventoryLogsComponent implements OnInit {
+export class ProductsComponent implements OnInit {
   public displayedColumns: string[] = [
-    'date',
-    'productName',
-    'quantity',
-    'changeType',
-    'remarks',
+    'id',
+    'name',
+    'categoryName',
+    'costPrice',
+    'sellingPrice',
+    'stock',
+    'isActive',
+    'dateAdded',
+    'lastUpdated',
     'actions'
   ];
-
-  public inventoryLogs!: MatTableDataSource<InventoryLog>;
+  public products!: MatTableDataSource<Product>;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
-  public defaultSortColumn: string = "date";
+  public defaultSortColumn: string = "name";
   public defaultSortOrder: "asc" | "desc" = "asc";
 
-  defaultFilterColumn: string = "date";
+  defaultFilterColumn: string = "name";
   filterQuery?: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -36,7 +47,9 @@ export class InventoryLogsComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private inventoryLogService: InventoryLogService) {
+  constructor(
+    private productService: ProductService,
+    private productGraphqlService: ProductGraphQlService) {
   }
 
   ngOnInit() {
@@ -77,7 +90,7 @@ export class InventoryLogsComponent implements OnInit {
       ? this.filterQuery
       : null;
 
-    this.inventoryLogService.getData(
+    this.productGraphqlService.getData(
       event.pageIndex,
       event.pageSize,
       sortColumn,
@@ -89,14 +102,13 @@ export class InventoryLogsComponent implements OnInit {
           this.paginator.length = result.totalCount;
           this.paginator.pageIndex = result.pageIndex;
           this.paginator.pageSize = result.pageSize;
-          this.inventoryLogs = new MatTableDataSource<InventoryLog>(result.data);
+          this.products = new MatTableDataSource<Product>(result.data);
         },
         error: (error) => console.error(error)
       });
   }
 
   onDelete(id: number): void {
-    if (!id) return;
-    this.inventoryLogService.confirmAndDelete(id, undefined, () => this.loadData());
+    this.productService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 }

@@ -3,17 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HealthCheckComponent } from './health-check/health-check.component';
-import { ProductsComponent } from './products/products.component';
+import { ProductsComponent } from './products/components/products.component';
 import { ProductEditComponent } from './products/product-edit.component';
-import { CategoriesComponent } from './categories/categories.component';
-import { CategoryEditComponent } from './categories/category-edit.component';
+import { CategoriesComponent } from './categories/components/categories-list/categories.component';
+import { CategoryEditComponent } from './categories/components/category-edit/category-edit.component';
 import { LoginComponent } from './auth/login.component';
 
 import { AuthGuard } from './auth/auth.guard';
-import { InventoryLogsComponent } from './inventory-logs/inventory-logs.component';
-import { InventoryLogEditComponent } from './inventory-logs/inventory-log-edit.component';
-import { SalesTransactionsComponent } from './sales-transactions/sales-transactions.component';
-import { SalesTransactionEditComponent } from './sales-transactions/sales-transaction-edit.component';
+import { InventoryLogsComponent } from './inventory-logs/components/inventory-logs-list/inventory-logs.component';
+import { InventoryLogEditComponent } from './inventory-logs/components/inventory-log-edit/inventory-log-edit.component';
+import { SalesTransactionsComponent } from './sales-transactions/components/sales-transactions-list/sales-transactions.component';
+import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit/sales-transaction-edit.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },

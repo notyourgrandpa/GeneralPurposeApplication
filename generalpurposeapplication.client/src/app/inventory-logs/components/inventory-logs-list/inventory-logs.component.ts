@@ -1,37 +1,34 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SalesTransaction } from './sales-transaction';
 import { MatTableDataSource } from '@angular/material/table';
+import { InventoryLog } from '../../models/inventory-logs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { SalesTransactionService } from './sales-transaction.service';
+import { InventoryLogService } from '../../services/inventory-logs.service';
 
 @Component({
-  selector: 'app-sales-transactions',
-  templateUrl: './sales-transactions.component.html',
-  styleUrl: './sales-transactions.component.scss'
+  selector: 'app-inventory-logs',
+  templateUrl: './inventory-logs.component.html',
+  styleUrl: './inventory-logs.component.scss'
 })
-export class SalesTransactionsComponent implements OnInit {
-  ngOnInit() {
-    this.loadData();
-  }
+export class InventoryLogsComponent implements OnInit {
   public displayedColumns: string[] = [
-    'id',
-    //'totalAmount',
-    //'paymentMethod',
-    //'processedByUsername',
-    //'date'
-  ]
+    'date',
+    'productName',
+    'quantity',
+    'changeType',
+    'remarks',
+    'actions'
+  ];
 
-  public salesTransactions!: MatTableDataSource<SalesTransaction>;
+  public inventoryLogs!: MatTableDataSource<InventoryLog>;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
-
   public defaultSortColumn: string = "date";
-  public defaultSortOrder: 'asc' | 'desc' = 'asc';
+  public defaultSortOrder: "asc" | "desc" = "asc";
 
-  defaultFilterColumn = "date";
+  defaultFilterColumn: string = "date";
   filterQuery?: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -39,8 +36,14 @@ export class SalesTransactionsComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private salesTransactionService: SalesTransactionService) { }
+  constructor(private inventoryLogService: InventoryLogService) {
+  }
 
+  ngOnInit() {
+    this.loadData();
+  }
+
+  // debounce filter text changes
   onFilterTextChanged(filterText: string) {
     if (!this.filterTextChanged.observed) {
       this.filterTextChanged
@@ -74,7 +77,7 @@ export class SalesTransactionsComponent implements OnInit {
       ? this.filterQuery
       : null;
 
-    this.salesTransactionService.getData(
+    this.inventoryLogService.getData(
       event.pageIndex,
       event.pageSize,
       sortColumn,
@@ -86,13 +89,14 @@ export class SalesTransactionsComponent implements OnInit {
           this.paginator.length = result.totalCount;
           this.paginator.pageIndex = result.pageIndex;
           this.paginator.pageSize = result.pageSize;
-          this.salesTransactions = new MatTableDataSource<SalesTransaction>(result.data);
+          this.inventoryLogs = new MatTableDataSource<InventoryLog>(result.data);
         },
         error: (error) => console.error(error)
       });
   }
 
   onDelete(id: number): void {
-    this.salesTransactionService.confirmAndDelete(id, undefined, () => this.loadData());
+    if (!id) return;
+    this.inventoryLogService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 }
