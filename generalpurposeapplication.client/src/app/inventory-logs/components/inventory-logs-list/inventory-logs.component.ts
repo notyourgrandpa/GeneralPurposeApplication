@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { InventoryLog } from './inventory-logs';
+import { InventoryLog } from '../../models/inventory-logs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { InventoryLogService } from './inventory-logs.service';
+import { InventoryLogService } from '../../services/inventory-logs.service';
 
 @Component({
   selector: 'app-inventory-logs',

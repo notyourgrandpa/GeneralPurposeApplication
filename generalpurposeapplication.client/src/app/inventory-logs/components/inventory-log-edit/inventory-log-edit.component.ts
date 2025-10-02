@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BaseFormComponent } from '../base-form.component';
-import { InventoryLog } from './inventory-logs';
+import { BaseFormComponent } from '../../../base-form.component';
+import { InventoryLog } from '../../models/inventory-logs';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { Product } from '../products/models/product';
+import { Product } from '../../../products/models/product';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InventoryLogService } from './inventory-logs.service';
+import { InventoryLogService } from '../../services/inventory-logs.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-inventory-log-edit',
