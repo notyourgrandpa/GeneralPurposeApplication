@@ -4,7 +4,7 @@ import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AngularMaterialModule } from './angular-material.module';
+import { AngularMaterialModule } from './shared/angular-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -23,11 +23,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { ConnectionServiceModule } from 'ng-connection-service';
-import { GraphQLModule } from './graphql.module';
+import { GraphQLModule } from './core/graphql.module';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { InventoryLogsComponent } from './inventory-logs/components/inventory-logs-list/inventory-logs.component';
 import { InventoryLogEditComponent } from './inventory-logs/components/inventory-log-edit/inventory-log-edit.component';
-import { InventoryChangeTypePipe } from './inventory-change-type.pipe';
+import { InventoryChangeTypePipe } from './shared/pipes/inventory-change-type.pipe';
 import { SalesTransactionsComponent } from './sales-transactions/components/sales-transactions-list/sales-transactions.component';
 import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit/sales-transaction-edit.component';
 

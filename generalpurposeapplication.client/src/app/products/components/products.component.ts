@@ -12,7 +12,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { ProductService } from '../services/product.service';
 import { ProductGraphQlService } from '../product-graphql.service';
-import { ApiResult } from '../../base.service';
+import { ApiResult } from '../../shared/services/base.service';
 
 @Component({
   selector: 'app-products',

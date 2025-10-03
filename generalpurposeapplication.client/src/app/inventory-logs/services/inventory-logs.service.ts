@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ApiResult, BaseService } from "../../base.service";
+import { ApiResult, BaseService } from "../../shared/services/base.service";
 import { InventoryLog } from "../models/inventory-logs";
 import { Observable, catchError, filter, of, switchMap, tap, throwError } from "rxjs";
 import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
