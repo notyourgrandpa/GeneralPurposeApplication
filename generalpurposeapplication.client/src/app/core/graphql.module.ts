@@ -3,7 +3,7 @@ import { HttpLink } from 'apollo-angular/http';
 import { inject, NgModule } from '@angular/core';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 const uri = environment.baseUrl + 'api/graphql';
 

@@ -8,7 +8,7 @@ import { map, takeUntil } from 'rxjs/operators';
 //import { environment } from '../../environments/environment';
 import { Product } from './models/product';
 import { Category } from '../categories/models/category';
-import { BaseFormComponent } from './../base-form.component'
+import { BaseFormComponent } from '../shared/components/base-form.component'
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 

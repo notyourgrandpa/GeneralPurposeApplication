@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiResult, BaseService } from '../../base.service';
+import { ApiResult, BaseService } from '../../shared/services/base.service';
 import { SalesTransaction } from '../models/sales-transaction';
 import { Observable, catchError, filter, of, switchMap, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';

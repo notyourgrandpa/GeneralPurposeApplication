@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BaseFormComponent } from '../../../base-form.component';
+import { BaseFormComponent } from '../../../shared/components/base-form.component';
 import { Product } from '../../../products/models/product';
 import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, of, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';

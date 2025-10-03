@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 //import { environment } from '../../environments/environment';
 import { Category } from '../../models/category';
-import { BaseFormComponent } from '../../../base-form.component';
+import { BaseFormComponent } from '../../../shared/components/base-form.component';
 import { CategoryService } from '../../services/category.service';
 import { CategoryGraphQlService } from '../../services/categories-graphql.service'
 import { MatDialog } from '@angular/material/dialog';

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BaseFormComponent } from '../../../base-form.component';
+import { BaseFormComponent } from '../../../shared/components/base-form.component';
 import { InventoryLog } from '../../models/inventory-logs';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
