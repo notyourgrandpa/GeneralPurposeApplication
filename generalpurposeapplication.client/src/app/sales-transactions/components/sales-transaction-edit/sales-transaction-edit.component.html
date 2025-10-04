@@ -19,6 +19,7 @@
             {{ c.name }} – {{ c.contactNumber }}
           </mat-option>
         </mat-autocomplete>
+        <mat-error *ngFor="let error of getErrors(form.get('customer')!, 'Customer')">{{error}}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
@@ -86,12 +87,17 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Paid Amount</mat-label>
         <input type="number" matInput formControlName="paidAmount">
+        <mat-error *ngFor="let error of getErrors(
+                   form.get('paidAmount')!,
+                   'Paid amount',
+                   {'pattern' : 'must be a positive number with 0-2 decimal values'}
+                   )">{{error}}</mat-error>
       </mat-form-field>
 
       <p class="pos-change">Change: {{ change | currency:'PHP':'symbol' }}</p>
 
       <div class="pos-actions">
-        <button mat-raised-button color="primary" type="submit">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
           Save Transaction
         </button>
         <button mat-stroked-button routerLink="/sales">Cancel</button>
