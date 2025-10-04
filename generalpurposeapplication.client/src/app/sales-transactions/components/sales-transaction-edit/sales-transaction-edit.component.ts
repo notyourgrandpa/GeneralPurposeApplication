@@ -224,10 +224,10 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       if (this.id) {
         this.salesTransactionService.update(salesTransaction).subscribe({
           next: (result) => {
-            console.log("Sales Transaction" + salesTransaction!.id + "has been updated successfully!");
+            this.router.navigate(['/sales-transactions']);
           },
           error: (error) => {
-            console.error(error);
+            this.snackBar.open(error);
           }
         });
       }
@@ -235,7 +235,10 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       else {
         this.salesTransactionService.create(salesTransaction).subscribe({
           next: (result) => {
-            console.log("Product " + result.id + " has been created successfully!");
+            this.router.navigate(['/sales-transactions']);
+          },
+          error: (error) => {
+            this.snackBar.open(error);
           }
         });
       }
