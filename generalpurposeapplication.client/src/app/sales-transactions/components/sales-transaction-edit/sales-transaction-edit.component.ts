@@ -64,7 +64,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       customer: [null, Validators.required],
       paymentMethod: ['Cash', Validators.required],
       items: this.fb.array<FormGroup>([]),
-      paidAmount: [0]
+      paidAmount: [0, Validators.required]
     });
 
     this.filteredCustomers = this.form.get('customer')!.valueChanges.pipe(
