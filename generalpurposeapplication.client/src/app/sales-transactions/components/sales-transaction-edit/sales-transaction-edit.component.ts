@@ -13,6 +13,7 @@ import { Customer } from '../../../customers/models/customer';
 import { CustomerService } from '../../../customers/services/customer.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
+import { paidEnoughValidator } from '../../../shared/validators/paid-enough.validator';
 
 @Component({
   selector: 'app-sales-transaction-edit',
@@ -65,7 +66,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       paymentMethod: ['Cash', Validators.required],
       items: this.fb.array<FormGroup>([], Validators.required),
       paidAmount: [0, [Validators.required, Validators.pattern(/^[1-9]+(\.[0-9]{1,2})?$/)]]
-    });
+    }, { validators: paidEnoughValidator });
 
     this.filteredCustomers = this.form.get('customer')!.valueChanges.pipe(
       debounceTime(300),            // wait until user stops typing
@@ -244,4 +245,5 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       }
     }
   }
+
 }
