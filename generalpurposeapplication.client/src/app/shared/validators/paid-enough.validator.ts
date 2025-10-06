@@ -13,7 +13,5 @@ export const paidEnoughValidator: ValidatorFn = (form: AbstractControl): Validat
     return sum + (qty * price);
   }, 0);
 
-  console.log(items);
-
   return paidAmount >= total ? null : { insufficientPayment: true}
 }
