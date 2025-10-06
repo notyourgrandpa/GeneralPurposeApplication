@@ -96,6 +96,10 @@
 
       <p class="pos-change">Change: {{ change | currency:'PHP':'symbol' }}</p>
 
+      <div class="form-error" *ngIf="form.errors?.['insufficientPayment']">
+        Payment must be equal or greater than items total.
+      </div>
+
       <div class="pos-actions">
         <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
           Save Transaction
