@@ -82,3 +82,10 @@ mat-form-field {
   font-weight: bold;
   margin: 1rem 0;
 }
+
+.form-error {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: -8px; /* adjust if needed */
+  margin-bottom: 8px;
+}
