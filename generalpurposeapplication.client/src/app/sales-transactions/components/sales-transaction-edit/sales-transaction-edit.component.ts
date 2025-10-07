@@ -219,21 +219,22 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     var salesTransaction = this.id ? this.salesTransaction : <SalesTransaction>{}
     // edit mode
     if (salesTransaction) {
-      var items: SalesTransactionItem[] = [];
+      const itemsControl = this.form.get('items') as FormArray;
+
+      const items: SalesTransactionItem[] = itemsControl.controls.map(control => {
+        const value = control.value;
+        return {
+          productId: value.product.id,
+          quantity: value.qty,
+          unitPrice: value.price,
+          subtotal: value.subtotal
+        };
+      });
+
       var customer = this.form.get('customer')!.value;
+
       salesTransaction.customerId = customer.id;
       salesTransaction.paymentMethod = this.form.get('paymentMethod')!.value;
-      var salesTransactionitems = this.form.get('items') as FormArray;
-      for (let i = 0; i < salesTransactionitems.length; i++) {
-        var formValue = salesTransactionitems.at(i).value;
-        const item: SalesTransactionItem = {
-          productId: formValue.product.id,
-          quantity: formValue.qty,
-          unitPrice: formValue.price,
-          subtotal: formValue.subtotal
-        };
-        items.push(item);
-      }
       salesTransaction.items = items;
 
       if (this.id) {
