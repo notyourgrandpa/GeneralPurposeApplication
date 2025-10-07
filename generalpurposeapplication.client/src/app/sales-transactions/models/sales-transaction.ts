@@ -1,3 +1,4 @@
+import { SalesTransactionItem } from '../models/sales-transaction-item';
 export interface SalesTransaction{
   id: number;
   totalAmount: number;
@@ -6,4 +7,5 @@ export interface SalesTransaction{
   procsssedByUserName: string;
   date: Date;
   customerId: number;
+  items: SalesTransactionItem[];
 }

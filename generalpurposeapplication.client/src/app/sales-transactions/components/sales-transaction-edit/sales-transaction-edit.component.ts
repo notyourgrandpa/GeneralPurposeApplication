@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SalesTransactionService } from '../../services/sales-transaction.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalesTransaction } from '../../models/sales-transaction';
+import { SalesTransactionItem } from '../../models/sales-transaction-item';
 import { Customer } from '../../../customers/models/customer';
 import { CustomerService } from '../../../customers/services/customer.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -218,9 +219,23 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     var salesTransaction = this.id ? this.salesTransaction : <SalesTransaction>{}
     // edit mode
     if (salesTransaction) {
+      const itemsControl = this.form.get('items') as FormArray;
+
+      const items: SalesTransactionItem[] = itemsControl.controls.map(control => {
+        const value = control.value;
+        return {
+          productId: value.product.id,
+          quantity: value.qty,
+          unitPrice: value.price,
+          subtotal: value.subtotal
+        };
+      });
+
       var customer = this.form.get('customer')!.value;
+
       salesTransaction.customerId = customer.id;
       salesTransaction.paymentMethod = this.form.get('paymentMethod')!.value;
+      salesTransaction.items = items;
 
       if (this.id) {
         this.salesTransactionService.update(salesTransaction).subscribe({
