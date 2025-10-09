@@ -98,6 +98,15 @@ namespace GeneralPurposeApplication.Server.Controllers
                         Subtotal = row.Quantity * row.UnitPrice
                     };
                     salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
+
+                    InventoryLog inventoryLog = new()
+                    {
+                        ProductId = row.ProductId,
+                        Quantity = row.Quantity,
+                        Date = DateTime.UtcNow,
+                        ChangeType = InventoryChangeType.StockOut
+                    };
+                    salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
                 }
 
                 _context.SalesTransactions.Add(salesTransaction);
