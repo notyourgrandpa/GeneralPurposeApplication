@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Cors;
 using GeneralPurposeApplication.Server.Data.GraphQL;
 using Microsoft.AspNetCore.SignalR;
+using GeneralPurposeApplication.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<JwtHandler>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAuthentication(opt =>
 {
