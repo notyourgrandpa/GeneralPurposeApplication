@@ -14,9 +14,11 @@ namespace GeneralPurposeApplication.Server.Services
     public class InventoryLogService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public InventoryLogService(IUnitOfWork unitOfWork)
+        private readonly ProductService _productService;
+        public InventoryLogService(IUnitOfWork unitOfWork, ProductService productService)
         {
             _unitOfWork = unitOfWork;
+            _productService = productService;
         }
 
         public async Task<InventoryLog> CreateInventoryLog(InventoryLogCreateInputDto inventoryLogDto)
@@ -34,6 +36,9 @@ namespace GeneralPurposeApplication.Server.Services
             };
 
             await _unitOfWork.Repository<InventoryLog>().AddAsync(inventoryLog);
+
+            await _productService.UpdateStockAsync(inventoryLog);
+
             await _unitOfWork.SaveChangesAsync();
 
             return inventoryLog;
