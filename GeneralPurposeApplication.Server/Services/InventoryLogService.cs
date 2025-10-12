@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Services
 {
-    public class InventoryLogService
+    public class InventoryLogService: IInventoryLogService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ProductService _productService;
@@ -21,7 +21,7 @@ namespace GeneralPurposeApplication.Server.Services
             _productService = productService;
         }
 
-        public async Task<InventoryLog> CreateInventoryLog(InventoryLogCreateInputDto inventoryLogDto)
+        public async Task<InventoryLog> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
             if (inventoryLogDto.Quantity <= 0)
                 throw new ArgumentException("Quantity must be greater than zero.");
