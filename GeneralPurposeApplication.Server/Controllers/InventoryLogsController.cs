@@ -17,9 +17,9 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class InventoryLogsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly InventoryLogService _inventoryLogService;
+        private readonly IInventoryLogService _inventoryLogService;
 
-        public InventoryLogsController(ApplicationDbContext context, InventoryLogService inventoryLogService)
+        public InventoryLogsController(ApplicationDbContext context, IInventoryLogService inventoryLogService)
         {
             _context = context;
             _inventoryLogService = inventoryLogService;
@@ -71,11 +71,11 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<InventoryLog>> CreateInventoryLog(InventoryLogCreateInputDto inventoryLogDto)
+        public async Task<ActionResult<InventoryLog>> CreateInventoryLog(InventoryLogCreateDto inventoryLogDto)
         {
             try
             {
-                InventoryLog inventoryLog = await _inventoryLogService.CreateInventoryLog(inventoryLogDto);
+                InventoryLog inventoryLog = await _inventoryLogService.CreateInventoryLogAsync(inventoryLogDto);
 
                 return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, new InventoryLogDTO
                 {
