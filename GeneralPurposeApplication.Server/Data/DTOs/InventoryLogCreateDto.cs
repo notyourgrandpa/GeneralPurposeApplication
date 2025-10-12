@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Data.DTOs
 {
-    public class InventoryLogCreateInputDto
+    public class InventoryLogCreateDto
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
