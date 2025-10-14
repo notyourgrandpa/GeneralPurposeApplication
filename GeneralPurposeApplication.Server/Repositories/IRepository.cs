@@ -13,5 +13,6 @@ namespace GeneralPurposeApplication.Server.Repositories
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(int id);
+        IQueryable<T> GetQueryable();
     }
 }

@@ -16,6 +16,7 @@ namespace GeneralPurposeApplication.Server.Repositories
 
         public async Task<T?> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
         public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().AsNoTracking().ToListAsync();
+        public IQueryable<T> GetQueryable() => _context.Set<T>().AsNoTracking();
         public async Task AddAsync(T entity) => await _context.Set<T>().AddAsync(entity);
         public Task UpdateAsync(T entity)
         {
