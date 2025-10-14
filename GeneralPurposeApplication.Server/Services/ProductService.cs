@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Services
 {
-    public class ProductService
+    public class ProductService: IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
 
