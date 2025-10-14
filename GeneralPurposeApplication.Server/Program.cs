@@ -71,8 +71,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 builder.Services.AddScoped<JwtHandler>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IInventoryLogService,  InventoryLogService>();
-builder.Services.AddScoped<ProductService>(); // Registered as concrete class for now. Will implement the service later.
+builder.Services.AddScoped<IInventoryLogService, InventoryLogService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddAuthentication(opt =>
 {
