@@ -36,25 +36,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null,
             string? filterQuery = null)
         {
-            return await ApiResult<InventoryLogDTO>.CreateAsync(
-                _context.InventoryLogs
-                    .AsNoTracking()
-                    .Select(x => new InventoryLogDTO
-                    {
-                        Id = x.Id,
-                        ProductId = x.ProductId,
-                        Quantity = x.Quantity,
-                        ChangeType = x.ChangeType,
-                        Remarks = x.Remarks,
-                        Date = x.Date,
-                        ProductName = x.Product!.Name
-                    }),
-                pageIndex,
-                pageSize,
-                sortColumn,
-                sortOrder,
-                filterColumn,
-                filterQuery);
+            return await _inventoryLogService.GetInventoryLogsAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
         }
 
         [HttpGet("{id}")]
