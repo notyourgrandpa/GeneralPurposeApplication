@@ -42,7 +42,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<InventoryLog>> GetInventoryLogAsync(int id)
         {
-            var inventoryLog = await _context.InventoryLogs.FindAsync(id);
+            var inventoryLog = await _inventoryLogService.GetInventoryLogAsync(id);
 
             if (inventoryLog == null)
             {

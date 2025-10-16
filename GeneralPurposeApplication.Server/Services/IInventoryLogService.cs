@@ -17,7 +17,8 @@ namespace GeneralPurposeApplication.Server.Services
             string? sortOrder = null,
             string? filterColumn = null,
             string? filterQuery = null);
-        //Task<InventoryLog> GetInventoryLogAsync(int id);
+
+        Task<InventoryLog?> GetInventoryLogAsync(int id);
         Task<InventoryLog> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto);
         //Task<InventoryLog> UpdateInventoryLogAsync(int id, InventoryLogUpdateInputDTO inventoryLogDto);
         //Task<bool> DeleteInventoryLogAsync(int id);
