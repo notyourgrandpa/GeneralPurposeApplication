@@ -73,5 +73,10 @@ namespace GeneralPurposeApplication.Server.Services
 
             return inventoryLog;
         }
+
+        public async Task<InventoryLog?> GetInventoryLogAsync(int id)
+        {
+            return await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
+        }
     }
 }
