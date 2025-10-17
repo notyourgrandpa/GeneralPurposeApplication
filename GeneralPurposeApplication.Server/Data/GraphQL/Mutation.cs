@@ -100,7 +100,7 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         [Serial]
         //[Authorize(Roles = ["RegisteredUser"])]
         public async Task<Category> UpdateCategory(
-            [Service] ApplicationDbContext context, CategoryUpdateInputDTO categoryDTO)
+            [Service] ApplicationDbContext context, CategoryUpdateDTO categoryDTO)
         {
             var category = await context.Categories
                            .Where(c => c.Id == categoryDTO.Id)
