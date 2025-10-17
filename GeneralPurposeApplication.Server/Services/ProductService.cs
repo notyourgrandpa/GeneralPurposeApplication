@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,11 @@ namespace GeneralPurposeApplication.Server.Services
                 product.Stock = inventoryLog.Quantity;
 
             product.LastUpdated = DateTime.Now;
+        }
+
+        private async Task<bool> ProductExistsAsync(int id)
+        {
+            return await _unitOfWork.Repository<Product>().AnyAsync(x => x.Id == id);
         }
     }
 }
