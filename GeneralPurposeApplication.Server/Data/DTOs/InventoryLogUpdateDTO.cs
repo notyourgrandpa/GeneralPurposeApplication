@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Data.DTOs
 {
-    public class InventoryLogUpdateInputDTO: InventoryLogCreateDto
+    public class InventoryLogUpdateDTO: InventoryLogCreateDto
     {
         public int Id { get; set; }
     }

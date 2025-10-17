@@ -20,8 +20,8 @@ namespace GeneralPurposeApplication.Server.Services
 
         Task<InventoryLog?> GetInventoryLogAsync(int id);
         Task<InventoryLog> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto);
-        //Task<InventoryLog> UpdateInventoryLogAsync(int id, InventoryLogUpdateInputDTO inventoryLogDto);
-        //Task<bool> DeleteInventoryLogAsync(int id);
+        Task UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDto);
+        Task<bool> DeleteInventoryLogAsync(int id);
 
     }
 }
