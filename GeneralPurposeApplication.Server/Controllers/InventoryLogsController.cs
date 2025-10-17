@@ -76,52 +76,34 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutInventory(int id, InventoryLogUpdateInputDTO inventoryLogDto)
+        public async Task<IActionResult> PutInventory(int id, InventoryLogUpdateDTO inventoryLogDto)
         {
             if (id != inventoryLogDto.Id)
                 return BadRequest();
 
-            var inventoryLog = await _context.InventoryLogs.FindAsync(id);
-            if (inventoryLog == null)
-                return NotFound();
-
-            inventoryLog.ProductId = inventoryLogDto.ProductId;
-            inventoryLog.Quantity = inventoryLogDto.Quantity;
-            inventoryLog.ChangeType = inventoryLogDto.ChangeType;
-            inventoryLog.Remarks = inventoryLogDto.Remarks;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _inventoryLogService.UpdateInventoryLogAsync(id, inventoryLogDto);
             }
-            catch (DbUpdateConcurrencyException)
+            catch(KeyNotFoundException ex)
             {
-                    throw;
-
+                return BadRequest(new { message = ex.Message });
             }
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInvetoryLog(int id)
+        public async Task<IActionResult> DeleteInventoryLogAsync(int id)
         {
-            var inventoryLog = await _context.InventoryLogs.FindAsync(id);
+            var isDeleted = await _inventoryLogService.DeleteInventoryLogAsync(id);
 
-            if(inventoryLog == null)
+            if (!isDeleted)
             {
                 return NotFound();
             }
 
-            _context.InventoryLogs.Remove(inventoryLog);
-            await _context.SaveChangesAsync();
-
             return NoContent();
 
-        }
-
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(x => x.Id == id);
         }
     }
 }
