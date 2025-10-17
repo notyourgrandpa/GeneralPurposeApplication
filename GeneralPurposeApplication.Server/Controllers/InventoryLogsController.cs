@@ -59,7 +59,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             {
                 InventoryLog inventoryLog = await _inventoryLogService.CreateInventoryLogAsync(inventoryLogDto);
 
-                return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, new InventoryLogDTO
+                return CreatedAtAction("GetInventoryLogAsync", new { id = inventoryLog.Id }, new InventoryLogDTO
                 {
                     Id = inventoryLog.Id,
                     ProductId = inventoryLog.ProductId,
