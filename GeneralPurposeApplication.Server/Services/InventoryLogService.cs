@@ -15,8 +15,8 @@ namespace GeneralPurposeApplication.Server.Services
     public class InventoryLogService: IInventoryLogService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ProductService _productService;
-        public InventoryLogService(IUnitOfWork unitOfWork, ProductService productService)
+        private readonly IProductService _productService;
+        public InventoryLogService(IUnitOfWork unitOfWork, IProductService productService)
         {
             _unitOfWork = unitOfWork;
             _productService = productService;
@@ -51,6 +51,12 @@ namespace GeneralPurposeApplication.Server.Services
                 filterColumn,
                 filterQuery);
         }
+
+        public async Task<InventoryLog?> GetInventoryLogAsync(int id)
+        {
+            return await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
+        }
+
         public async Task<InventoryLog> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
             if (inventoryLogDto.Quantity <= 0)
@@ -74,9 +80,28 @@ namespace GeneralPurposeApplication.Server.Services
             return inventoryLog;
         }
 
-        public async Task<InventoryLog?> GetInventoryLogAsync(int id)
+        public async Task UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDTO)
         {
-            return await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
+            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
+            if (inventoryLog == null)
+                throw new KeyNotFoundException($"InventoryLog {id} not found.");
+
+            inventoryLog.ProductId = inventoryLogDTO.ProductId;
+            inventoryLog.Quantity = inventoryLogDTO.Quantity;
+            inventoryLog.ChangeType = inventoryLog.ChangeType;
+            inventoryLog.Remarks = inventoryLogDTO.Remarks;
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteInventoryLogAsync(int id)
+        {
+            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
+            if (inventoryLog == null)
+                return false;
+            _unitOfWork.Repository<InventoryLog>().Delete(inventoryLog);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
     }
 }
