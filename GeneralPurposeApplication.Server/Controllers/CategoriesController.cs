@@ -69,7 +69,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(Roles = "RegisteredUser")]
-        public async Task<IActionResult> PutCategory(int id, CategoryUpdateInputDTO category)
+        public async Task<IActionResult> PutCategory(int id, CategoryUpdateDTO category)
         {
             if (id != category.Id)
             {
