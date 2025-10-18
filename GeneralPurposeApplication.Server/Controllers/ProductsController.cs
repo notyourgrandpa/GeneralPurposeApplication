@@ -10,6 +10,7 @@ using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using GeneralPurposeApplication.Server.Services;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -28,7 +29,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/Cities/?pageIndex=0&pageSize=10
         // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ActionResult<ApiResult<ProductDTO>>> GetProducts(
+        public async Task<ApiResult<ProductDTO>> GetProducts(
             int pageIndex = 0, 
             int pageSize = 10, 
             string? sortColumn = null,

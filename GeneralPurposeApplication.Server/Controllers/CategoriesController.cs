@@ -10,6 +10,7 @@ using GeneralPurposeApplication.Server.Data.Models;
 using System.Linq.Dynamic.Core;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using GeneralPurposeApplication.Server.Services;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -18,10 +19,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, ICategoryService categoryService)
         {
             _context = context;
+            _categoryService = categoryService;
         }
 
         // GET: api/Categories
@@ -34,28 +37,15 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null,
             string? filterQuery = null)
         {
-            return await ApiResult<CategoryDTO>.CreateAsync(
-                _context.Categories
-                    .AsNoTracking()
-                    .Select(x => new CategoryDTO
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        TotalProducts = x.Products!.Count
-                    }),
-                pageIndex,
-                pageSize,
-                sortColumn,
-                sortOrder,
-                filterColumn,
-                filterQuery);
+            return await _categoryService.GetCategoriesAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            //var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryService.GetCategoryAsync(id);
 
             if (category == null)
             {
@@ -76,18 +66,9 @@ namespace GeneralPurposeApplication.Server.Controllers
                 return BadRequest();
             }
 
-            var existingCategory = _context.Categories.Find(id);
-
-            if (existingCategory == null)
-            {
-                return NotFound();
-            }
-
-            existingCategory.Name = category.Name;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _categoryService.UpdateCategoryAsync(id, category);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -110,13 +91,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(CategoryCreateInputDTO category)
         {
-            var newCategory = new Category 
-            { 
-                Name = category.Name 
-            };
-
-            _context.Categories.Add(newCategory);
-            await _context.SaveChangesAsync();
+            var newCategory = await _categoryService.CreateCategoryAsync(category);
 
             return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
         }
@@ -124,18 +99,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         // DELETE: api/Categories/5
         [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<bool> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return await _categoryService.DeleteCategoryAsync(id);
         }
 
         private bool CategoryExists(int id)
