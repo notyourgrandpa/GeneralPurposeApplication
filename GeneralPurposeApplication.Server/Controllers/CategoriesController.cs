@@ -66,18 +66,9 @@ namespace GeneralPurposeApplication.Server.Controllers
                 return BadRequest();
             }
 
-            var existingCategory = _context.Categories.Find(id);
-
-            if (existingCategory == null)
-            {
-                return NotFound();
-            }
-
-            existingCategory.Name = category.Name;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _categoryService.UpdateCategoryAsync(id, category);
             }
             catch (DbUpdateConcurrencyException)
             {
