@@ -99,18 +99,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         // DELETE: api/Categories/5
         [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<bool> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return await _categoryService.DeleteCategoryAsync(id);
         }
 
         private bool CategoryExists(int id)
