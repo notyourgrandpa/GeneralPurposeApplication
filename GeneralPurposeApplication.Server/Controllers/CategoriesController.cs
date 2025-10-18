@@ -91,13 +91,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(CategoryCreateInputDTO category)
         {
-            var newCategory = new Category 
-            { 
-                Name = category.Name 
-            };
-
-            _context.Categories.Add(newCategory);
-            await _context.SaveChangesAsync();
+            var newCategory = await _categoryService.CreateCategoryAsync(category);
 
             return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
         }
