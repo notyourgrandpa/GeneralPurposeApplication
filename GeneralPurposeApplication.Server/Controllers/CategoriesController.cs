@@ -10,6 +10,7 @@ using GeneralPurposeApplication.Server.Data.Models;
 using System.Linq.Dynamic.Core;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using GeneralPurposeApplication.Server.Services;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -18,10 +19,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, ICategoryService categoryService)
         {
             _context = context;
+            _categoryService = categoryService;
         }
 
         // GET: api/Categories
@@ -34,21 +37,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null,
             string? filterQuery = null)
         {
-            return await ApiResult<CategoryDTO>.CreateAsync(
-                _context.Categories
-                    .AsNoTracking()
-                    .Select(x => new CategoryDTO
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        TotalProducts = x.Products!.Count
-                    }),
-                pageIndex,
-                pageSize,
-                sortColumn,
-                sortOrder,
-                filterColumn,
-                filterQuery);
+            return await _categoryService.GetCategoriesAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
         }
 
         // GET: api/Categories/5
