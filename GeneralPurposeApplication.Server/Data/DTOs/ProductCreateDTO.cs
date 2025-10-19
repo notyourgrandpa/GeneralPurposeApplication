@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Data.DTOs
 {
-    public class ProductCreateInputDTO
+    public class ProductCreateDTO
     {
         public string Name { get; set; } = null!;
         public int CategoryId { get; set; }
