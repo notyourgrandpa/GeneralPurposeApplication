@@ -1,4 +1,6 @@
-﻿using GeneralPurposeApplication.Server.Data.Models;
+﻿using GeneralPurposeApplication.Server.Data;
+using GeneralPurposeApplication.Server.Data.DTOs;
+using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,6 +18,26 @@ namespace GeneralPurposeApplication.Server.Services
         public ProductService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public Task<bool> DeleteProductAsync(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResult<ProductDTO>> GetProduct(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Product> GetProductAsync(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task UpdateStockAsync(InventoryLog inventoryLog)
