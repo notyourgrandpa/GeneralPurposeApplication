@@ -79,7 +79,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, ProductUpdateInputDTO product)
+        public async Task<IActionResult> PutProduct(int id, ProductUpdateDTO product)
         {
             if (id != product.Id)
             {
@@ -122,7 +122,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(ProductCreateInputDTO product)
+        public async Task<ActionResult<Product>> PostProduct(ProductCreateDTO product)
         {
             var newProduct = new Product 
             { 

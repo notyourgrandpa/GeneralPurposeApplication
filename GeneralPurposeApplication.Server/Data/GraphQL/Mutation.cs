@@ -18,7 +18,7 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         [Serial]
         //[Authorize(Roles = ["RegisteredUser"])]
         public async Task<Product> AddProduct(
-            [Service] ApplicationDbContext context, ProductCreateInputDTO productDTO)
+            [Service] ApplicationDbContext context, ProductCreateDTO productDTO)
         {
             var product = new Product()
             {
@@ -40,7 +40,7 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
         [Serial]
         //[Authorize(Roles = ["RegisteredUser"])]
         public async Task<Product> UpdateProduct(
-            [Service] ApplicationDbContext context, ProductUpdateInputDTO productDTO)
+            [Service] ApplicationDbContext context, ProductUpdateDTO productDTO)
         {
             var product = await context.Products
                            .Where(c => c.Id == productDTO.Id)
