@@ -20,20 +20,44 @@ namespace GeneralPurposeApplication.Server.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<ApiResult<ProductDTO>> GetProductsAsync(int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
+        {
+            return await ApiResult<ProductDTO>.CreateAsync(
+                _unitOfWork.Repository<Product>().GetQueryable()
+                .AsNoTracking()
+                .Select(x => new ProductDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    CategoryId = x.CategoryId,
+                    CategoryName = x.Category!.Name,
+                    CostPrice = x.CostPrice,
+                    SellingPrice = x.SellingPrice,
+                    Stock = x.Stock,
+                    IsActive = x.IsActive,
+                    DateAdded = x.DateAdded,
+                    LastUpdated = x.LastUpdated,
+                }),
+                pageIndex,
+                pageSize,
+                sortColumn,
+                sortOrder,
+                filterColumn,
+                filterQuery);
+        }
+
         public Task<bool> DeleteProductAsync(int productId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ApiResult<ProductDTO>> GetProduct(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<Product> GetProductAsync(int productId)
         {
             throw new NotImplementedException();
         }
+
+        
 
         public Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO)
         {
