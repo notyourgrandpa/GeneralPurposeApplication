@@ -11,7 +11,13 @@ namespace GeneralPurposeApplication.Server.Services
 {
     public interface IProductService
     {
-        Task<ApiResult<ProductDTO>> GetProduct(int id);
+        Task<ApiResult<ProductDTO>> GetProductsAsync(
+            int pageIndex,
+            int pageSize,
+            string? sortColumn,
+            string? sortOrder,
+            string? filterColumn,
+            string? filterQuery);
         Task<Product> GetProductAsync(int productId);
         Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO);
         Task<bool> DeleteProductAsync(int productId);

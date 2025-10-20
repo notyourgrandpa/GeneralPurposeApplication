@@ -19,10 +19,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IProductService _productService;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, IProductService productService)
         {
             _context = context;
+            _productService = productService;
         }
 
         // GET: api/Products
@@ -37,28 +39,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null, 
             string? filterQuery = null)
         {
-            return await ApiResult<ProductDTO>.CreateAsync(
-                _context.Products
-                .AsNoTracking()
-                .Select(x => new ProductDTO
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    CategoryId = x.CategoryId,
-                    CategoryName = x.Category!.Name,
-                    CostPrice = x.CostPrice,
-                    SellingPrice = x.SellingPrice,
-                    Stock = x.Stock,
-                    IsActive = x.IsActive,
-                    DateAdded = x.DateAdded,
-                    LastUpdated = x.LastUpdated,
-                }), 
-                pageIndex, 
-                pageSize,
-                sortColumn,
-                sortOrder, 
-                filterColumn, 
-                filterQuery);
+            return await _productService.GetProductsAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
         }
 
         // GET: api/Products/5
