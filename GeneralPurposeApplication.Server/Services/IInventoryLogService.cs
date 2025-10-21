@@ -19,7 +19,7 @@ namespace GeneralPurposeApplication.Server.Services
             string? filterQuery = null);
 
         Task<InventoryLog?> GetInventoryLogAsync(int id);
-        Task<InventoryLog> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto);
+        Task<InventoryLogDTO> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto);
         Task UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDto);
         Task<bool> DeleteInventoryLogAsync(int id);
 
