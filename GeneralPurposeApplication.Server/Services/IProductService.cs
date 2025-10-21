@@ -19,6 +19,7 @@ namespace GeneralPurposeApplication.Server.Services
             string? filterColumn,
             string? filterQuery);
         Task<Product?> GetProductAsync(int productId);
+        Task<ProductDTO> CreateProductAsync(ProductCreateDTO productCreateDTO);
         Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO);
         Task<bool> DeleteProductAsync(int productId);
         Task UpdateStockAsync(InventoryLog inventoryLog);
