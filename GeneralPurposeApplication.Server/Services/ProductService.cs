@@ -46,20 +46,17 @@ namespace GeneralPurposeApplication.Server.Services
                 filterQuery);
         }
 
-        public Task<bool> DeleteProductAsync(int productId)
+        public async Task<Product?> GetProductAsync(int productId)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Repository<Product>().GetByIdAsync(productId);
         }
-
-
-        public Task<Product> GetProductAsync(int productId)
-        {
-            throw new NotImplementedException();
-        }
-
-        
 
         public Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteProductAsync(int productId)
         {
             throw new NotImplementedException();
         }
