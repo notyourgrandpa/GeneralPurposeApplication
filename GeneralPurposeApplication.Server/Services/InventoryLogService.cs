@@ -57,7 +57,7 @@ namespace GeneralPurposeApplication.Server.Services
             return await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
         }
 
-        public async Task<InventoryLog> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
+        public async Task<InventoryLogDTO> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
             if (inventoryLogDto.Quantity <= 0)
                 throw new ArgumentException("Quantity must be greater than zero.");
@@ -77,7 +77,15 @@ namespace GeneralPurposeApplication.Server.Services
 
             await _unitOfWork.SaveChangesAsync();
 
-            return inventoryLog;
+            return new InventoryLogDTO
+            {
+                Id = inventoryLog.Id,
+                ProductId = inventoryLog.ProductId,
+                Quantity = inventoryLog.Quantity,
+                ChangeType = inventoryLog.ChangeType,
+                Remarks = inventoryLog.Remarks,
+                Date = inventoryLog.Date
+            };
         }
 
         public async Task UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDTO)

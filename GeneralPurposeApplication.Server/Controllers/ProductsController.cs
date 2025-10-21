@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GeneralPurposeApplication.Server.Data;
+using GeneralPurposeApplication.Server.Data.DTOs;
+using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Services;
+using Humanizer;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GeneralPurposeApplication.Server.Data;
-using GeneralPurposeApplication.Server.Data.Models;
-using GeneralPurposeApplication.Server.Data.DTOs;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using GeneralPurposeApplication.Server.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -31,7 +32,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/Cities/?pageIndex=0&pageSize=10
         // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ApiResult<ProductDTO>> GetProducts(
+        public async Task<ActionResult<ApiResult<ProductDTO>>> GetProductsAsync(
             int pageIndex = 0, 
             int pageSize = 10, 
             string? sortColumn = null,
@@ -39,64 +40,41 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null, 
             string? filterQuery = null)
         {
-            return await _productService.GetProductsAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            var result = await _productService.GetProductsAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            return Ok(result);
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<IActionResult> GetProductAsync(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productService.GetProductAsync(id);
 
             if (product == null)
-            {
                 return NotFound();
-            }
 
-            return product;
+            return Ok(product);
         }
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, ProductUpdateDTO product)
+        public async Task<IActionResult> PutProductAsync(int id, ProductUpdateDTO product)
         {
             if (id != product.Id)
-            {
-                return BadRequest();
-            }
-
-            var existingProduct = await _context.Products.FindAsync(id);
-
-            if(existingProduct == null)
-            {
-                return NotFound();
-            }
-
-            existingProduct.Name = product.Name;
-            existingProduct.CostPrice = product.CostPrice;
-            existingProduct.SellingPrice = product.SellingPrice;
-            existingProduct.IsActive = product.IsActive;
-            existingProduct.LastUpdated = DateTime.UtcNow;
+                return BadRequest(new { message = "ID mismatch between route and body." });
 
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                await _productService.UpdateProductAsync(id, product);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
         }
 
         // POST: api/Products
@@ -105,27 +83,15 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(ProductCreateDTO product)
         {
-            var newProduct = new Product 
-            { 
-                Name = product.Name, 
-                CostPrice = product.CostPrice ,
-                SellingPrice = product.SellingPrice,
-                IsActive = product.IsActive,
-                LastUpdated = DateTime.UtcNow,
-                DateAdded = DateTime.UtcNow,
-                CategoryId = product.CategoryId,
-            };
+            var productDTO = await _productService.CreateProductAsync(product);
 
-            _context.Products.Add(newProduct);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProduct", new { id = newProduct.Id }, newProduct);
+            return CreatedAtAction("GetProduct", new { id = productDTO.Id }, productDTO);
         }
 
         // DELETE: api/Products/5
         [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProductAsync(int id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null)

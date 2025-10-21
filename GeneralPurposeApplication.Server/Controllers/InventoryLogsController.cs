@@ -53,20 +53,13 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<InventoryLog>> CreateInventoryLog(InventoryLogCreateDto inventoryLogDto)
+        public async Task<ActionResult<InventoryLogDTO>> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
             try
             {
-                InventoryLog inventoryLog = await _inventoryLogService.CreateInventoryLogAsync(inventoryLogDto);
+                InventoryLogDTO inventoryLog = await _inventoryLogService.CreateInventoryLogAsync(inventoryLogDto);
 
-                return CreatedAtAction("GetInventoryLogAsync", new { id = inventoryLog.Id }, new InventoryLogDTO
-                {
-                    Id = inventoryLog.Id,
-                    ProductId = inventoryLog.ProductId,
-                    Quantity = inventoryLog.Quantity,
-                    ChangeType = inventoryLog.ChangeType,
-                    Remarks = inventoryLog.Remarks
-                });
+                return CreatedAtAction("GetInventoryLogAsync", new { id = inventoryLog.Id }, inventoryLog);
             }
             catch(InvalidOperationException ex)
             {
@@ -76,7 +69,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutInventory(int id, InventoryLogUpdateDTO inventoryLogDto)
+        public async Task<IActionResult> PutInventoryAsync(int id, InventoryLogUpdateDTO inventoryLogDto)
         {
             if (id != inventoryLogDto.Id)
                 return BadRequest();

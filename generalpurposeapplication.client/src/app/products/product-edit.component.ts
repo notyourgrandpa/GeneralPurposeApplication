@@ -112,7 +112,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
     if (this.id) {
       // EDIT MODE
       // fetch the product from the server
-      this.productGraphQlService.get(this.id).subscribe({
+      this.productService.get(this.id).subscribe({
         next: (result) => {
           this.product = result;
           this.title = "Edit - " + this.product.name;
@@ -146,7 +146,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
 
       if (this.id) {
         // EDIT mode
-        this.productGraphQlService
+        this.productService
           .put(product)
           .subscribe({
             next: (result) => {
@@ -159,7 +159,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
       }
       else {
         // ADD NEW mode
-        this.productGraphQlService
+        this.productService
           .post(product)
           .subscribe({
             next: (result) => {
