@@ -51,14 +51,59 @@ namespace GeneralPurposeApplication.Server.Services
             return await _unitOfWork.Repository<Product>().GetByIdAsync(productId);
         }
 
-        public Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO)
+        public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO productCreateDTO)
         {
-            throw new NotImplementedException();
+            var product = new Product
+            {
+                Name = productCreateDTO.Name,
+                CostPrice = productCreateDTO.CostPrice,
+                SellingPrice = productCreateDTO.SellingPrice,
+                IsActive = productCreateDTO.IsActive,
+                LastUpdated = DateTime.UtcNow,
+                DateAdded = DateTime.UtcNow
+            };
+
+            await _unitOfWork.Repository<Product>().AddAsync(product);
+            await _unitOfWork.SaveChangesAsync();
+
+            var productDTO = new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                CostPrice = product.CostPrice,
+                SellingPrice = product.SellingPrice,
+                IsActive = product.IsActive,
+                LastUpdated = DateTime.UtcNow,
+                DateAdded = DateTime.UtcNow
+            };
+
+            return productDTO;
         }
 
-        public Task<bool> DeleteProductAsync(int productId)
+        public async Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO)
         {
-            throw new NotImplementedException();
+            var product = await GetProductAsync(productId);
+            if (product == null)
+                throw new KeyNotFoundException($"Product {productId} not found.");
+
+            product.Name = productUpdateDTO.Name;
+            product.CostPrice = productUpdateDTO.CostPrice;
+            product.SellingPrice = productUpdateDTO.SellingPrice;
+            product.IsActive = productUpdateDTO.IsActive;
+            product.LastUpdated = DateTime.Now;
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteProductAsync(int productId)
+        {
+            var product= await GetProductAsync(productId);
+            if (product == null)
+                return false;
+            _unitOfWork.Repository<Product>().Delete(product);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task UpdateStockAsync(InventoryLog inventoryLog)
