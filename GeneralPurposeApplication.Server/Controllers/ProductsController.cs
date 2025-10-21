@@ -31,7 +31,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/Cities/?pageIndex=0&pageSize=10
         // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ApiResult<ProductDTO>> GetProducts(
+        public async Task<ApiResult<ProductDTO>> GetProductsAsync(
             int pageIndex = 0, 
             int pageSize = 10, 
             string? sortColumn = null,
