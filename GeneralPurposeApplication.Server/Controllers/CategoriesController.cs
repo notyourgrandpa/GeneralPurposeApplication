@@ -29,7 +29,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<ApiResult<CategoryDTO>>> GetCategories(
+        public async Task<ActionResult<ApiResult<CategoryDTO>>> GetCategoriesAsync(
             int pageIndex = 0,
             int pageSize = 10,
             string? sortColumn = null,
