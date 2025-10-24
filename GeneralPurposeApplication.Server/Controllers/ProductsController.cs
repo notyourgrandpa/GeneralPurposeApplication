@@ -93,14 +93,11 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var deleted = await _productService.DeleteProductAsync(id);
+            if (!deleted)
             {
                 return NotFound();
             }
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

@@ -29,7 +29,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<ApiResult<CategoryDTO>>> GetCategories(
+        public async Task<ActionResult<ApiResult<CategoryDTO>>> GetCategoriesAsync(
             int pageIndex = 0,
             int pageSize = 10,
             string? sortColumn = null,
@@ -42,7 +42,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<Category>> GetCategoryAsync(int id)
         {
             //var category = await _context.Categories.FindAsync(id);
             var category = await _categoryService.GetCategoryAsync(id);
@@ -59,7 +59,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(Roles = "RegisteredUser")]
-        public async Task<IActionResult> PutCategory(int id, CategoryUpdateDTO category)
+        public async Task<IActionResult> PutCategoryAsync(int id, CategoryUpdateDTO category)
         {
             if (id != category.Id)
             {
@@ -89,7 +89,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(CategoryCreateInputDTO category)
+        public async Task<ActionResult<Category>> PostCategoryAsync(CategoryCreateInputDTO category)
         {
             var newCategory = await _categoryService.CreateCategoryAsync(category);
 
@@ -99,9 +99,15 @@ namespace GeneralPurposeApplication.Server.Controllers
         // DELETE: api/Categories/5
         [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
-        public async Task<bool> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
-            return await _categoryService.DeleteCategoryAsync(id);
+            var deleted = await _categoryService.DeleteCategoryAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            s
+            return NoContent();
         }
 
         private bool CategoryExists(int id)
