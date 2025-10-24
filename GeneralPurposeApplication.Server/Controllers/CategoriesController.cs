@@ -42,7 +42,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<Category>> GetCategoryAsync(int id)
         {
             //var category = await _context.Categories.FindAsync(id);
             var category = await _categoryService.GetCategoryAsync(id);
