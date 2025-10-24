@@ -89,7 +89,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(CategoryCreateInputDTO category)
+        public async Task<ActionResult<Category>> PostCategoryAsync(CategoryCreateInputDTO category)
         {
             var newCategory = await _categoryService.CreateCategoryAsync(category);
 
