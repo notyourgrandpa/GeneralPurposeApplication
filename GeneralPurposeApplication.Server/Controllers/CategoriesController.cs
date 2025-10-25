@@ -106,7 +106,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             {
                 return NotFound();
             }
-            s
+
             return NoContent();
         }
 

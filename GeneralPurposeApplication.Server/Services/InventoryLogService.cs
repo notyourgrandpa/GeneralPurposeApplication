@@ -88,11 +88,11 @@ namespace GeneralPurposeApplication.Server.Services
             };
         }
 
-        public async Task UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDTO)
+        public async Task<bool> UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDTO)
         {
             InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
             if (inventoryLog == null)
-                throw new KeyNotFoundException($"InventoryLog {id} not found.");
+                return false;
 
             inventoryLog.ProductId = inventoryLogDTO.ProductId;
             inventoryLog.Quantity = inventoryLogDTO.Quantity;
@@ -100,6 +100,7 @@ namespace GeneralPurposeApplication.Server.Services
             inventoryLog.Remarks = inventoryLogDTO.Remarks;
 
             await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> DeleteInventoryLogAsync(int id)

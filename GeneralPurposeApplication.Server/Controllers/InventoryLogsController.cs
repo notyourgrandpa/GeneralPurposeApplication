@@ -74,13 +74,10 @@ namespace GeneralPurposeApplication.Server.Controllers
             if (id != inventoryLogDto.Id)
                 return BadRequest();
 
-            try
+            var updated = await _inventoryLogService.UpdateInventoryLogAsync(id, inventoryLogDto);
+            if (!updated)
             {
-                await _inventoryLogService.UpdateInventoryLogAsync(id, inventoryLogDto);
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return BadRequest(new { message = ex.Message });
+                return NotFound();
             }
             return NoContent();
         }

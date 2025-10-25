@@ -80,11 +80,11 @@ namespace GeneralPurposeApplication.Server.Services
             return productDTO;
         }
 
-        public async Task UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO)
+        public async Task<bool> UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO)
         {
             var product = await GetProductAsync(productId);
             if (product == null)
-                throw new KeyNotFoundException($"Product {productId} not found.");
+                return false;
 
             product.Name = productUpdateDTO.Name;
             product.CostPrice = productUpdateDTO.CostPrice;
@@ -93,6 +93,7 @@ namespace GeneralPurposeApplication.Server.Services
             product.LastUpdated = DateTime.Now;
 
             await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> DeleteProductAsync(int productId)
