@@ -65,16 +65,13 @@ namespace GeneralPurposeApplication.Server.Controllers
             if (id != product.Id)
                 return BadRequest(new { message = "ID mismatch between route and body." });
 
-            try
+            var updated = await _productService.UpdateProductAsync(id, product);
+            if (!updated)
             {
-                await _productService.UpdateProductAsync(id, product);
+                return NotFound();
+            }
 
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
+            return NoContent();
         }
 
         // POST: api/Products
