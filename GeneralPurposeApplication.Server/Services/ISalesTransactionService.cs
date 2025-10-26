@@ -11,7 +11,13 @@ namespace GeneralPurposeApplication.Server.Services
 {
     public interface ISalesTransactionService
     {
-        Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync();
+        Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync(
+            int pageIndex,
+            int pageSize,
+            string? sortColumn,
+            string? sortOrder,
+            string? filterColumn,
+            string? filterQuery);
         Task<SalesTransaction?> GetSalesTransactionAsync();
         Task<SalesTransactionsDTO> CreateSalesTransactionAsync();
         Task<bool> UpdateSalesTransactionAsync();
