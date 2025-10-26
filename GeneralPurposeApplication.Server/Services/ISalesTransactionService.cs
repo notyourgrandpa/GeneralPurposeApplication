@@ -18,7 +18,7 @@ namespace GeneralPurposeApplication.Server.Services
             string? sortOrder,
             string? filterColumn,
             string? filterQuery);
-        Task<SalesTransaction?> GetSalesTransactionAsync();
+        Task<SalesTransaction?> GetSalesTransactionAsync(int id);
         Task<SalesTransactionsDTO> CreateSalesTransactionAsync();
         Task<bool> UpdateSalesTransactionAsync();
         Task<bool> DeleteSalesTransactionAsync();
