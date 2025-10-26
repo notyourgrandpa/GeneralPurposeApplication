@@ -34,12 +34,6 @@ namespace GeneralPurposeApplication.Server.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateSalesTransactionAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-
         public Task<bool> DeleteSalesTransactionAsync()
         {
             throw new NotImplementedException();
