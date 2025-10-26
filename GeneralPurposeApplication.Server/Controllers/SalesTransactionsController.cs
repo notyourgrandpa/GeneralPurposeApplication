@@ -63,7 +63,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateInputDTO salesTransactionLogDto)
+        public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateDTO salesTransactionLogDto)
         {
             //using var transaction = await _context.Database.BeginTransactionAsync();
 

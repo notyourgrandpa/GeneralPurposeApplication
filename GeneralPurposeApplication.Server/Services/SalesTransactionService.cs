@@ -29,7 +29,7 @@ namespace GeneralPurposeApplication.Server.Services
             throw new NotImplementedException();
         }
 
-        public Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateInputDTO salesTransactionDTO)
+        public Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO)
         {
             throw new NotImplementedException();
         }
