@@ -12,6 +12,12 @@ namespace GeneralPurposeApplication.Server.Services
 {
     public class SalesTransactionService : ISalesTransactionService
     {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public SalesTransactionService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
         public Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync()
         {
