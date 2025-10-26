@@ -20,6 +20,6 @@ namespace GeneralPurposeApplication.Server.Services
             string? filterQuery);
         Task<SalesTransaction?> GetSalesTransactionAsync(int id);
         Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateInputDTO salesTransactionDTO);
-        Task<bool> DeleteSalesTransactionAsync();
+        Task<bool> DeleteSalesTransactionAsync(int id);
     }
 }
