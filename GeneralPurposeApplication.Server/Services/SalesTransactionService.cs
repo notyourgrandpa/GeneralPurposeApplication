@@ -24,7 +24,7 @@ namespace GeneralPurposeApplication.Server.Services
             throw new NotImplementedException();
         }
 
-        public Task<SalesTransaction?> GetSalesTransactionAsync()
+        public Task<SalesTransaction?> GetSalesTransactionAsync(int id)
         {
             throw new NotImplementedException();
         }
