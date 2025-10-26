@@ -34,7 +34,7 @@ namespace GeneralPurposeApplication.Server.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteSalesTransactionAsync()
+        public Task<bool> DeleteSalesTransactionAsync(int id)
         {
             throw new NotImplementedException();
         }
