@@ -1,6 +1,6 @@
 ﻿namespace GeneralPurposeApplication.Server.Data.DTOs
 {
-    public class SalesTransactionCreateInputDTO
+    public class SalesTransactionCreateDTO
     {
         public string PaymentMethod { get; set; } = string.Empty;
         public int CustomerId { get; set; }
