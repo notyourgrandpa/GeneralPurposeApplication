@@ -2,6 +2,7 @@
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,24 +20,100 @@ namespace GeneralPurposeApplication.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync(int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
+        public async Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync(int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
         {
-            throw new NotImplementedException();
+            return await ApiResult<SalesTransactionsDTO>.CreateAsync(
+                _unitOfWork.Repository<SalesTransaction>().GetQueryable()
+                    .Select(x => new SalesTransactionsDTO
+                    {
+                        Id = x.Id,
+                        TotalAmount = x.TotalAmount,
+                        PaymentMethod = x.PaymentMethod,
+                        ProcessedByUserId = x.ProcessedByUserId,
+                        ProcessedByUserName = x.ProcessedByUser.UserName!,
+                        Date = x.Date,
+                    }),
+                pageIndex,
+                pageSize,
+                sortColumn,
+                sortOrder,
+                filterColumn,
+                filterQuery);
         }
 
-        public Task<SalesTransaction?> GetSalesTransactionAsync(int id)
+        public async Task<SalesTransaction?> GetSalesTransactionAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Repository<SalesTransaction>().GetByIdAsync(id);
         }
 
-        public Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO)
+        public async Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userId)
         {
-            throw new NotImplementedException();
+            var productIds = salesTransactionDTO.Items.Select(i => i.ProductId).ToList();
+
+            var validIds = await _unitOfWork.Repository<Product>().GetQueryable()
+                .Where(p => productIds.Contains(p.Id))
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            var invalidIds = productIds.Except(validIds).ToList();
+            if (invalidIds.Any())
+                throw new InvalidOperationException($"Invalid product IDs: {string.Join(", ", invalidIds)}");
+
+            var salesTransaction = new SalesTransaction
+            {
+                CustomerId = salesTransactionDTO.CustomerId,
+                PaymentMethod = salesTransactionDTO.PaymentMethod,
+                ProcessedByUserId = userId,
+                Date = DateTime.UtcNow,
+                TotalAmount = salesTransactionDTO.Items.Sum(i => i.Quantity * i.UnitPrice)
+            };
+
+            foreach (var row in salesTransactionDTO.Items)
+            {
+                SalesTransactionItem salesTransactionItem = new()
+                {
+                    ProductId = row.ProductId,
+                    Quantity = row.Quantity,
+                    UnitPrice = row.UnitPrice,
+                    Subtotal = row.Quantity * row.UnitPrice
+                };
+                salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
+
+                InventoryLog inventoryLog = new()
+                {
+                    ProductId = row.ProductId,
+                    Quantity = row.Quantity,
+                    Date = DateTime.UtcNow,
+                    ChangeType = InventoryChangeType.StockOut
+                };
+                salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
+            }
+
+            await _unitOfWork.Repository<SalesTransaction>().AddAsync(salesTransaction);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return new SalesTransactionsDTO
+            {
+                Id = salesTransaction.Id,
+                TotalAmount = salesTransaction.TotalAmount,
+                PaymentMethod = salesTransaction.PaymentMethod,
+                ProcessedByUserId = salesTransaction.ProcessedByUserId,
+                ProcessedByUserName = salesTransaction.ProcessedByUser.UserName!,
+                Date = salesTransaction.Date,
+            };
         }
 
-        public Task<bool> DeleteSalesTransactionAsync(int id)
+        public async Task<bool> DeleteSalesTransactionAsync(int id)
         {
-            throw new NotImplementedException();
+            var salesTransaction = await GetSalesTransactionAsync(id);
+            if (salesTransaction == null)
+                return false;
+
+            _unitOfWork.Repository<SalesTransaction>().Delete(salesTransaction);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
         }
     }
 }

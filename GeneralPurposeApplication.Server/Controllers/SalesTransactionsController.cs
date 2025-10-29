@@ -2,6 +2,7 @@
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Extensions;
+using GeneralPurposeApplication.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +13,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class SalesTransactionsController: ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ISalesTransactionService _salesTransactionService;
 
-        public SalesTransactionsController(ApplicationDbContext context)
+        public SalesTransactionsController(ApplicationDbContext context, ISalesTransactionService salesTransactionService)
         {
             _context = context;
+            _salesTransactionService = salesTransactionService;
         }
         // GET: api/SalesTransactions
         // GET: api/SalesTransactions/?pageIndex=0&pageSize=10
@@ -63,114 +66,30 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateDTO salesTransactionLogDto)
+        public async Task<ActionResult<SalesTransaction>> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionLogDto)
         {
-            //using var transaction = await _context.Database.BeginTransactionAsync();
-
             try
             {
-                var productIds = salesTransactionLogDto.Items.Select(i => i.ProductId).ToList();
-                var validIds = await _context.Products
-                    .Where(p => productIds.Contains(p.Id))
-                    .Select(p => p.Id)
-                    .ToListAsync();
+                var salesTransactionDto = await _salesTransactionService.CreateSalesTransactionAsync(salesTransactionLogDto, User.GetUserId());
 
-                var invalidIds = productIds.Except(validIds).ToList();
-                if (invalidIds.Any())
-                    return BadRequest($"Invalid product IDs: {string.Join(",", invalidIds)}");
-
-                var salesTransaction = new SalesTransaction
-                {
-                    CustomerId = salesTransactionLogDto.CustomerId,
-                    PaymentMethod = salesTransactionLogDto.PaymentMethod,
-                    ProcessedByUserId = User.GetUserId(),
-                    Date = DateTime.UtcNow,
-                    TotalAmount = salesTransactionLogDto.Items.Sum(i => i.Quantity * i.UnitPrice)
-                };
-
-                foreach(var row in salesTransactionLogDto.Items)
-                {
-                    SalesTransactionItem salesTransactionItem = new()
-                    {
-                        ProductId = row.ProductId,
-                        Quantity = row.Quantity,
-                        UnitPrice = row.UnitPrice,
-                        Subtotal = row.Quantity * row.UnitPrice
-                    };
-                    salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
-
-                    InventoryLog inventoryLog = new()
-                    {
-                        ProductId = row.ProductId,
-                        Quantity = row.Quantity,
-                        Date = DateTime.UtcNow,
-                        ChangeType = InventoryChangeType.StockOut
-                    };
-                    salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
-                }
-
-                _context.SalesTransactions.Add(salesTransaction);
-
-                await _context.SaveChangesAsync();
-
-                //await transaction.CommitAsync();
-
-                return CreatedAtAction("GetSalesTransaction", new { id = salesTransaction.Id }, new SalesTransactionsDTO
-                {
-                    Id = salesTransaction.Id,
-                    PaymentMethod = salesTransaction.PaymentMethod,
-                    ProcessedByUserId = salesTransaction.ProcessedByUserId,
-                    Date = salesTransaction.Date,
-                    TotalAmount = salesTransaction.TotalAmount
-                });
+                return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
             }
             catch (Exception ex)
             {
-                //await transaction.RollbackAsync();
                 return BadRequest(new { message = ex.Message });
             }
     }
 
-        //[HttpPut]
-        //public async Task<IActionResult> PutInventory(int id, SalesTransactionUpdateInputDTO salesTransactionLogDto)
-        //{
-        //    if (id != salesTransactionLogDto.Id)
-        //        return BadRequest();
-
-        //    var salesTransaction = await _context.SalesTransactions.FindAsync(id);
-        //    if (salesTransaction == null)
-        //        return NotFound();
-
-        //    salesTransaction.ProductId = salesTransactionDto.ProductId;
-        //    salesTransaction.Quantity = salesTransactionDto.Quantity;
-        //    salesTransaction.ChangeType = salesTransactionDto.ChangeType;
-        //    salesTransaction.Remarks = salesTransactionDto.Remarks;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        throw;
-
-        //    }
-        //    return NoContent();
-        //}
-
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSalesTransaction(int id)
+        public async Task<IActionResult> DeleteSalesTransactionAsync(int id)
         {
-            var inventoryLog = await _context.SalesTransactions.FindAsync(id);
+            var inventoryLog = await _salesTransactionService.DeleteSalesTransactionAsync(id);
 
-            if (inventoryLog == null)
+            if (!inventoryLog)
             {
                 return NotFound();
             }
-
-            _context.SalesTransactions.Remove(inventoryLog);
-            await _context.SaveChangesAsync();
 
             return NoContent();
 
