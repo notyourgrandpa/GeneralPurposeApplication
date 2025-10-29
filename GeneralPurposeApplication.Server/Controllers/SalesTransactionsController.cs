@@ -68,68 +68,14 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateDTO salesTransactionLogDto)
         {
-            //using var transaction = await _context.Database.BeginTransactionAsync();
-
             try
             {
-                var productIds = salesTransactionLogDto.Items.Select(i => i.ProductId).ToList();
-                var validIds = await _context.Products
-                    .Where(p => productIds.Contains(p.Id))
-                    .Select(p => p.Id)
-                    .ToListAsync();
+                var salesTransactionDto = await _salesTransactionService.CreateSalesTransactionAsync(salesTransactionLogDto, User.GetUserId());
 
-                var invalidIds = productIds.Except(validIds).ToList();
-                if (invalidIds.Any())
-                    return BadRequest($"Invalid product IDs: {string.Join(",", invalidIds)}");
-
-                var salesTransaction = new SalesTransaction
-                {
-                    CustomerId = salesTransactionLogDto.CustomerId,
-                    PaymentMethod = salesTransactionLogDto.PaymentMethod,
-                    ProcessedByUserId = User.GetUserId(),
-                    Date = DateTime.UtcNow,
-                    TotalAmount = salesTransactionLogDto.Items.Sum(i => i.Quantity * i.UnitPrice)
-                };
-
-                foreach(var row in salesTransactionLogDto.Items)
-                {
-                    SalesTransactionItem salesTransactionItem = new()
-                    {
-                        ProductId = row.ProductId,
-                        Quantity = row.Quantity,
-                        UnitPrice = row.UnitPrice,
-                        Subtotal = row.Quantity * row.UnitPrice
-                    };
-                    salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
-
-                    InventoryLog inventoryLog = new()
-                    {
-                        ProductId = row.ProductId,
-                        Quantity = row.Quantity,
-                        Date = DateTime.UtcNow,
-                        ChangeType = InventoryChangeType.StockOut
-                    };
-                    salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
-                }
-
-                _context.SalesTransactions.Add(salesTransaction);
-
-                await _context.SaveChangesAsync();
-
-                //await transaction.CommitAsync();
-
-                return CreatedAtAction("GetSalesTransaction", new { id = salesTransaction.Id }, new SalesTransactionsDTO
-                {
-                    Id = salesTransaction.Id,
-                    PaymentMethod = salesTransaction.PaymentMethod,
-                    ProcessedByUserId = salesTransaction.ProcessedByUserId,
-                    Date = salesTransaction.Date,
-                    TotalAmount = salesTransaction.TotalAmount
-                });
+                return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
             }
             catch (Exception ex)
             {
-                //await transaction.RollbackAsync();
                 return BadRequest(new { message = ex.Message });
             }
     }
