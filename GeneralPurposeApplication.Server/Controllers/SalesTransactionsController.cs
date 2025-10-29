@@ -2,6 +2,7 @@
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Extensions;
+using GeneralPurposeApplication.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +13,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class SalesTransactionsController: ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ISalesTransactionService _salesTransactionService;
 
-        public SalesTransactionsController(ApplicationDbContext context)
+        public SalesTransactionsController(ApplicationDbContext context, ISalesTransactionService salesTransactionService)
         {
             _context = context;
+            _salesTransactionService = salesTransactionService;
         }
         // GET: api/SalesTransactions
         // GET: api/SalesTransactions/?pageIndex=0&pageSize=10
