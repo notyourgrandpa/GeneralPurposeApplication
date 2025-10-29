@@ -111,15 +111,12 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalesTransaction(int id)
         {
-            var inventoryLog = await _context.SalesTransactions.FindAsync(id);
+            var inventoryLog = await _salesTransactionService.DeleteSalesTransactionAsync(id);
 
-            if (inventoryLog == null)
+            if (!inventoryLog)
             {
                 return NotFound();
             }
-
-            _context.SalesTransactions.Remove(inventoryLog);
-            await _context.SaveChangesAsync();
 
             return NoContent();
 
