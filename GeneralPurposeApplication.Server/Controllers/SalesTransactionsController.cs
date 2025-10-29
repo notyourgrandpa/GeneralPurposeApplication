@@ -80,33 +80,6 @@ namespace GeneralPurposeApplication.Server.Controllers
             }
     }
 
-        //[HttpPut]
-        //public async Task<IActionResult> PutInventory(int id, SalesTransactionUpdateInputDTO salesTransactionLogDto)
-        //{
-        //    if (id != salesTransactionLogDto.Id)
-        //        return BadRequest();
-
-        //    var salesTransaction = await _context.SalesTransactions.FindAsync(id);
-        //    if (salesTransaction == null)
-        //        return NotFound();
-
-        //    salesTransaction.ProductId = salesTransactionDto.ProductId;
-        //    salesTransaction.Quantity = salesTransactionDto.Quantity;
-        //    salesTransaction.ChangeType = salesTransactionDto.ChangeType;
-        //    salesTransaction.Remarks = salesTransactionDto.Remarks;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        throw;
-
-        //    }
-        //    return NoContent();
-        //}
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalesTransactionAsync(int id)
