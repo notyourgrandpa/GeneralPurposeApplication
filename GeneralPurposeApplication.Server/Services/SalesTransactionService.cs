@@ -19,9 +19,25 @@ namespace GeneralPurposeApplication.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync(int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
+        public async Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync(int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
         {
-            throw new NotImplementedException();
+            return await ApiResult<SalesTransactionsDTO>.CreateAsync(
+                _unitOfWork.Repository<SalesTransaction>().GetQueryable()
+                    .Select(x => new SalesTransactionsDTO
+                    {
+                        Id = x.Id,
+                        TotalAmount = x.TotalAmount,
+                        PaymentMethod = x.PaymentMethod,
+                        ProcessedByUserId = x.ProcessedByUserId,
+                        ProcessedByUserName = x.ProcessedByUser.UserName!,
+                        Date = x.Date,
+                    }),
+                pageIndex,
+                pageSize,
+                sortColumn,
+                sortOrder,
+                filterColumn,
+                filterQuery);
         }
 
         public Task<SalesTransaction?> GetSalesTransactionAsync(int id)
