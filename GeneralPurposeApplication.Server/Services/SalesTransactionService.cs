@@ -104,9 +104,16 @@ namespace GeneralPurposeApplication.Server.Services
             };
         }
 
-        public Task<bool> DeleteSalesTransactionAsync(int id)
+        public async Task<bool> DeleteSalesTransactionAsync(int id)
         {
-            throw new NotImplementedException();
+            var salesTransaction = await GetSalesTransactionAsync(id);
+            if (salesTransaction == null)
+                return false;
+
+            _unitOfWork.Repository<SalesTransaction>().Delete(salesTransaction);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
         }
     }
 }
