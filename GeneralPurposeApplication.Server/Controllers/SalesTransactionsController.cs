@@ -66,7 +66,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SalesTransaction>> CreateSalesTransaction(SalesTransactionCreateDTO salesTransactionLogDto)
+        public async Task<ActionResult<SalesTransaction>> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionLogDto)
         {
             try
             {
