@@ -42,7 +42,7 @@ namespace GeneralPurposeApplication.Server.Services
 
         public Task<SalesTransaction?> GetSalesTransactionAsync(int id)
         {
-            throw new NotImplementedException();
+            return _unitOfWork.Repository<SalesTransaction>().GetByIdAsync(id);
         }
 
         public Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO)
