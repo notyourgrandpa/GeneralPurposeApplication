@@ -21,5 +21,6 @@ namespace GeneralPurposeApplication.Server.Services
         Task<SalesTransaction?> GetSalesTransactionAsync(int id);
         Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userID);
         Task<bool> DeleteSalesTransactionAsync(int id);
+        Task<bool> VoidSalesTransactionAsync(int id, string userId);
     }
 }

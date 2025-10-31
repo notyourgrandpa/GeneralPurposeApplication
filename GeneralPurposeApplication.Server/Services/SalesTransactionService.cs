@@ -115,5 +115,43 @@ namespace GeneralPurposeApplication.Server.Services
 
             return true;
         }
+        
+        public async Task<bool> VoidSalesTransactionAsync(int id, string userId)
+        {
+            var transaction = await _unitOfWork.Repository<SalesTransaction>().GetQueryable().Include(t => t.SalesTransactionItems)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (transaction == null)
+            {
+                return false; // should return an exception but this is fine for now 
+                //return NotFound();
+            }    
+
+            if (transaction.IsVoided)
+            {
+                return false; // should return an exception but this is fine for now 
+                //return BadRequest("Transaction is already voided.");
+            }
+                
+
+            // Mark as voided
+            transaction.IsVoided = true;
+            transaction.VoidedAt = DateTime.UtcNow;
+            transaction.VoidedByUserId = userId;
+
+            // Reverse inventory changes (optional, depends on your system)
+            foreach (var item in transaction.SalesTransactionItems)
+            {
+                var product = await _unitOfWork.Repository<Product>().GetByIdAsync(item.ProductId);
+                if (product != null)
+                {
+                    product.Stock += item.Quantity; // restore stock
+                    product.LastUpdated = DateTime.UtcNow;
+                }
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
     }
 }
