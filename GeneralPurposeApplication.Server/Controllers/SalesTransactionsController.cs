@@ -98,35 +98,14 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost("{id}/void")]
         public async Task<IActionResult> VoidSalesTransaction(int id)
         {
-            var transaction = await _context.SalesTransactions
-                .Include(t => t.SalesTransactionItems)
-                .FirstOrDefaultAsync(t => t.Id == id);
-
-            if (transaction == null)
+            var isVoided = await _salesTransactionService.VoidSalesTransactionAsync(id, User.GetUserId());
+            if (!isVoided)
+            {
                 return NotFound();
 
-            if (transaction.IsVoided)
-                return BadRequest("Transaction is already voided.");
-
-            // Mark as voided
-            transaction.IsVoided = true;
-            transaction.VoidedAt = DateTime.UtcNow;
-            transaction.VoidedByUserId = User.GetUserId();
-
-            // Reverse inventory changes (optional, depends on your system)
-            foreach (var item in transaction.SalesTransactionItems)
-            {
-                var product = await _context.Products.FindAsync(item.ProductId);
-                if (product != null)
-                {
-                    product.Stock += item.Quantity; // restore stock
-                    product.LastUpdated = DateTime.UtcNow;
-                }
             }
 
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Transaction voided successfully." });
+            return NoContent();
         }
     }
 }
