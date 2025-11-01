@@ -127,7 +127,7 @@ namespace GeneralPurposeApplication.Server.Services
             product.LastUpdated = DateTime.Now;
         }
 
-        private async Task<bool> ProductExistsAsync(int id)
+        public async Task<bool> ProductExistsAsync(int id)
         {
             return await _unitOfWork.Repository<Product>().AnyAsync(x => x.Id == id);
         }
