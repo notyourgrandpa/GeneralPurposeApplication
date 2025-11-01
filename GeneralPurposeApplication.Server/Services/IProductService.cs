@@ -23,5 +23,6 @@ namespace GeneralPurposeApplication.Server.Services
         Task<bool> UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO);
         Task<bool> DeleteProductAsync(int productId);
         Task UpdateStockAsync(InventoryLog inventoryLog);
+        Task<bool> ProductExistsAsync(int productId);
     }
 }
