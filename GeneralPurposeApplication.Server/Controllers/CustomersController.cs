@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
+using GeneralPurposeApplication.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,28 +16,17 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class CustomersController: ControllerBase
     {
         private ApplicationDbContext _context;
-        public CustomersController(ApplicationDbContext context) 
+        private readonly ICustomerService _customerService;
+        public CustomersController(ApplicationDbContext context, ICustomerService customerService) 
         { 
             _context = context;
+            _customerService = customerService;
         }
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> Search(string term)
         {
-            if (string.IsNullOrWhiteSpace(term))
-                return Ok(new List<CustomerDTO>()); // empty list if no search term
-
-            var customers = await _context.Customers
-                .Where(c => c.Name.Contains(term))
-                .OrderBy(c => c.Name)
-                .Take(20) // limit results for performance
-                .Select(c => new CustomerDTO
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    ContactNumber = c.ContactNumber
-                })
-                .ToListAsync();
+            var customers = await _customerService.SearchCustomer(term);
 
             return Ok(customers);
         }
