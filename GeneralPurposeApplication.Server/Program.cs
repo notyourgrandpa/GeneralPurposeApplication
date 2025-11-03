@@ -74,6 +74,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IInventoryLogService, InventoryLogService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
 
 builder.Services.AddAuthentication(opt =>
 {
