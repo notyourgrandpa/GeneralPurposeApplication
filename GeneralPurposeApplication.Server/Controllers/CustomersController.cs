@@ -15,11 +15,9 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class CustomersController: ControllerBase
     {
-        private ApplicationDbContext _context;
         private readonly ICustomerService _customerService;
-        public CustomersController(ApplicationDbContext context, ICustomerService customerService) 
+        public CustomersController(ICustomerService customerService) 
         { 
-            _context = context;
             _customerService = customerService;
         }
 
