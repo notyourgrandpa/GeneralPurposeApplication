@@ -13,6 +13,7 @@ using GeneralPurposeApplication.Server.Data.GraphQL;
 using Microsoft.AspNetCore.SignalR;
 using GeneralPurposeApplication.Server.Repositories;
 using GeneralPurposeApplication.Server.Services;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -130,6 +131,27 @@ else
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        context.Response.ContentType = "application/json";
+
+        context.Response.StatusCode = exception switch
+        {
+            KeyNotFoundException => StatusCodes.Status404NotFound,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            message = exception?.Message ?? "An error occured",
+            type = exception?.GetType().Name
+        });
+    });
+});
 app.UseCors("AngularPolicy");
 
 app.UseHealthChecks(new PathString("/api/health"), new CustomHealthCheckOptions());
