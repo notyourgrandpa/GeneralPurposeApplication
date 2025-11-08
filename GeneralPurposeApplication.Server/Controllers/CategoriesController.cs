@@ -66,21 +66,7 @@ namespace GeneralPurposeApplication.Server.Controllers
                 return BadRequest();
             }
 
-            try
-            {
-                await _categoryService.UpdateCategoryAsync(id, category);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _categoryService.UpdateCategoryAsync(id, category);
 
             return NoContent();
         }
