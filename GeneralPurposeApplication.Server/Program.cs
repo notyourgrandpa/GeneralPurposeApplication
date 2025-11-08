@@ -131,25 +131,21 @@ else
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
     {
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-
         context.Response.ContentType = "application/json";
-
         context.Response.StatusCode = exception switch
         {
             KeyNotFoundException => StatusCodes.Status404NotFound,
-            _ => StatusCodes.Status500InternalServerError
+            _ => StatusCodes.Status403Forbidden
         };
 
-        await context.Response.WriteAsJsonAsync(new
-        {
-            message = exception?.Message ?? "An error occured",
-            type = exception?.GetType().Name
-        });
+        await context.Response.WriteAsJsonAsync(
+            new { message = exception?.Message ?? "An error occured." });
     });
 });
 app.UseCors("AngularPolicy");
