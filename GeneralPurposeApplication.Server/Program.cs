@@ -141,6 +141,7 @@ app.UseExceptionHandler(errorApp =>
         context.Response.StatusCode = exception switch
         {
             KeyNotFoundException => StatusCodes.Status404NotFound,
+            DbUpdateConcurrencyException => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status403Forbidden
         };
 
