@@ -71,7 +71,6 @@ namespace GeneralPurposeApplication.Server.Controllers
             var salesTransactionDto = await _salesTransactionService.CreateSalesTransactionAsync(salesTransactionLogDto, User.GetUserId());
 
             return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
-            return BadRequest(new { message = ex.Message });
         }
 
 
