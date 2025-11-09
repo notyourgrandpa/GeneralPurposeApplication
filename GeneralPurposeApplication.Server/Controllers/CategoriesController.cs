@@ -87,11 +87,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
-            var deleted = await _categoryService.DeleteCategoryAsync(id);
-            if (!deleted)
-            {
-                return NotFound();
-            }
+            await _categoryService.DeleteCategoryAsync(id);
 
             return NoContent();
         }

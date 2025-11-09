@@ -22,6 +22,6 @@ namespace GeneralPurposeApplication.Server.Services
         Task<Category?> GetCategoryAsync(int id);
         Task<Category> CreateCategoryAsync(CategoryCreateInputDTO categoryCreateDTO);
         Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO);
-        Task<bool> DeleteCategoryAsync(int id);
+        Task DeleteCategoryAsync(int id);
     }
 }
