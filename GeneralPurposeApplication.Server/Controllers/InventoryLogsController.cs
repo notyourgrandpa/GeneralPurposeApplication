@@ -55,17 +55,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<InventoryLogDTO>> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
-            try
-            {
-                InventoryLogDTO inventoryLog = await _inventoryLogService.CreateInventoryLogAsync(inventoryLogDto);
+            InventoryLogDTO inventoryLog = await _inventoryLogService.CreateInventoryLogAsync(inventoryLogDto);
 
-                return CreatedAtAction("GetInventoryLogAsync", new { id = inventoryLog.Id }, inventoryLog);
-            }
-            catch(InvalidOperationException ex)
-            {
-                //await transaction.RollbackAsync();
-                return BadRequest(new { message = ex.Message });
-            }
+            return CreatedAtAction("GetInventoryLogAsync", new { id = inventoryLog.Id }, inventoryLog);
         }
 
         [HttpPut]
