@@ -102,14 +102,14 @@ namespace GeneralPurposeApplication.Server.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteInventoryLogAsync(int id)
+        public async Task DeleteInventoryLogAsync(int id)
         {
             InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
             if (inventoryLog == null)
-                return false;
+                throw new KeyNotFoundException();
+
             _unitOfWork.Repository<InventoryLog>().Delete(inventoryLog);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }
