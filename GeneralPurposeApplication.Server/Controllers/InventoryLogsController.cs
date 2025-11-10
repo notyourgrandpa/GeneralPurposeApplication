@@ -61,31 +61,21 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutInventoryAsync(int id, InventoryLogUpdateDTO inventoryLogDto)
+        public async Task<IActionResult> PutInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDto)
         {
             if (id != inventoryLogDto.Id)
                 return BadRequest();
 
-            var updated = await _inventoryLogService.UpdateInventoryLogAsync(id, inventoryLogDto);
-            if (!updated)
-            {
-                return NotFound();
-            }
+            await _inventoryLogService.UpdateInventoryLogAsync(id, inventoryLogDto);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInventoryLogAsync(int id)
         {
-            var isDeleted = await _inventoryLogService.DeleteInventoryLogAsync(id);
-
-            if (!isDeleted)
-            {
-                return NotFound();
-            }
+            await _inventoryLogService.DeleteInventoryLogAsync(id);
 
             return NoContent();
-
         }
     }
 }
