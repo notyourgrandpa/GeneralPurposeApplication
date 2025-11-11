@@ -77,15 +77,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalesTransactionAsync(int id)
         {
-            var inventoryLog = await _salesTransactionService.DeleteSalesTransactionAsync(id);
-
-            if (!inventoryLog)
-            {
-                return NotFound();
-            }
+            await _salesTransactionService.DeleteSalesTransactionAsync(id);
 
             return NoContent();
-
         }
 
         [HttpPost("{id}/void")]
