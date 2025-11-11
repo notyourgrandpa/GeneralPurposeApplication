@@ -21,7 +21,7 @@ namespace GeneralPurposeApplication.Server.Services
         public async Task<IEnumerable<CustomerDTO>> SearchCustomer(string term)
         {
             if (string.IsNullOrWhiteSpace(term))
-                return Ok(new List<CustomerDTO>()); // empty list if no search term
+                return new List<CustomerDTO>(); // empty list if no search term
 
             var customers = await _unitOfWork.Repository<Customer>().GetQueryable()
                 .Where(c => c.Name.Contains(term))

@@ -77,26 +77,15 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalesTransactionAsync(int id)
         {
-            var inventoryLog = await _salesTransactionService.DeleteSalesTransactionAsync(id);
-
-            if (!inventoryLog)
-            {
-                return NotFound();
-            }
+            await _salesTransactionService.DeleteSalesTransactionAsync(id);
 
             return NoContent();
-
         }
 
         [HttpPost("{id}/void")]
         public async Task<IActionResult> VoidSalesTransaction(int id)
         {
-            var isVoided = await _salesTransactionService.VoidSalesTransactionAsync(id, User.GetUserId());
-            if (!isVoided)
-            {
-                return NotFound();
-
-            }
+            await _salesTransactionService.VoidSalesTransactionAsync(id, User.GetUserId());
 
             return NoContent();
         }

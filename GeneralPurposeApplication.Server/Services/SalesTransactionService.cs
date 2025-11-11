@@ -104,33 +104,29 @@ namespace GeneralPurposeApplication.Server.Services
             };
         }
 
-        public async Task<bool> DeleteSalesTransactionAsync(int id)
+        public async Task DeleteSalesTransactionAsync(int id)
         {
             var salesTransaction = await GetSalesTransactionAsync(id);
             if (salesTransaction == null)
-                return false;
+                throw new KeyNotFoundException();
 
             _unitOfWork.Repository<SalesTransaction>().Delete(salesTransaction);
             await _unitOfWork.SaveChangesAsync();
-
-            return true;
         }
         
-        public async Task<bool> VoidSalesTransactionAsync(int id, string userId)
+        public async Task VoidSalesTransactionAsync(int id, string userId)
         {
             var transaction = await _unitOfWork.Repository<SalesTransaction>().GetQueryable().Include(t => t.SalesTransactionItems)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             if (transaction == null)
             {
-                return false; // should return an exception but this is fine for now 
-                //return NotFound();
+                throw new KeyNotFoundException("Selected transaction not found.");
             }    
 
             if (transaction.IsVoided)
             {
-                return false; // should return an exception but this is fine for now 
-                //return BadRequest("Transaction is already voided.");
+                throw new InvalidOperationException("Transaction is already voided.");
             }
                 
 
@@ -139,7 +135,7 @@ namespace GeneralPurposeApplication.Server.Services
             transaction.VoidedAt = DateTime.UtcNow;
             transaction.VoidedByUserId = userId;
 
-            // Reverse inventory changes (optional, depends on your system)
+            // Reverse inventory changes
             foreach (var item in transaction.SalesTransactionItems)
             {
                 var product = await _unitOfWork.Repository<Product>().GetByIdAsync(item.ProductId);
@@ -151,7 +147,6 @@ namespace GeneralPurposeApplication.Server.Services
             }
 
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }

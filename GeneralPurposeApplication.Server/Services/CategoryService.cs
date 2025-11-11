@@ -64,16 +64,15 @@ namespace GeneralPurposeApplication.Server.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteCategoryAsync(int id)
+        public async Task DeleteCategoryAsync(int id)
         {
             Category? category = await GetCategoryAsync(id);
             if (category == null)
             {
-                return false;
+                throw new KeyNotFoundException();
             }
             _unitOfWork.Repository<Category>().Delete(category);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }
