@@ -85,12 +85,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost("{id}/void")]
         public async Task<IActionResult> VoidSalesTransaction(int id)
         {
-            var isVoided = await _salesTransactionService.VoidSalesTransactionAsync(id, User.GetUserId());
-            if (!isVoided)
-            {
-                return NotFound();
-
-            }
+            await _salesTransactionService.VoidSalesTransactionAsync(id, User.GetUserId());
 
             return NoContent();
         }
