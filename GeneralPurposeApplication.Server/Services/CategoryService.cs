@@ -43,6 +43,12 @@ namespace GeneralPurposeApplication.Server.Services
 
         public async Task<Category> CreateCategoryAsync(CategoryCreateInputDTO categoryCreateDTO)
         {
+            var exists = await this.CategoryExists(categoryCreateDTO.Name);
+            if (exists)
+            {
+                throw new InvalidOperationException($"Category {categoryCreateDTO.Name} already exists.");
+            }
+
             Category category = new Category { 
                 Name = categoryCreateDTO.Name 
             };
@@ -73,6 +79,11 @@ namespace GeneralPurposeApplication.Server.Services
             }
             _unitOfWork.Repository<Category>().Delete(category);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> CategoryExists(string name)
+        {
+            return await _unitOfWork.Repository<Category>().AnyAsync(x => x.Name == name);
         }
     }
 }
