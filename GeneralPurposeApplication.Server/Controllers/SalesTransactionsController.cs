@@ -12,12 +12,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class SalesTransactionsController: ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly ISalesTransactionService _salesTransactionService;
 
-        public SalesTransactionsController(ApplicationDbContext context, ISalesTransactionService salesTransactionService)
+        public SalesTransactionsController(ISalesTransactionService salesTransactionService)
         {
-            _context = context;
             _salesTransactionService = salesTransactionService;
         }
         // GET: api/SalesTransactions
