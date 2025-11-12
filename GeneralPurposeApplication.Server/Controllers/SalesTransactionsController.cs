@@ -55,14 +55,12 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SalesTransaction>> GetSalesTransactionAsync(int id)
         {
-            var inventoryLog = await _context.SalesTransactions.FindAsync(id);
-
-            if (inventoryLog == null)
+            var salesTransaction = await _salesTransactionService.GetSalesTransactionAsync(id);
+            if (salesTransaction == null)
             {
                 return NotFound();
             }
-
-            return inventoryLog;
+            return salesTransaction;
         }
 
         [HttpPost]
