@@ -23,5 +23,6 @@ namespace GeneralPurposeApplication.Server.Services
         Task<Category> CreateCategoryAsync(CategoryCreateInputDTO categoryCreateDTO);
         Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO);
         Task DeleteCategoryAsync(int id);
+        Task CategoryExists(string categoryName);
     }
 }
