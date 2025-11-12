@@ -12,12 +12,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class SalesTransactionsController: ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly ISalesTransactionService _salesTransactionService;
 
-        public SalesTransactionsController(ApplicationDbContext context, ISalesTransactionService salesTransactionService)
+        public SalesTransactionsController(ISalesTransactionService salesTransactionService)
         {
-            _context = context;
             _salesTransactionService = salesTransactionService;
         }
         // GET: api/SalesTransactions
@@ -32,18 +30,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null,
             string? filterQuery = null)
         {
-            return await ApiResult<SalesTransactionsDTO>.CreateAsync(
-                _context.SalesTransactions
-                    .AsNoTracking()
-                    .Select(x => new SalesTransactionsDTO
-                    {
-                        Id = x.Id,
-                        TotalAmount = x.TotalAmount,
-                        PaymentMethod = x.PaymentMethod,
-                        ProcessedByUserId = x.ProcessedByUserId,
-                        ProcessedByUserName = x.ProcessedByUser.UserName!,
-                        Date = x.Date,
-                    }),
+            return await _salesTransactionService.GetSalesTransactionsAsync(
                 pageIndex,
                 pageSize,
                 sortColumn,
@@ -55,14 +42,12 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SalesTransaction>> GetSalesTransactionAsync(int id)
         {
-            var inventoryLog = await _context.SalesTransactions.FindAsync(id);
-
-            if (inventoryLog == null)
+            var salesTransaction = await _salesTransactionService.GetSalesTransactionAsync(id);
+            if (salesTransaction == null)
             {
                 return NotFound();
             }
-
-            return inventoryLog;
+            return salesTransaction;
         }
 
         [HttpPost]
