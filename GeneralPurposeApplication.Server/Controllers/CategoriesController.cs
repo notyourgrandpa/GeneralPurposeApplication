@@ -44,7 +44,6 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategoryAsync(int id)
         {
-            //var category = await _context.Categories.FindAsync(id);
             var category = await _categoryService.GetCategoryAsync(id);
 
             if (category == null)
