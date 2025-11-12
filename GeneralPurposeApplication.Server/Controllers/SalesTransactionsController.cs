@@ -32,18 +32,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             string? filterColumn = null,
             string? filterQuery = null)
         {
-            return await ApiResult<SalesTransactionsDTO>.CreateAsync(
-                _context.SalesTransactions
-                    .AsNoTracking()
-                    .Select(x => new SalesTransactionsDTO
-                    {
-                        Id = x.Id,
-                        TotalAmount = x.TotalAmount,
-                        PaymentMethod = x.PaymentMethod,
-                        ProcessedByUserId = x.ProcessedByUserId,
-                        ProcessedByUserName = x.ProcessedByUser.UserName!,
-                        Date = x.Date,
-                    }),
+            return await _salesTransactionService.GetSalesTransactionsAsync(
                 pageIndex,
                 pageSize,
                 sortColumn,
