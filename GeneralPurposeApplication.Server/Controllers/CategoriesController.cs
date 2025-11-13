@@ -98,7 +98,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         [HttpPost]
         [Route("IsDupeField")]
-        public bool IsDupeField(int categoryId, string fieldName, string fieldValue)
+        public async Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue)
         {
             //// Default approach (using strongly-typed LAMBA expressions)
             //switch (fieldName)
@@ -112,12 +112,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             //}
 
             // Alternative approach (using System.Linq.Dynamic.Core)
-            return (ApiResult<Category>.IsValidProperty(fieldName, true))
-                ? _context.Categories.Any(
-                    string.Format("{0} == @0 && Id != @1", fieldName),
-                    fieldValue,
-                    categoryId)
-                : false;
+            return await _categoryService.IsDupeField(categoryId, fieldName, fieldValue);
         }
     }
 }
