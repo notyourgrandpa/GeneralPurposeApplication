@@ -85,5 +85,11 @@ namespace GeneralPurposeApplication.Server.Services
         {
             return await _unitOfWork.Repository<Category>().AnyAsync(x => x.Name == name);
         }
+
+        public async Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue)
+        {
+            return (ApiResult<Category>.IsValidProperty(fieldName, true))
+                ? await _unitOfWork.Repository<Category>().AnyAsync(string.Format("{0} == @0 && Id = @0", fieldName), fieldValue, categoryId) : false;
+        }
     }
 }
