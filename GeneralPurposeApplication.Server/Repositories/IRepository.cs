@@ -16,5 +16,6 @@ namespace GeneralPurposeApplication.Server.Repositories
         void Delete(T entity);
         IQueryable<T> GetQueryable();
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
+        Task<bool> AnyAsync(string predicate, params object[] values);
     }
 }
