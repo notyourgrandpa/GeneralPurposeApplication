@@ -24,5 +24,6 @@ namespace GeneralPurposeApplication.Server.Services
         Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO);
         Task DeleteCategoryAsync(int id);
         Task<bool> CategoryExists(string categoryName);
+        Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue);
     }
 }
