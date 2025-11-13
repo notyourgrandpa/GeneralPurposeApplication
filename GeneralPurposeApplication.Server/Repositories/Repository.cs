@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,5 +23,9 @@ namespace GeneralPurposeApplication.Server.Repositories
         public void Update(T entity) => _context.Set<T>().Update(entity);
         public void Delete(T entity) => _context.Set<T>().Remove(entity);
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate) => await _context.Set<T>().AnyAsync(predicate);
+        public async Task<bool> AnyAsync(string predicate, params object[] values)
+        {
+            return await _context.Set<T>().Where(predicate, values).AnyAsync();
+        }
     }
 }
