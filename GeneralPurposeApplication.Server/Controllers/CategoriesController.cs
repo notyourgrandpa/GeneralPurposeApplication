@@ -18,12 +18,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context, ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
             _categoryService = categoryService;
         }
 
