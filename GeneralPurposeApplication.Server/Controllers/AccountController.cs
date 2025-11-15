@@ -11,12 +11,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class AccountController: ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtHandler _jwtHandler;
-        public AccountController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, JwtHandler jwtHandler)
+        public AccountController(UserManager<ApplicationUser> userManager, JwtHandler jwtHandler)
         {
-            _context = context;
             _userManager = userManager;
             _jwtHandler = jwtHandler;
         }

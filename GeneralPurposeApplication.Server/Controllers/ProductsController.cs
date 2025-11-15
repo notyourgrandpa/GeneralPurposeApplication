@@ -99,9 +99,9 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
-        private bool ProductExists(int id)
+        private async Task<bool> ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return await _productService.ProductExistsAsync(id);
         }
 
         [HttpPost]

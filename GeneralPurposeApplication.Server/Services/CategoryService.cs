@@ -81,9 +81,9 @@ namespace GeneralPurposeApplication.Server.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> CategoryExists(string name)
+        public async Task<bool> CategoryExists(int id)
         {
-            return await _unitOfWork.Repository<Category>().AnyAsync(x => x.Name == name);
+            return await _unitOfWork.Repository<Category>().AnyAsync(x => x.Id == id);
         }
 
         public async Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue)

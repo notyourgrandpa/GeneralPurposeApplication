@@ -18,12 +18,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context, ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
             _categoryService = categoryService;
         }
 
@@ -91,9 +89,9 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private async Task<bool> CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return await _categoryService.CategoryExists(id);
         }
 
         [HttpPost]

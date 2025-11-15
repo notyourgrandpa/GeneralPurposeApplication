@@ -23,7 +23,7 @@ namespace GeneralPurposeApplication.Server.Services
         Task<Category> CreateCategoryAsync(CategoryCreateInputDTO categoryCreateDTO);
         Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO);
         Task DeleteCategoryAsync(int id);
-        Task<bool> CategoryExists(string categoryName);
+        Task<bool> CategoryExists(int id);
         Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue);
     }
 }

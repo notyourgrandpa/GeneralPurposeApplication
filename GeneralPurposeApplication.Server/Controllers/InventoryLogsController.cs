@@ -16,12 +16,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class InventoryLogsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IInventoryLogService _inventoryLogService;
 
-        public InventoryLogsController(ApplicationDbContext context, IInventoryLogService inventoryLogService)
+        public InventoryLogsController(IInventoryLogService inventoryLogService)
         {
-            _context = context;
             _inventoryLogService = inventoryLogService;
         }
         // GET: api/InventoryLogs
