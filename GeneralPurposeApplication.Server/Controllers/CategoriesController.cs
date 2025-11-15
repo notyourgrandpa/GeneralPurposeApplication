@@ -91,9 +91,9 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private async Task<bool> CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return await _categoryService.CategoryExists(id);
         }
 
         [HttpPost]
