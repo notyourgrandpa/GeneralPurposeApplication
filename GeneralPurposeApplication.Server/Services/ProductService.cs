@@ -142,5 +142,25 @@ namespace GeneralPurposeApplication.Server.Services
         {
             return await _unitOfWork.Repository<Product>().AnyAsync(x => x.Id == id);
         }
+
+        public async Task<IEnumerable<ProductDTO>> SearchProduct(string term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return new List<ProductDTO>(); // empty list if no search term
+
+            var products = await _unitOfWork.Repository<Product>().GetQueryable()
+                .Where(c => c.Name.Contains(term))
+                .OrderBy(c => c.Name)
+                .Take(20) // limit results for performance
+                .Select(c => new ProductDTO
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    SellingPrice = c.SellingPrice
+                })
+                .ToListAsync();
+
+            return products;
+        }
     }
 }
