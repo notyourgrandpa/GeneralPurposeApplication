@@ -106,15 +106,9 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         [HttpPost]
         [Route("IsDupeProduct")]
-        public bool IsDupeProduct(Product product)
+        public async Task<bool> IsDupeProduct(Product product)
         {
-            return _context.Products.AsNoTracking().Any(
-                e => e.Name == product.Name
-                && e.CategoryId == product.CategoryId
-                && e.SellingPrice == product.SellingPrice
-                && e.CostPrice == product.CostPrice
-                && e.Id != product.Id
-            );
+            return await _productService.IsDupeProduct(product);
         }
 
         [HttpGet("search")]
