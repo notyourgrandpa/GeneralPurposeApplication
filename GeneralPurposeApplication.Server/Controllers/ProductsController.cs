@@ -19,12 +19,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
 
-        public ProductsController(ApplicationDbContext context, IProductService productService)
+        public ProductsController(IProductService productService)
         {
-            _context = context;
             _productService = productService;
         }
 
@@ -106,36 +104,15 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         [HttpPost]
         [Route("IsDupeProduct")]
-        public bool IsDupeProduct(Product product)
+        public async Task<bool> IsDupeProduct(Product product)
         {
-            return _context.Products.AsNoTracking().Any(
-                e => e.Name == product.Name
-                && e.CategoryId == product.CategoryId
-                && e.SellingPrice == product.SellingPrice
-                && e.CostPrice == product.CostPrice
-                && e.Id != product.Id
-            );
+            return await _productService.IsDupeProduct(product);
         }
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> Search(string term)
         {
-            if (string.IsNullOrWhiteSpace(term))
-                return Ok(new List<ProductDTO>()); // empty list if no search term
-
-            var products = await _context.Products
-                .Where(c => c.Name.Contains(term))
-                .OrderBy(c => c.Name)
-                .Take(20) // limit results for performance
-                .Select(c => new ProductDTO
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    SellingPrice = c.SellingPrice
-                })
-                .ToListAsync();
-
-            return Ok(products);
+            return Ok(await _productService.SearchProduct(term));
         }
     }
 }
