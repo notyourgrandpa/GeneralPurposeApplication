@@ -127,6 +127,17 @@ namespace GeneralPurposeApplication.Server.Services
             product.LastUpdated = DateTime.Now;
         }
 
+        public async Task<bool> IsDupeProduct(Product product)
+        {
+            return await _unitOfWork.Repository<Product>().AnyAsync(
+                e => e.Name == product.Name
+                && e.CategoryId == product.CategoryId
+                && e.SellingPrice == product.SellingPrice
+                && e.CostPrice == product.CostPrice
+                && e.Id != product.Id
+            );
+        }
+
         public async Task<bool> ProductExistsAsync(int id)
         {
             return await _unitOfWork.Repository<Product>().AnyAsync(x => x.Id == id);
