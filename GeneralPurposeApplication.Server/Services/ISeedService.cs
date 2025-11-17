@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Services
 {
-    public interface ISeedController
+    public interface ISeedService
     {
         Task Import();
         Task CreateDefaultUser();

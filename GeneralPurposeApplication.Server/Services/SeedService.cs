@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Services
 {
-    public class SeedService : ISeedController
+    public class SeedService : ISeedService
     {
         public Task CreateDefaultUser()
         {
