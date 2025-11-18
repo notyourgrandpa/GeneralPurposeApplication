@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneralPurposeApplication.Server.Data.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace GeneralPurposeApplication.Server.Services
 {
     public interface ISeedService
     {
-        Task Import();
+        Task<SeedResultDTO> Import();
         Task CreateDefaultUser();
     }
 }
