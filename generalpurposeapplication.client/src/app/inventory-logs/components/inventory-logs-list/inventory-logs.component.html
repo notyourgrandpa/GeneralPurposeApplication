@@ -31,7 +31,7 @@
     <ng-container matColumnDef="productName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
       <td mat-cell *matCellDef="let inventoryLog">
-        <a [routerLink]="['/pr', inventoryLog.productId]">{{inventoryLog.productName}}</a>
+        <a [routerLink]="['/product', inventoryLog.productId]">{{inventoryLog.productName}}</a>
       </td>
     </ng-container>
 
