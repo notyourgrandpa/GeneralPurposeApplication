@@ -91,7 +91,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         private async Task<bool> CategoryExists(string categoryName)
         {
-            return await _categoryService.CategoryExists(string);
+            return await _categoryService.CategoryExists(categoryName);
         }
 
         [HttpPost]
