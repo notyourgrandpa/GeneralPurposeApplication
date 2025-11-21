@@ -1,0 +1,14 @@
+<h2 *ngIf="!product; else productLoaded" mat-dialog-title>Loading...</h2>
+<ng-template #productLoaded>
+  <h2 mat-dialog-title>{{product.name}}</h2>
+  <mat-dialog-content>
+    <p>Cost Price: {{product.costPrice}}</p>
+    <p>Selling Price: {{product.sellingPrice}}</p>
+    <p>Status: {{product.isActive ? 'Active' : 'Inactive'}}</p>
+    <p>Stock: {{product.stock}} </p>
+  </mat-dialog-content>
+</ng-template>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

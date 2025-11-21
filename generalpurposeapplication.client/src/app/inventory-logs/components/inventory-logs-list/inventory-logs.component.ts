@@ -5,6 +5,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { InventoryLogService } from '../../services/inventory-logs.service';
+import { ProductDialogService } from '../../../products/services/product-dialog.service'
 
 @Component({
   selector: 'app-inventory-logs',
@@ -36,7 +37,7 @@ export class InventoryLogsComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private inventoryLogService: InventoryLogService) {
+  constructor(private inventoryLogService: InventoryLogService, private productDialogService: ProductDialogService) {
   }
 
   ngOnInit() {
@@ -98,5 +99,9 @@ export class InventoryLogsComponent implements OnInit {
   onDelete(id: number): void {
     if (!id) return;
     this.inventoryLogService.confirmAndDelete(id, undefined, () => this.loadData());
+  }
+
+  openProductDialog(productId: number) {
+    this.productDialogService.open(productId);
   }
 }
