@@ -30,6 +30,7 @@ import { InventoryLogEditComponent } from './inventory-logs/components/inventory
 import { InventoryChangeTypePipe } from './shared/pipes/inventory-change-type.pipe';
 import { SalesTransactionsComponent } from './sales-transactions/components/sales-transactions-list/sales-transactions.component';
 import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit/sales-transaction-edit.component';
+import { ProductDialogComponent } from './products/components/product-dialog/product-dialog.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { SalesTransactionEditComponent } from './sales-transactions/components/s
     InventoryLogEditComponent,
     InventoryChangeTypePipe,
     SalesTransactionsComponent,
-    SalesTransactionEditComponent
+    SalesTransactionEditComponent,
+    ProductDialogComponent
   ],
   imports: [
     BrowserModule,
