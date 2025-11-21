@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using GeneralPurposeApplication.Server.Controllers;
 using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Repositories;
+using GeneralPurposeApplication.Server.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -35,17 +38,23 @@ namespace GeneralPurposeApplication.Tests
                 Name = "TestProduct1"
             });
             context.SaveChanges();
-            var controller = new ProductsController(context);
-            Product? product_existing = null;
-            Product? product_notExisting = null;
+
+            var unitOfWork = new UnitOfWork(context);
+            var productService = new ProductService(unitOfWork);
+            var controller = new ProductsController(productService);
+            //Product? product_existing = null;
+            //Product? product_notExisting = null;
 
 
-            // Act
-            product_existing = (await controller.GetProduct(1)).Value;
-            product_notExisting = (await controller.GetProduct(2)).Value;
-            // Assert
+            // Act & Assert existing product
+            var result_existing = await controller.GetProductAsync(1);
+            var okResult_existing = Assert.IsType<OkObjectResult>(result_existing.Result);
+            var product_existing = Assert.IsType<Product>(okResult_existing.Value);
             Assert.NotNull(product_existing);
-            Assert.Null(product_notExisting);
+
+            // Act & Assert non-existing product
+            var result_notExisting = await controller.GetProductAsync(2);
+            Assert.IsType<NotFoundResult>(result_notExisting.Result);
         }
     }
 }

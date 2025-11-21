@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
+using GeneralPurposeApplication.Server.Services;
 
 namespace GeneralPurposeApplication.Tests
 {
@@ -36,6 +37,7 @@ namespace GeneralPurposeApplication.Tests
                 var mockEnv = Mock.Of<IWebHostEnvironment>();
                 // create a IConfiguration mock instance
                 var mockConfiguration = new Mock<IConfiguration>();
+                var mockSeedService = new Mock<ISeedService>();
                 mockConfiguration.SetupGet(x => x[It.Is<string>(s => s == "DefaultPasswords:RegisteredUser")]).Returns("M0ckP$$word");
                 mockConfiguration.SetupGet(x => x[It.Is<string>(s => s == "DefaultPasswords:Administrator")]).Returns("M0ckP$$word");
                 // create a ApplicationDbContext instance using the
@@ -46,7 +48,7 @@ namespace GeneralPurposeApplication.Tests
                 // create a UserManager instance
                 var userManager = IdentityHelper.GetUserManager(new UserStore<ApplicationUser>(context));
                 // create a SeedController instance
-                var controller = new SeedController(context, roleManager, userManager, mockEnv, mockConfiguration.Object
+                var controller = new SeedController(context, roleManager, userManager, mockEnv, mockConfiguration.Object, mockSeedService.Object
                 );
                 // define the variables for the users we want to test
                 ApplicationUser user_Admin = null!;
