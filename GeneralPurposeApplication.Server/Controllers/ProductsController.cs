@@ -44,7 +44,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductAsync(int id)
+        public async Task<ActionResult<Product>> GetProductAsync(int id)
         {
             var product = await _productService.GetProductAsync(id);
 
