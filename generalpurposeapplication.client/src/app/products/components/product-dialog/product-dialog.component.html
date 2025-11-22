@@ -1,14 +1,36 @@
-<h2 *ngIf="!product; else productLoaded" mat-dialog-title>Loading...</h2>
-<ng-template #productLoaded>
-  <h2 mat-dialog-title>{{product.name}}</h2>
+<ng-container *ngIf="product; else loading">
+  <h2 mat-dialog-title>{{ product.name }}</h2>
+
+  <mat-dialog-content class="product-details">
+    <div class="detail-row">
+      <span class="label">Cost Price:</span>
+      <span>{{ product.costPrice }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Selling Price:</span>
+      <span>{{ product.sellingPrice }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Status:</span>
+      <span>{{ product.isActive ? 'Active' : 'Inactive' }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Stock:</span>
+      <span>{{ product.stock }}</span>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</ng-container>
+
+<ng-template #loading>
+  <h2 mat-dialog-title>Loading…</h2>
   <mat-dialog-content>
-    <p>Cost Price: {{product.costPrice}}</p>
-    <p>Selling Price: {{product.sellingPrice}}</p>
-    <p>Status: {{product.isActive ? 'Active' : 'Inactive'}}</p>
-    <p>Stock: {{product.stock}} </p>
+    <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
   </mat-dialog-content>
 </ng-template>
-
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Close</button>
-</mat-dialog-actions>

@@ -13,7 +13,7 @@ export class ProductDialogService {
   open(productId: number) {
     this.dialog.open(ProductDialogComponent,
       {
-        width: '500px',
+        width: '450px',
         data: { productId },
         panelClass: 'custom-dialog-container'
       }
