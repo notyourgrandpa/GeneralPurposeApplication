@@ -13,6 +13,7 @@ namespace GeneralPurposeApplication.Server.Data.Models
     {
         [Key]
         public int Id { get; set; }
+        public string Category { get; set; } = string.Empty;
 
         public string? Description { get; set; }
 

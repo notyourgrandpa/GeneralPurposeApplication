@@ -16,6 +16,7 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
             builder.ToTable("Expenses");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired();
+            builder.Property(x => x.Category).IsRequired();
             builder.Property(x => x.Description);
             builder.Property(x => x.Amount);
             builder.Property(x => x.Date);
