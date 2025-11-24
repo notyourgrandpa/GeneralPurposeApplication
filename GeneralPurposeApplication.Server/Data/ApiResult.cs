@@ -82,6 +82,40 @@ namespace GeneralPurposeApplication.Server.Data
             return new ApiResult<T>(data, count, pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
 
         }
+
+        public static async Task<ApiResult<T>> CreateAsync(
+            IQueryable<T> source,
+            QueryParameter parameters)
+        {
+            if (!string.IsNullOrEmpty(parameters.filterColumn)
+               && !string.IsNullOrEmpty(parameters.filterQuery)
+               && IsValidProperty(parameters.filterColumn))
+            {
+                source = source.Where(
+                    string.Format("{0}.StartsWith(@0)",
+                    parameters.filterColumn),
+                    parameters.filterQuery);
+            }
+
+            var count = await source.CountAsync();
+            if (!string.IsNullOrEmpty(parameters.sortColumn) && IsValidProperty(parameters.sortColumn))
+            {
+                parameters.sortOrder = !string.IsNullOrEmpty(parameters.sortOrder)
+                    && parameters.sortOrder.ToUpper() == "ASC"
+                    ? "ASC"
+                    : "DESC";
+                source = source.OrderBy(string.Format("{0} {1}", parameters.sortColumn, parameters.sortOrder)
+                    );
+            }
+            source = source
+                .Skip(parameters.pageIndex * parameters.pageSize)
+                .Take(parameters.pageSize);
+
+            var data = await source.ToListAsync();
+
+            return new ApiResult<T>(data, count, parameters.pageIndex, parameters.pageSize, parameters.sortColumn, parameters.sortOrder, parameters.filterColumn, parameters.filterQuery);
+
+        }
         #endregion
 
         #region Methods
