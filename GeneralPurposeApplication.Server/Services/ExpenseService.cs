@@ -27,31 +27,64 @@ namespace GeneralPurposeApplication.Server.Services
                     {
                         Id = x.Id,
                         Category = x.Category,
-                        Description = x.Description,
+                        Description = x.Description!,
                         Amount = x.Amount,
                         Date = x.Date
                     }), 
                     parameters);
         }
 
-        public Task<Expense> GetExpenseByIdAsync(int id)
+        public async Task<Expense> GetExpenseByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var expense = await _unitOfWork.Repository<Expense>().GetByIdAsync(id);
+
+            if(expense == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return expense;
         }
 
-        public Task<ExpenseDTO> CreateExpenseAsync(ExpenseDTO expenseDTO)
+        public async Task<ExpenseDTO> CreateExpenseAsync(ExpenseDTO expenseDTO)
         {
-            throw new NotImplementedException();
+            var expense = new Expense
+            {
+                Category = expenseDTO.Category,
+                Description = expenseDTO.Description,
+                Amount = expenseDTO.Amount,
+                Date = expenseDTO.Date
+            };
+
+            await _unitOfWork.Repository<Expense>().AddAsync(expense);
+            await _unitOfWork.SaveChangesAsync();
+            return expenseDTO;
         }
 
-        public Task UpdateExpenseAsync(int id, ExpenseDTO expenseDTO)
+        public async Task UpdateExpenseAsync(int id, ExpenseDTO expenseDTO)
         {
-            throw new NotImplementedException();
+            var expense = await _unitOfWork.Repository<Expense>().GetByIdAsync(id);
+            if(expense == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            expense.Category = expenseDTO.Category;
+            expense.Description = expenseDTO.Description;
+            expense.Amount = expenseDTO.Amount;
+            expense.Date = expenseDTO.Date;
+
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task DeleteExpenseAsync(int id)
+        public async Task DeleteExpenseAsync(int id)
         {
-            throw new NotImplementedException();
+            var expense = await _unitOfWork.Repository<Expense>().GetByIdAsync(id);
+            if(expense == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            _unitOfWork.Repository<Expense>().Delete(expense);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
