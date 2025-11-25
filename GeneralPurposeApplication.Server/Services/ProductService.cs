@@ -73,8 +73,8 @@ namespace GeneralPurposeApplication.Server.Services
                 CostPrice = product.CostPrice,
                 SellingPrice = product.SellingPrice,
                 IsActive = product.IsActive,
-                LastUpdated = DateTime.UtcNow,
-                DateAdded = DateTime.UtcNow
+                LastUpdated = product.LastUpdated,
+                DateAdded = product.DateAdded
             };
 
             return productDTO;

@@ -76,11 +76,11 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(ProductCreateDTO product)
+        public async Task<ActionResult<ProductDTO>> PostProduct(ProductCreateDTO product)
         {
             var productDTO = await _productService.CreateProductAsync(product);
 
-            return CreatedAtAction("GetProduct", new { id = productDTO.Id }, productDTO);
+            return CreatedAtAction(nameof(GetProductAsync), new { id = productDTO.Id }, productDTO);
         }
 
         // DELETE: api/Products/5
