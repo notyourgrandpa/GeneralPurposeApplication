@@ -45,18 +45,28 @@ namespace GeneralPurposeApplication.Server.Services
             return expense;
         }
 
-        public async Task<ExpenseDTO> CreateExpenseAsync(ExpenseDTO expenseDTO)
+        public async Task<ExpenseDTO> CreateExpenseAsync(ExpenseCreateDTO expenseCreateDTO)
         {
             var expense = new Expense
             {
-                Category = expenseDTO.Category,
-                Description = expenseDTO.Description,
-                Amount = expenseDTO.Amount,
-                Date = expenseDTO.Date
+                Category = expenseCreateDTO.Category,
+                Description = expenseCreateDTO.Description,
+                Amount = expenseCreateDTO.Amount,
+                Date = expenseCreateDTO.Date
             };
 
             await _unitOfWork.Repository<Expense>().AddAsync(expense);
             await _unitOfWork.SaveChangesAsync();
+
+            var expenseDTO = new ExpenseDTO
+            {
+                Id = expense.Id,
+                Category = expense.Category,
+                Description = expense.Description,
+                Amount = expense.Amount,
+                Date = expense.Date
+            };
+
             return expenseDTO;
         }
 
