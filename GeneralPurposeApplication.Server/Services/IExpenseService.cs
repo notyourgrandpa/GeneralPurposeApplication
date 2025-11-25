@@ -13,7 +13,7 @@ namespace GeneralPurposeApplication.Server.Services
     {
         Task<ApiResult<ExpenseDTO>> GetExpensesAsync(QueryParameter parameters);
         Task<Expense> GetExpenseByIdAsync(int id);
-        Task<ExpenseDTO> CreateExpenseAsync(ExpenseDTO expenseDTO);
+        Task<ExpenseDTO> CreateExpenseAsync(ExpenseCreateDTO expenseDTO);
         Task UpdateExpenseAsync(int id, ExpenseDTO expenseDTO);
         Task DeleteExpenseAsync(int id);
     }
