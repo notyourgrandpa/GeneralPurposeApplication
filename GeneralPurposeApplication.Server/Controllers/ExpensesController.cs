@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GeneralPurposeApplication.Server.Data;
+using GeneralPurposeApplication.Server.Data.DTOs;
+using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +11,50 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
-    public class ExpensesController: ControllerBase
+    public class ExpensesController : ControllerBase
     {
+        private readonly IExpenseService _expenseService;
 
+        public ExpensesController(IExpenseService expenseService)
+        {
+            _expenseService = expenseService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ApiResult<ExpenseDTO>>> GetExpensesAsync([FromBody] QueryParameter parameters)
+        {
+            return await _expenseService.GetExpensesAsync(parameters);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Expense>> GetExpenseById(int id)
+        {
+            return await _expenseService.GetExpenseByIdAsync(id);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> CreateExpenseAsync(ExpenseCreateDTO expenseCreateDTO)
+        {
+            var expenseDTO = await _expenseService.CreateExpenseAsync(expenseCreateDTO);
+            return CreatedAtAction("GetExpenseById", new { id = expenseDTO.Id }, expenseDTO);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateExpenseAsync(int id, ExpenseUpdateDTO expenseDTO)
+        {
+            if (id != expenseDTO.Id)
+            {
+                return BadRequest();
+            }
+            await _expenseService.UpdateExpenseAsync(id, expenseDTO);
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteExpenseAsync(int id)
+        {
+            await _expenseService.DeleteExpenseAsync(id);
+            return NoContent();
+        }
     }
 }
