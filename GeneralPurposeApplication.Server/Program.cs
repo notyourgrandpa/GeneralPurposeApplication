@@ -77,6 +77,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -96,14 +97,6 @@ builder.Services.AddAuthentication(opt =>
          IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecurityKey"]!))
      };
  });
-
-builder.Services.AddCors(options =>
-    options.AddPolicy(name: "AngularPolicy",
-        cfg => {
-            cfg.AllowAnyHeader();
-            cfg.AllowAnyMethod();
-            cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
-        }));
 
 builder.Services.AddGraphQLServer()
    .AddAuthorization()
