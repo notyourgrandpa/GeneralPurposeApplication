@@ -14,7 +14,7 @@ namespace GeneralPurposeApplication.Server.Services
         Task<ApiResult<ExpenseDTO>> GetExpensesAsync(QueryParameter parameters);
         Task<Expense> GetExpenseByIdAsync(int id);
         Task<ExpenseDTO> CreateExpenseAsync(ExpenseCreateDTO expenseDTO);
-        Task UpdateExpenseAsync(int id, ExpenseDTO expenseDTO);
+        Task UpdateExpenseAsync(int id, ExpenseUpdateDTO expenseDTO);
         Task DeleteExpenseAsync(int id);
     }
 }

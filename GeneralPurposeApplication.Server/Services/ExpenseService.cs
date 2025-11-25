@@ -70,7 +70,7 @@ namespace GeneralPurposeApplication.Server.Services
             return expenseDTO;
         }
 
-        public async Task UpdateExpenseAsync(int id, ExpenseDTO expenseDTO)
+        public async Task UpdateExpenseAsync(int id, ExpenseUpdateDTO expenseDTO)
         {
             var expense = await _unitOfWork.Repository<Expense>().GetByIdAsync(id);
             if(expense == null)
