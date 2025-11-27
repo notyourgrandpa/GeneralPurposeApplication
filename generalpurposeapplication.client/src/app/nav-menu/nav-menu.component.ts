@@ -70,7 +70,8 @@ export class NavMenuComponent implements OnInit, OnDestroy {
         { label: 'Add Product', icon: 'add', route: '/product' },
         { label: 'Categories', icon: 'category', route: '/categories' },
         { label: 'Inventory Logs', icon: 'receipt_long', route: '/inventory-logs' },
-        { label: 'Sales Transactions', icon: 'receipt_long', route: '/sales-transactions' }
+        { label: 'Sales Transactions', icon: 'receipt_long', route: '/sales-transactions' },
+        { label: 'Expenses', icon: 'wallet', route: '/expenses' }
       ]
     },
     {
