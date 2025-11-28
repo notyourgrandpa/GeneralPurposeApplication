@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class ExpensesController : ControllerBase
     {
         private readonly IExpenseService _expenseService;
@@ -21,7 +23,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ApiResult<ExpenseDTO>>> GetExpensesAsync([FromBody] QueryParameter parameters)
+        public async Task<ActionResult<ApiResult<ExpenseDTO>>> GetExpensesAsync([FromQuery] QueryParameter parameters)
         {
             return await _expenseService.GetExpensesAsync(parameters);
         }

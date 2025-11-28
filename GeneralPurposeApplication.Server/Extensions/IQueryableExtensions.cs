@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralPurposeApplication.Server
+namespace GeneralPurposeApplication.Server.Extensions
 {
     public static class IQueryableExtensions
     {
