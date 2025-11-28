@@ -47,7 +47,7 @@ builder.Services.AddCors(options =>
         cfg => {
             cfg.AllowAnyHeader();
             cfg.AllowAnyMethod();
-            cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
+            cfg.WithOrigins(builder.Configuration["AllowedCORS"]!);
         }));
 
 builder.Services.AddSignalR();
