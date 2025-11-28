@@ -1,23 +1,30 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ExpensesModel } from './expenses.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ExpensesService } from './expenses.service';
 
 @Component({
   selector: 'app-expenses',
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css'
 })
-export class ExpensesComponent {
+export class ExpensesComponent implements OnInit {
+  constructor(private expensesService: ExpensesService) { }
+
+  ngOnInit() {
+    this.loadData();
+  }
+
   public displayedColumns = [
     'category',
     'description',
     'amount',
     'date'
   ];
-  public expenses = MatTableDataSource<ExpensesModel>;
+  public expenses!: MatTableDataSource<ExpensesModel>;
 
   defaultPageIndex = 0;
   defaultPageSize = 10;
@@ -49,6 +56,36 @@ export class ExpensesComponent {
   }
 
   getData(event: PageEvent) {
+    var sortColumn = (this.sort)
+      ? this.sort.active
+      : this.defaultSortColumn;
+    var sortOrder = (this.sort)
+      ? this.sort.direction
+      : this.defaultSortOrder;
+    var filterColumn = (this.filterQuery)
+      ? this.defaultSortColumn
+      : null;
+    var filterQuery = (this.filterQuery)
+      ? this.filterQuery
+      : null;
 
+    this.expensesService.getData(
+      event.pageIndex,
+      event.pageSize,
+      sortColumn,
+      sortOrder,
+      filterColumn,
+      filterQuery)
+      .subscribe({
+        next: (result) => {
+          this.paginator.length = result.totalCount;
+          this.paginator.pageIndex = result.pageIndex;
+          this.paginator.pageSize = result.pageSize;
+          this.expenses = new MatTableDataSource<ExpensesModel>(result.data);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
   }
 }
