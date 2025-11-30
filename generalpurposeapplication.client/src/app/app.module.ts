@@ -31,7 +31,7 @@ import { InventoryChangeTypePipe } from './shared/pipes/inventory-change-type.pi
 import { SalesTransactionsComponent } from './sales-transactions/components/sales-transactions-list/sales-transactions.component';
 import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit/sales-transaction-edit.component';
 import { ProductDialogComponent } from './products/components/product-dialog/product-dialog.component';
-import { ExpensesComponent } from './expenses/expenses.component';
+import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 
 
 @NgModule({

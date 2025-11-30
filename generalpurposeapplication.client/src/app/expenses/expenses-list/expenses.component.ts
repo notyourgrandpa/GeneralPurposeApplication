@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { ExpensesService } from './expenses.service';
+import { ExpensesService } from '../services/expenses.service';
 
 @Component({
   selector: 'app-expenses',
