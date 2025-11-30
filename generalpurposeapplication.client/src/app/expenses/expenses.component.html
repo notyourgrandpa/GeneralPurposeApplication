@@ -1,7 +1,0 @@
-<p>Expenses</p>
-<p *ngIf="!expenses">Loading...</p>
-<mat-form-field [hidden]="!expenses">
-  <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
-         placeholder="Filter by name (or part of it)...">
-</mat-form-field>
-

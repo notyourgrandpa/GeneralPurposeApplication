@@ -14,7 +14,7 @@ import { InventoryLogsComponent } from './inventory-logs/components/inventory-lo
 import { InventoryLogEditComponent } from './inventory-logs/components/inventory-log-edit/inventory-log-edit.component';
 import { SalesTransactionsComponent } from './sales-transactions/components/sales-transactions-list/sales-transactions.component';
 import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit/sales-transaction-edit.component';
-import { ExpensesComponent } from './expenses/expenses.component';
+import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
