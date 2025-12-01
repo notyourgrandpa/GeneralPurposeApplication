@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 import { ApiResult, BaseService } from "../../shared/services/base.service";
-import { ExpensesModel } from "./expenses.model";
+import { ExpensesModel } from "../models/expenses.model";
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 
