@@ -1,0 +1,60 @@
+<h1>{{title}}</h1>
+<form [formGroup]="form" (ngSubmit)="ngOnSubmit()">
+  <mat-form-field>
+    <mat-label>Category</mat-label>
+    <input matInput formControlName="category" placeholder="Category" required>
+    <mat-error *ngFor="let errors of getErrors(form.get('category')!, 'Category')!,">
+      {{errors}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description" placeholder="Description" required>
+    <mat-error *ngFor="let errors of getErrors(form.get('description')!, 'Description')!,">
+      {{errors}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Amount</mat-label>
+    <input matInput formControlName="amount" placeholder="Amount" required>
+    <mat-error *ngFor="let errors of getErrors(form.get('amount')!, 'Amount')!,">
+      {{errors}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Date</mat-label>
+    <input matInput
+           [matDatepicker]="picker"
+           formControlName="date"
+           placeholder="Select date"
+           required>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngFor="let errors of getErrors(form.get('date')!, 'Date')!,">
+      {{errors}}
+    </mat-error>
+  </mat-form-field>
+
+  <div>
+    <button mat-flat-button color="primary"
+            type="submit"
+            [disabled]="!form.valid">
+      {{ this.id ? "Save" : "Create" }}
+    </button>
+    <button mat-flat-button color="secondary"
+            [routerLink]="['/expenses']">
+      Cancel
+    </button>
+
+    <button *ngIf="id"
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="onDelete()">
+      Delete
+    </button>
+  </div>
+</form>

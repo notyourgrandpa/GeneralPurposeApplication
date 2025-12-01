@@ -5,6 +5,10 @@
          placeholder="Filter by name (or part of it)...">
 </mat-form-field>
 
+<button mat-flat-button color="primary" class="btn-add" *ngIf="expenses" [routerLink]="['/expense']">
+  Add a new Expense
+</button>
+
 <table mat-table
   [dataSource]="expenses"
   [hidden]="!expenses"

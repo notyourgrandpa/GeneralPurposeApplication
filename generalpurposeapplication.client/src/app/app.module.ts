@@ -32,6 +32,7 @@ import { SalesTransactionsComponent } from './sales-transactions/components/sale
 import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit/sales-transaction-edit.component';
 import { ProductDialogComponent } from './products/components/product-dialog/product-dialog.component';
 import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
+import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
     SalesTransactionsComponent,
     SalesTransactionEditComponent,
     ProductDialogComponent,
-    ExpensesComponent
+    ExpensesComponent,
+    ExpenseEditComponent
   ],
   imports: [
     BrowserModule,
