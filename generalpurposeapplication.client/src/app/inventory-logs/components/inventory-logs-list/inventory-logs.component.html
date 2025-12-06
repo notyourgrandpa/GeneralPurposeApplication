@@ -19,7 +19,6 @@
        [matSortActive]="defaultSortColumn"
        [matSortDirection]="defaultSortOrder">
 
-  <tr style="display:none!important">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -85,7 +84,6 @@
         </button>
       </td>
     </ng-container>
-  </tr>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
