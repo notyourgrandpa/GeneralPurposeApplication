@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExpensesService } from '../services/expenses.service';
 import { ExpensesModel } from '../models/expenses.model';
 import { BaseFormComponent } from '../../shared/components/base-form.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-expense-edit',
@@ -15,8 +16,12 @@ export class ExpenseEditComponent extends BaseFormComponent implements OnInit {
   id?: number;
   expense?: ExpensesModel;
 
-  constructor(private activatedRoute: ActivatedRoute,
-    private expensesService: ExpensesService)
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private expensesService: ExpensesService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  )
   {
     super()
   }
@@ -31,8 +36,41 @@ export class ExpenseEditComponent extends BaseFormComponent implements OnInit {
     this.loadData();
   }
 
-  ngOnSubmit() {
+  onSubmit() {
+    let expense = (this.id) ? this.expense : <ExpensesModel>{};
 
+    if (expense) {
+      expense.description = this.form.controls['description'].value;
+      expense.category = this.form.controls['category'].value;
+      expense.amount = this.form.controls['amount'].value;
+      expense.date = this.form.controls['date'].value;
+
+      if (this.id) {
+        //edit mode
+        this.expensesService.put(expense).subscribe({
+          next: (result) => {
+            this.snackBar.open("Expense " + this.id + "has been updated.");
+
+            this.router.navigate(['/expenses']);
+          },
+          error: (error) => {
+            this.snackBar.open(error);
+          }
+        })
+      }
+      else {
+        //add mode
+        this.expensesService.post(expense).subscribe({
+          next: (result) =>{
+            this.snackBar.open("Expense created succesfullly.");
+            this.router.navigate(['/expenses']);
+          },
+          error: (error) => {
+            this.snackBar.open(error);
+          }
+        })
+      }
+    }
   }
 
   onDelete(){
