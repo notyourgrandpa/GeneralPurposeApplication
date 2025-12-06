@@ -10,16 +10,20 @@ import { Injectable } from "@angular/core";
 
 export class ExpensesService extends BaseService<ExpensesModel> {
   override get(id: number): Observable<ExpensesModel> {
-      throw new Error("Method not implemented.");
+    let url = this.getUrl("api/expenses/" + id);
+    return this.http.get<ExpensesModel>(url);
   }
   override put(item: ExpensesModel): Observable<ExpensesModel> {
-      throw new Error("Method not implemented.");
+    let url = this.getUrl("api/expenses");
+    return this.http.put<ExpensesModel>(url, item);
   }
   override post(item: ExpensesModel): Observable<ExpensesModel> {
-      throw new Error("Method not implemented.");
+    let url = this.getUrl("api/expenses");
+    return this.http.post<ExpensesModel>(url, item);
   }
   override delete(id: number): Observable<ExpensesModel> {
-      throw new Error("Method not implemented.");
+    let url = this.getUrl("api/expenses/" + id);
+    return this.http.delete<ExpensesModel>(url);
   }
   constructor(http: HttpClient)
   {

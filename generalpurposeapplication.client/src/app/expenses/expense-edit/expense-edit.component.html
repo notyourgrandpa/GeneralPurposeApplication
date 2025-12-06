@@ -1,5 +1,5 @@
 <h1>{{title}}</h1>
-<form [formGroup]="form" (ngSubmit)="ngOnSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <mat-label>Category</mat-label>
     <input matInput formControlName="category" placeholder="Category" required>
