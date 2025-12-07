@@ -21,10 +21,15 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
             builder.Property(x => x.ChangeType);
             builder.Property(x => x.Remarks);
             builder.Property(x => x.Date);
+            builder.Property(x => x.OldStock);
             builder
                 .HasOne(x => x.Product)
                 .WithMany(x => x.InventoryLogs)
                 .HasForeignKey(x => x.ProductId);
+            builder
+                .HasOne(x => x.VoidedByUser)
+                .WithMany(x => x.InventoryLogs)
+                .HasForeignKey(x => x.VoidedByUserId);
         }
     }
 }

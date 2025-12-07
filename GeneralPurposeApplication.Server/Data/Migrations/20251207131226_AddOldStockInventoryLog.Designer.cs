@@ -4,16 +4,19 @@ using GeneralPurposeApplication.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GeneralPurposeApplication.Server.Data.Migrations
+namespace GeneralPurposeApplication.Server.Data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251207131226_AddOldStockInventoryLog")]
+    partial class AddOldStockInventoryLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,9 +232,6 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsVoided")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OldStock")
                         .HasColumnType("int");
 
@@ -244,17 +244,9 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
                     b.Property<string>("Remarks")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("VoidedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VoidedByUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("VoidedByUserId");
 
                     b.ToTable("InventoryLogs", (string)null);
                 });
@@ -522,13 +514,7 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GeneralPurposeApplication.Server.Data.Models.ApplicationUser", "VoidedByUser")
-                        .WithMany("InventoryLogs")
-                        .HasForeignKey("VoidedByUserId");
-
                     b.Navigation("Product");
-
-                    b.Navigation("VoidedByUser");
                 });
 
             modelBuilder.Entity("GeneralPurposeApplication.Server.Data.Models.Product", b =>
@@ -639,8 +625,6 @@ namespace GeneralPurposeApplication.Server.Data.Migrations
 
             modelBuilder.Entity("GeneralPurposeApplication.Server.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("InventoryLogs");
-
                     b.Navigation("SalesTransactions");
                 });
 

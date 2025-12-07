@@ -27,8 +27,19 @@ namespace GeneralPurposeApplication.Server.Data.Models
 
         public DateTime Date { get; set; } = DateTime.Now;
 
+        public int OldStock { get; set; }
+
+        public bool IsVoided { get; set; } = false;
+
+        public DateTime? VoidedAt { get; set; }
+
+        public string? VoidedByUserId { get; set; }
+
         [ForeignKey(nameof(ProductId))]
         public Product? Product { get; set; }
+
+        [ForeignKey(nameof(VoidedByUserId))]
+        public ApplicationUser? VoidedByUser { get; set; }
     }
 
     public enum InventoryChangeType

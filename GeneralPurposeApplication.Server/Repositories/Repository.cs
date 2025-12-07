@@ -17,7 +17,34 @@ namespace GeneralPurposeApplication.Server.Repositories
         public Repository(ApplicationDbContext context) => _context = context;
 
         public async Task<T?> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
+        public async Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var include in includes)
+                query = query.Include(include);
+            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().AsNoTracking().ToListAsync();
+        public async Task<IEnumerable<T>> GetAllAsync(
+            Expression<Func<T, bool>>? predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _context.Set<T>();
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            return await query.AsNoTracking().ToListAsync();
+        }
+
         public IQueryable<T> GetQueryable() => _context.Set<T>().AsNoTracking();
         public async Task AddAsync(T entity) => await _context.Set<T>().AddAsync(entity);
         public void Update(T entity) => _context.Set<T>().Update(entity);

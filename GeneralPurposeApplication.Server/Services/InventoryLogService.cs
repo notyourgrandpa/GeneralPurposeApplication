@@ -111,5 +111,51 @@ namespace GeneralPurposeApplication.Server.Services
             _unitOfWork.Repository<InventoryLog>().Delete(inventoryLog);
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task VoidInventoryLogAsync(int inventoryLogId, string userId)
+        {
+            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>()
+                .GetByIdAsync(inventoryLogId);
+
+            if (inventoryLog == null)
+                throw new KeyNotFoundException($"Inventory Log {inventoryLogId} not found.");
+
+            if (inventoryLog.IsVoided)
+                throw new InvalidOperationException("This inventory log is already voided.");
+
+            inventoryLog.IsVoided = true;
+            inventoryLog.VoidedAt = DateTime.UtcNow;
+            inventoryLog.VoidedByUserId = userId;
+
+            var logs = await _unitOfWork.Repository<InventoryLog>()
+                .GetAllAsync(l => l.ProductId == inventoryLog.ProductId,
+                             orderBy: q => q.OrderBy(l => l.Date));
+
+            int stock = 0;
+
+            foreach (var log in logs)
+            {
+                if (log.IsVoided)
+                    continue;
+
+                switch (log.ChangeType)
+                {
+                    case InventoryChangeType.StockIn:
+                        stock += log.Quantity;
+                        break;
+                    case InventoryChangeType.StockOut:
+                        stock -= log.Quantity;
+                        break;
+                    case InventoryChangeType.Adjustment:
+                        stock = log.Quantity;
+                        break;
+                }
+            }
+
+            inventoryLog.Product!.Stock = stock;
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
     }
 }
