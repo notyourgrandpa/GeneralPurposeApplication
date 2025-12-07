@@ -17,6 +17,14 @@ namespace GeneralPurposeApplication.Server.Repositories
         public Repository(ApplicationDbContext context) => _context = context;
 
         public async Task<T?> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
+        public async Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var include in includes)
+                query = query.Include(include);
+            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().AsNoTracking().ToListAsync();
         public IQueryable<T> GetQueryable() => _context.Set<T>().AsNoTracking();
         public async Task AddAsync(T entity) => await _context.Set<T>().AddAsync(entity);
