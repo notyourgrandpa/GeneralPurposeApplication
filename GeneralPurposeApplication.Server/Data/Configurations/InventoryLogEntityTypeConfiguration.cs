@@ -21,6 +21,7 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
             builder.Property(x => x.ChangeType);
             builder.Property(x => x.Remarks);
             builder.Property(x => x.Date);
+            builder.Property(x => x.OldStock);
             builder
                 .HasOne(x => x.Product)
                 .WithMany(x => x.InventoryLogs)

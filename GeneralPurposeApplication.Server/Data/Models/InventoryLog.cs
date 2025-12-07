@@ -27,6 +27,8 @@ namespace GeneralPurposeApplication.Server.Data.Models
 
         public DateTime Date { get; set; } = DateTime.Now;
 
+        public int OldStock { get; set; }
+
         [ForeignKey(nameof(ProductId))]
         public Product? Product { get; set; }
     }
