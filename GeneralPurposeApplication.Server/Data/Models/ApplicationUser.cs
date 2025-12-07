@@ -14,6 +14,7 @@ namespace GeneralPurposeApplication.Server.Data.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<SalesTransaction> SalesTransactions { get; set; }
+        public ICollection<InventoryLog> InventoryLogs { get; set; }
 
     }
 }
