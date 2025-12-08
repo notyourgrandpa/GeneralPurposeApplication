@@ -70,20 +70,20 @@
     <button mat-flat-button color="primary"
             type="submit"
             [disabled]="!form.valid">
-      {{ this.id ? "Save" : "Create" }}
+      {{ this.id ? "Void" : "Create" }}
     </button>
     <button mat-flat-button color="secondary"
             [routerLink]="['/inventory-logs']">
       Cancel
     </button>
 
-    <button *ngIf="id"
+    <!--<button *ngIf="id"
             mat-flat-button
             color="warn"
             type="button"
             (click)="onDelete()">
       Delete
-    </button>
+    </button>-->
   </div>
 </form>
 

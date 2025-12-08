@@ -68,6 +68,11 @@ export class InventoryLogService extends BaseService<InventoryLog>{
     return this.http.delete<InventoryLog>(url);
   }
 
+  voidInventoryLog(id: number):Observable<InventoryLog> {
+    var url = this.getUrl("api/inventoryLogs/" + id);
+    return this.http.patch<InventoryLog>(url, {});
+  }
+
   getProducts(
     pageIndex: number,
     pageSize: number,
