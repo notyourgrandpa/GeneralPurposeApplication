@@ -77,7 +77,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> VoidInventoryLogAsync(int id)
         {
             await _inventoryLogService.VoidInventoryLogAsync(id,User.GetUserId());
