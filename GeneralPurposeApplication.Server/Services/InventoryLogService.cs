@@ -42,7 +42,8 @@ namespace GeneralPurposeApplication.Server.Services
                         ChangeType = x.ChangeType,
                         Remarks = x.Remarks,
                         Date = x.Date,
-                        ProductName = x.Product!.Name
+                        ProductName = x.Product!.Name,
+                        IsVoided = x.IsVoided
                     }),
                 pageIndex,
                 pageSize,
@@ -115,7 +116,7 @@ namespace GeneralPurposeApplication.Server.Services
         public async Task VoidInventoryLogAsync(int inventoryLogId, string userId)
         {
             InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>()
-                .GetByIdAsync(inventoryLogId);
+                .GetByIdAsync(inventoryLogId, q => q.Product!);
 
             if (inventoryLog == null)
                 throw new KeyNotFoundException($"Inventory Log {inventoryLogId} not found.");

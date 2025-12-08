@@ -7,4 +7,5 @@ export interface InventoryLog {
   remarks: string;
   date: Date;
   stock: number;
+  isVoided: boolean;
 }
