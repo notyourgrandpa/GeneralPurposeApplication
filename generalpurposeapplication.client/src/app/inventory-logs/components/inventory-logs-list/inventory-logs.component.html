@@ -19,74 +19,83 @@
        [matSortActive]="defaultSortColumn"
        [matSortDirection]="defaultSortOrder">
 
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-      <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.id}}</td>
-    </ng-container>
+  <!-- Id Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+    <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.id}}</td>
+  </ng-container>
 
 
-    <!-- Product Column -->
-    <ng-container matColumnDef="productName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
-      <td mat-cell *matCellDef="let inventoryLog">
-        <button class="link-button" (click)="openProductDialog(inventoryLog.productId)">
-          {{ inventoryLog.productName }}
-        </button>
-      </td>
-    </ng-container>
+  <!-- Product Column -->
+  <ng-container matColumnDef="productName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
+    <td mat-cell *matCellDef="let inventoryLog">
+      <button class="link-button" (click)="openProductDialog(inventoryLog.productId)">
+        {{ inventoryLog.productName }}
+      </button>
+    </td>
+  </ng-container>
 
-    <!-- Date Column -->
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-      <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.date | date:'short'}}</td>
-    </ng-container>
+  <!-- Date Column -->
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+    <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.date | date:'short'}}</td>
+  </ng-container>
 
-    <!-- Quantity Column -->
-    <ng-container matColumnDef="quantity">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity </th>
-      <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.quantity}}</td>
-    </ng-container>
+  <!-- Quantity Column -->
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity </th>
+    <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.quantity}}</td>
+  </ng-container>
 
-    <!-- Change Type Column -->
-    <ng-container matColumnDef="changeType">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
-      <td mat-cell *matCellDef="let inventoryLog">
-        <mat-chip-listbox>
-          <mat-chip highlighted
-                    [color]="
+  <!-- Change Type Column -->
+  <ng-container matColumnDef="changeType">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+    <td mat-cell *matCellDef="let inventoryLog">
+      <mat-chip-listbox>
+        <mat-chip highlighted
+                  [color]="
           inventoryLog.changeType === 1 ? 'primary' :
           inventoryLog.changeType === 2 ? 'warn' :
           'accent'
         ">
-            {{ inventoryLog.changeType | inventoryChangeType }}
-          </mat-chip>
-        </mat-chip-listbox>
-      </td>
-    </ng-container>
+          {{ inventoryLog.changeType | inventoryChangeType }}
+        </mat-chip>
+      </mat-chip-listbox>
+    </td>
+  </ng-container>
 
 
-    <!-- Remarkss Column -->
-    <ng-container matColumnDef="remarks">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks</th>
-      <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.remarks}}</td>
-    </ng-container>
+  <!-- Remarkss Column -->
+  <ng-container matColumnDef="remarks">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks</th>
+    <td mat-cell *matCellDef="let inventoryLog">{{inventoryLog.remarks}}</td>
+  </ng-container>
 
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let inventoryLog">
-        <button mat-icon-button color="primary" [routerLink]="['/inventory-log', inventoryLog.id]" matTooltip="Edit">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="onDelete(inventoryLog.id)" matTooltip="Delete">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+    <td mat-cell *matCellDef="let inventoryLog">
+
+      <mat-chip color="warn" selected *ngIf="inventoryLog.isVoided">
+        VOIDED
+      </mat-chip>
+
+      <button mat-icon-button
+              color="primary"
+              [routerLink]="['/inventory-log', inventoryLog.id]"
+              matTooltip="Edit"
+              *ngIf="!inventoryLog.isVoided">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+    </td>
+  </ng-container>
+
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-row [class.voided]="row.isVoided" *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
 <!-- Pagination directive -->

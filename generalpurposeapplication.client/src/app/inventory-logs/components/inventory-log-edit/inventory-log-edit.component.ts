@@ -140,14 +140,14 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
       if (this.id) {
         // EDIT mode
         this.inventoryLogService
-          .put(inventoryLog)
+          .voidInventoryLog(inventoryLog.id)
           .subscribe({
             next: (result) => {
-              console.log("Inventory Log " + inventoryLog!.id + " has been updated.");
+              this.snackBar.open("Inventory log has been voided successfully.")
               // go back to products view
               this.router.navigate(['/inventory-logs']);
             },
-            error: (error) => console.error(error)
+            error: (error) => this.snackBar.open(error.error?.message, "Close")
           });
       }
       else {

@@ -1,6 +1,7 @@
 ﻿using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Extensions;
 using GeneralPurposeApplication.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,13 @@ namespace GeneralPurposeApplication.Server.Controllers
         {
             await _inventoryLogService.DeleteInventoryLogAsync(id);
 
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> VoidInventoryLogAsync(int id)
+        {
+            await _inventoryLogService.VoidInventoryLogAsync(id,User.GetUserId());
             return NoContent();
         }
     }

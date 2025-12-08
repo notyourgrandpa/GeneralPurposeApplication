@@ -16,5 +16,6 @@ namespace GeneralPurposeApplication.Server.Data.DTOs
         public string? Remarks { get; set; }
         public DateTime Date { get; set; }
         public string ProductName { get; set; } = null!;
+        public bool IsVoided { get; set; }
     }
 }
