@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { BaseFormComponent } from '../../../shared/components/base-form.component';
 import { InventoryLog } from '../../models/inventory-logs';
 import { Observable, Subject } from 'rxjs';
@@ -7,7 +7,7 @@ import { Product } from '../../../products/models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InventoryLogService } from '../../services/inventory-logs.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
@@ -31,8 +31,11 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     private router: Router,
     private inventoryLogService: InventoryLogService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public productId: number
+  ) {
     super();
+    this.id = productId
   }
 
   ngOnInit() {
