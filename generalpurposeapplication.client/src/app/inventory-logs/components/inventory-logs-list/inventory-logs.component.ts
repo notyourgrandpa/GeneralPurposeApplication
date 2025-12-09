@@ -1,3 +1,4 @@
+import { InventoryLogEditComponent } from './../inventory-log-edit/inventory-log-edit.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { InventoryLog } from '../../models/inventory-logs';
@@ -6,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { InventoryLogService } from '../../services/inventory-logs.service';
 import { ProductDialogService } from '../../../products/services/product-dialog.service'
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-inventory-logs',
@@ -37,7 +39,7 @@ export class InventoryLogsComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private inventoryLogService: InventoryLogService, private productDialogService: ProductDialogService) {
+  constructor(private inventoryLogService: InventoryLogService, private productDialogService: ProductDialogService, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -103,5 +105,15 @@ export class InventoryLogsComponent implements OnInit {
 
   openProductDialog(productId: number) {
     this.productDialogService.open(productId);
+  }
+
+  openInventoryLogEditDialog(productId: number){
+    let dialogRef = this.dialog.open(InventoryLogEditComponent, {width: '600px', data: productId})
+
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result){
+        this.loadData();
+      }
+    })
   }
 }
