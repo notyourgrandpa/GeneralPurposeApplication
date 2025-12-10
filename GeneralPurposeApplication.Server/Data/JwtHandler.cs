@@ -49,10 +49,52 @@ namespace GeneralPurposeApplication.Server.Data
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.Email!)
             };
-            foreach (var role in await _userManager.GetRolesAsync(user))
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+
+            var rolePermissions = new Dictionary<string, Dictionary<string, string[]>>
+            {
+                ["Administrator"] = new Dictionary<string, string[]>
+                {
+                    ["inventory-log"] = new[] { "edit", "view", "delete" },
+                    ["product"] = new[] { "edit", "view" },
+                    ["user"] = new[] { "edit", "view", "delete" }
+                },
+                ["Manager"] = new Dictionary<string, string[]>
+                {
+                    ["inventory-log"] = new[] { "view" },
+                    ["product"] = new[] { "view" }
+                },
+                ["Staff"] = new Dictionary<string, string[]>
+                {
+                    ["inventory-log"] = new[] { "view" }
+                }
+            };
+
+            //Merge permissions from all roles the user has
+            var userPermissions = new Dictionary<string, string[]>();
+            foreach (var role in roles)
+            {
+                if (rolePermissions.ContainsKey(role))
+                {
+                    foreach (var kvp in rolePermissions[role])
+                    {
+                        if (!userPermissions.ContainsKey(kvp.Key))
+                            userPermissions[kvp.Key] = kvp.Value;
+                        else
+                            userPermissions[kvp.Key] = userPermissions[kvp.Key].Union(kvp.Value).ToArray();
+                    }
+                }
+            }
+
+            var permissionsJson = System.Text.Json.JsonSerializer.Serialize(userPermissions);
+            claims.Add(new Claim("permissions", permissionsJson));
+
             return claims;
         }
     }

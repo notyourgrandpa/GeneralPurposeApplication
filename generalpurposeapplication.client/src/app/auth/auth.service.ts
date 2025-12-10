@@ -99,4 +99,27 @@ export class AuthService
     }
   }
 
+  private getDecodedToken(): any {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    } catch {
+      return null;
+    }
+  }
+
+  private getPermissions(): { [resource: string]: string[] } {
+    const decoded = this.getDecodedToken();
+    if (!decoded || !decoded.permissions) return {};
+    return typeof decoded.permissions === 'string'
+      ? JSON.parse(decoded.permissions)
+      : decoded.permissions;
+  }
+
+  canEdit(resource: string): boolean {
+    const perms = this.getPermissions()[resource];
+    return perms ? perms.includes('edit') : false;
+  }
 }
