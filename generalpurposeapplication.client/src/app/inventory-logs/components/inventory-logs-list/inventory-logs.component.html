@@ -12,7 +12,8 @@
          placeholder="Filter by name (or part of it)...">
 </mat-form-field>
 
-<table mat-table [dataSource]="inventoryLogs"
+<div class="w-full overflow-x-auto">
+  <table mat-table [dataSource]="inventoryLogs"
        class="mat-elevation-z8"
        [hidden]="!inventoryLogs"
        matSort (matSortChange)="loadData()"
@@ -105,6 +106,7 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row [class.voided]="row.isVoided" *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+</div>
 
 <!-- Pagination directive -->
 <mat-paginator [hidden]="!inventoryLogs"
