@@ -7,7 +7,7 @@ import { Product } from '../../../products/models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InventoryLogService } from '../../services/inventory-logs.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
@@ -32,7 +32,8 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     private inventoryLogService: InventoryLogService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public productId: number
+    @Inject(MAT_DIALOG_DATA) public productId: number,
+    private dialogRef: MatDialogRef<InventoryLogEditComponent>
   ) {
     super();
     this.id = productId
@@ -94,15 +95,16 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     this.loadProducts();
 
     // retrieve the ID from the 'id' parameter
-    var idParam = this.activatedRoute.snapshot.paramMap.get('id');
-    this.id = idParam ? +idParam : 0;
+    //var idParam = this.activatedRoute.snapshot.paramMap.get('id');
+    //this.id = idParam ? +idParam : 0;
+
     if (this.id) {
       // EDIT MODE
       // fetch the inventoryLog from the server
       this.inventoryLogService.get(this.id).subscribe({
         next: (result) => {
           this.inventoryLog = result;
-          this.title = "Edit - Inventory Log of " + this.inventoryLog.productName;
+          this.title = "Edit - Inventory Log";
           // update the form with the inventoryLog value
           this.form.patchValue(this.inventoryLog);
 
@@ -147,8 +149,7 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
           .subscribe({
             next: (result) => {
               this.snackBar.open("Inventory log has been voided successfully.")
-              // go back to products view
-              this.router.navigate(['/inventory-logs']);
+              this.dialogRef.close(true);
             },
             error: (error) => this.snackBar.open(error.error?.message, "Close")
           });

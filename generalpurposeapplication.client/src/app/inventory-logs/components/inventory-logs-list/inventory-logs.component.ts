@@ -1,3 +1,4 @@
+import { AuthService } from './../../../auth/auth.service';
 import { InventoryLogEditComponent } from './../inventory-log-edit/inventory-log-edit.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +9,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { InventoryLogService } from '../../services/inventory-logs.service';
 import { ProductDialogService } from '../../../products/services/product-dialog.service'
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-inventory-logs',
@@ -39,7 +41,12 @@ export class InventoryLogsComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private inventoryLogService: InventoryLogService, private productDialogService: ProductDialogService, private dialog: MatDialog) {
+  constructor(
+    private inventoryLogService: InventoryLogService,
+    private productDialogService: ProductDialogService,
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -107,13 +114,19 @@ export class InventoryLogsComponent implements OnInit {
     this.productDialogService.open(productId);
   }
 
-  openInventoryLogEditDialog(productId: number){
-    let dialogRef = this.dialog.open(InventoryLogEditComponent, {width: '600px', data: productId})
+  openInventoryLogEditDialog(productId: number) {
+    if (!this.authService.canEdit('inventory-log')) {
+      this.snackBar.open('You do not have permission to edit inventory logs.', 'Close', { duration: 3000 });
+      return; // Prevent dialog from opening
+    }
 
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result){
-        this.loadData();
-      }
-    })
+    const dialogRef = this.dialog.open(InventoryLogEditComponent, {
+      width: '600px',
+      data:  productId
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.loadData();
+    });
   }
 }
