@@ -17,10 +17,11 @@ export class SalesTransactionsComponent implements OnInit {
   }
   public displayedColumns: string[] = [
     'id',
-    //'totalAmount',
-    //'paymentMethod',
-    //'processedByUsername',
-    //'date'
+    'totalAmount',
+    'paymentMethod',
+    'processedByUsername',
+    'date',
+    'actions'
   ]
 
   public salesTransactions!: MatTableDataSource<SalesTransaction>;
