@@ -1,6 +1,11 @@
 {
-  "tailwindCSS.experimental.classRegex": [
-    "(?:className|classList)\\s*?=\\s*?[\"'`]([^\"'`]*).*?",
-  ],
-  "tailwindCSS.experimental.configFile": "../src/styles.css"
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+    "html": "html",
+    "typescript": "html"
+  },
+  "tailwindCSS.experimental.configFile": "tailwind.config.js"
 }
