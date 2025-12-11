@@ -73,6 +73,10 @@ namespace GeneralPurposeApplication.Server.Data
                 ["Staff"] = new Dictionary<string, string[]>
                 {
                     ["inventory-log"] = new[] { "view" }
+                },
+                ["RegisteredUser"] = new Dictionary<string, string[]>
+                {
+                    ["inventory-log"] = new[] { "view" }
                 }
             };
 
