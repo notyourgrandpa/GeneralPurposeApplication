@@ -63,12 +63,15 @@ namespace GeneralPurposeApplication.Server.Services
             if (inventoryLogDto.Quantity <= 0)
                 throw new ArgumentException("Quantity must be greater than zero.");
 
+            var product = await _productService.GetProductAsync(inventoryLogDto.ProductId);
+
             InventoryLog inventoryLog = new()
             {
                 ProductId = inventoryLogDto.ProductId,
                 Quantity = inventoryLogDto.Quantity,
                 ChangeType = inventoryLogDto.ChangeType,
                 Remarks = inventoryLogDto.Remarks,
+                OldStock = product?.Stock ?? 0,
                 Date = DateTime.UtcNow
             };
 
@@ -115,7 +118,8 @@ namespace GeneralPurposeApplication.Server.Services
 
         public async Task VoidInventoryLogAsync(int inventoryLogId, string userId)
         {
-            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>()
+            // Fetch the inventory log including its product
+            var inventoryLog = await _unitOfWork.Repository<InventoryLog>()
                 .GetByIdAsync(inventoryLogId, q => q.Product!);
 
             if (inventoryLog == null)
@@ -124,13 +128,17 @@ namespace GeneralPurposeApplication.Server.Services
             if (inventoryLog.IsVoided)
                 throw new InvalidOperationException("This inventory log is already voided.");
 
+            // Mark the log as voided
             inventoryLog.IsVoided = true;
             inventoryLog.VoidedAt = DateTime.UtcNow;
             inventoryLog.VoidedByUserId = userId;
 
+            // Fetch all logs for the same product, ordered by date
             var logs = await _unitOfWork.Repository<InventoryLog>()
-                .GetAllAsync(l => l.ProductId == inventoryLog.ProductId,
-                             orderBy: q => q.OrderBy(l => l.Date));
+                .GetAllAsync(
+                    l => l.ProductId == inventoryLog.ProductId,
+                    orderBy: q => q.OrderBy(l => l.Date)
+                );
 
             int stock = 0;
 
@@ -139,15 +147,21 @@ namespace GeneralPurposeApplication.Server.Services
                 if (log.IsVoided)
                     continue;
 
+                // Use OldStock to recalc stock
                 switch (log.ChangeType)
                 {
                     case InventoryChangeType.StockIn:
+                        log.OldStock = stock;
                         stock += log.Quantity;
                         break;
+
                     case InventoryChangeType.StockOut:
+                        log.OldStock = stock;
                         stock -= log.Quantity;
                         break;
+
                     case InventoryChangeType.Adjustment:
+                        log.OldStock = stock;
                         stock = log.Quantity;
                         break;
                 }
@@ -157,6 +171,5 @@ namespace GeneralPurposeApplication.Server.Services
 
             await _unitOfWork.SaveChangesAsync();
         }
-
     }
 }
