@@ -36,7 +36,7 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     private dialogRef: MatDialogRef<InventoryLogEditComponent>
   ) {
     super();
-    this.id = productId
+    this.id = productId ?? 0
   }
 
   ngOnInit() {
@@ -148,7 +148,7 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
           .voidInventoryLog(inventoryLog.id)
           .subscribe({
             next: (result) => {
-              this.snackBar.open("Inventory log has been voided successfully.")
+              this.snackBar.open("Inventory log has been voided successfully.", "Close", { duration: 3000 })
               this.dialogRef.close(true);
             },
             error: (error) => this.snackBar.open(error.error?.message, "Close")
@@ -160,9 +160,9 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
           .post(inventoryLog)
           .subscribe({
             next: (result) => {
-              console.log("Inventory Log " + result.id + " has been created.");
-              // go back to inventory logs view
-              this.router.navigate(['/inventory-logs']);
+              console.log();
+              this.snackBar.open("Inventory Log " + result.id + " has been created.", "Close", {duration: 3000})
+              this.dialogRef.close(true);
             },
             error: (err) => {
               console.error("Error:", err.message);
