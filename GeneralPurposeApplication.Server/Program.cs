@@ -78,6 +78,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<ISeedService, SeedService>();
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -140,7 +141,11 @@ app.UseExceptionHandler(errorApp =>
         };
 
         await context.Response.WriteAsJsonAsync(
-            new { message = exception?.Message ?? "An error occured." });
+            new
+            {
+                message = exception?.Message ?? "An error occured.",
+                type = exception?.GetType().Name
+            });
     });
 });
 app.UseCors("AngularPolicy");
