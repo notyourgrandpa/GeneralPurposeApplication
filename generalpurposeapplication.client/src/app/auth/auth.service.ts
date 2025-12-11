@@ -119,6 +119,7 @@ export class AuthService
   }
 
   canEdit(resource: string): boolean {
+    if (!this.isAuthenticated()) return false;
     const perms = this.getPermissions()[resource];
     return perms ? perms.includes('edit') : false;
   }
