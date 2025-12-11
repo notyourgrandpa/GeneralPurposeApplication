@@ -114,9 +114,13 @@ export class InventoryLogsComponent implements OnInit {
     this.productDialogService.open(productId);
   }
 
-  openInventoryLogEditDialog(productId: number) {
+  openInventoryLogEditDialog(productId?: number) {
+    const isEdit = !!productId;
     if (!this.authService.canEdit('inventory-log')) {
-      this.snackBar.open('You do not have permission to edit inventory logs.', 'Close', { duration: 3000 });
+      this.snackBar.open(
+        isEdit
+          ? 'You do not have permission to edit inventory logs.'
+          : 'You do not have permission to create inventory logs.', 'Close', { duration: 3000 });
       return; // Prevent dialog from opening
     }
 
