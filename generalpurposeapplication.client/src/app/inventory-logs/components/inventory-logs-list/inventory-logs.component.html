@@ -3,7 +3,7 @@
 <p *ngIf="!inventoryLogs"><em>Loading...</em></p>
 
 <button mat-flat-button color="primary"
-        class="btn-add" *ngIf="inventoryLogs" [routerLink]="['/inventory-log']">
+        class="btn-add" *ngIf="inventoryLogs" (click)="openInventoryLogEditDialog()">
   Add a new Inventory Log
 </button>
 
