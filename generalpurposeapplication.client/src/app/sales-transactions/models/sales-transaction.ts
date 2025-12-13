@@ -4,7 +4,7 @@ export interface SalesTransaction{
   totalAmount: number;
   paymentMethod: string;
   processedByUserId: number;
-  procsssedByUserName: string;
+  processedByUserName: string;
   date: Date;
   customerId: number;
   items: SalesTransactionItem[];
