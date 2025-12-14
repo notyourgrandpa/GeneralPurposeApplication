@@ -102,4 +102,8 @@ export class CategoriesComponent implements OnInit {
     if (!id) return;
     this.categoryService.confirmAndDelete(id, undefined, () => this.loadData());
   }
+
+  openCategoryproducts(categoryId: number) {
+
+  }
 }
