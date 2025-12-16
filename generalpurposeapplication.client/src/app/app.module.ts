@@ -34,6 +34,7 @@ import { ProductDialogComponent } from './products/components/product-dialog/pro
 import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.component';
 import { ProductListPageComponent } from './products/components/product-list-page/product-list-page.component';
+import { ProductListCoreComponent } from './products/components/product-list/product-list-core.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { ProductListPageComponent } from './products/components/product-list-pag
     ProductDialogComponent,
     ExpensesComponent,
     ExpenseEditComponent,
-    ProductListPageComponent
+    ProductListPageComponent,
+    ProductListCoreComponent
   ],
   imports: [
     BrowserModule,
