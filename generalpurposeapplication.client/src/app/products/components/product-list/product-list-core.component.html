@@ -7,7 +7,7 @@
   Add a new Product
 </button>
 
-<mat-form-field [hidden]="!products">
+<mat-form-field class="w-full" [hidden]="!products">
   <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
          placeholder="Filter by name (or part of it)...">
 </mat-form-field>

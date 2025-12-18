@@ -33,7 +33,7 @@ import { SalesTransactionEditComponent } from './sales-transactions/components/s
 import { ProductDialogComponent } from './products/components/product-dialog/product-dialog.component';
 import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.component';
-import { ProductListPageComponent } from './products/components/product-list-page/product-list-page.component';
+import { ProductListPageComponent } from './products/components/product-list/product-list-page.component';
 import { ProductListCoreComponent } from './products/components/product-list/product-list-core.component';
 
 
