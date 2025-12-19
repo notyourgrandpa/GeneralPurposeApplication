@@ -11,6 +11,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
 import { CategoryGraphQlService } from '../../services/categories-graphql.service'
+import { MatDialog } from '@angular/material/dialog';
+import { ProductListDialogComponent } from '../../../products/components/product-list-dialog/product-list-dialog.component';
 
 @Component({
   selector: 'app-categories',
@@ -39,7 +41,10 @@ export class CategoriesComponent implements OnInit {
 
   filterTextChanged: Subject<string> = new Subject<string>();
 
-  constructor(private categoryService: CategoryService, private categoryGraphQlService: CategoryGraphQlService) {
+  constructor(
+    private categoryService: CategoryService,
+    private categoryGraphQlService: CategoryGraphQlService,
+    private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -103,7 +108,11 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 
-  openCategoryProducts(categoryId: number) {
-
+  viewCategoryProducts(categoryId: number) {
+    this.dialog.open(ProductListDialogComponent,
+      {
+        width: '800px',
+        data: { categoryId }
+      })
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,7 +25,10 @@ export class ProductListCoreComponent {
     'lastUpdated',
     'actions'
   ];
-  public products!: MatTableDataSource<Product>;
+  public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
+  @Input() categoryId?: number;
+  @Input() compact = false;
+  @Input() outerPadded: boolean = false;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
