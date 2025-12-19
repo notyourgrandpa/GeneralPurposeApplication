@@ -103,7 +103,7 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 
-  openCategoryProducts(categoryId: number) {
+  openCategoryProductsDialog(categoryId: number) {
 
   }
 }
