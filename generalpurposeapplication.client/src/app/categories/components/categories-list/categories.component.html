@@ -37,7 +37,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Products</th>
       <td mat-cell *matCellDef="let category">
         {{category.totalProducts}}
-        <button mat-icon-button color="warn" (click)="openCategoryProducts(category.id)" matTooltip="Open Category Products">
+        <button mat-icon-button color="warn" (click)="viewCategoryProducts(category.id)" matTooltip="Open Category Products">
           <mat-icon>assignment</mat-icon>
         </button>
       </td>

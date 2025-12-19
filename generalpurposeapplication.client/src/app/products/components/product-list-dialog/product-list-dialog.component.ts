@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-product-list-dialog',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './product-list-dialog.component.scss'
 })
 export class ProductListDialogComponent {
-
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data:
+      {
+        categoryId: number
+      })
+  {
+  }
 }
