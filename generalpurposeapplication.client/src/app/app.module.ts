@@ -35,6 +35,7 @@ import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.component';
 import { ProductListPageComponent } from './products/components/product-list/product-list-page.component';
 import { ProductListCoreComponent } from './products/components/product-list/product-list-core.component';
+import { ProductListDialogComponent } from './products/components/product-list-dialog/product-list-dialog.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { ProductListCoreComponent } from './products/components/product-list/pro
     ExpensesComponent,
     ExpenseEditComponent,
     ProductListPageComponent,
-    ProductListCoreComponent
+    ProductListCoreComponent,
+    ProductListDialogComponent
   ],
   imports: [
     BrowserModule,
