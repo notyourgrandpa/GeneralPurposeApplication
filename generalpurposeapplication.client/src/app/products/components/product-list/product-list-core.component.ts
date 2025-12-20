@@ -85,7 +85,7 @@ export class ProductListCoreComponent {
       ? this.filterQuery
       : null;
 
-    this.productGraphqlService.getData(
+    this.productService.getData(
       event.pageIndex,
       event.pageSize,
       sortColumn,
