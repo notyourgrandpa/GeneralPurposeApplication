@@ -28,7 +28,6 @@ export class ProductListCoreComponent {
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
   @Input() categoryId?: number;
   @Input() compact = false;
-  @Input() outerPadded: boolean = false;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -86,7 +85,7 @@ export class ProductListCoreComponent {
       ? this.filterQuery
       : null;
 
-    this.productGraphqlService.getData(
+    this.productService.getData(
       event.pageIndex,
       event.pageSize,
       sortColumn,

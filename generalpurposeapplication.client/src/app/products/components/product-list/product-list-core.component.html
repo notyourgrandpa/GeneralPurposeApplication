@@ -3,7 +3,7 @@
 <p *ngIf="!products"><em>Loading...</em></p>
 
 <button mat-flat-button color="primary"
-        class="btn-add" *ngIf="products" [routerLink]="['/product']">
+        class="btn-add" *ngIf="products && !compact" [routerLink]="['/product']">
   Add a new Product
 </button>
 
