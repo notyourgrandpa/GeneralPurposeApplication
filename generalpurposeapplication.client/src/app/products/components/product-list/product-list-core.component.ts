@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { Product } from '../../models/product';
-import { ProductGraphQlService } from '../../services/product-graphql.service';
 import { ProductService } from '../../services/product.service';
 
 @Component({
@@ -43,8 +42,7 @@ export class ProductListCoreComponent {
   filterTextChanged: Subject<string> = new Subject<string>();
 
   constructor(
-    private productService: ProductService,
-    private productGraphqlService: ProductGraphQlService) {
+    private productService: ProductService) {
   }
 
   ngOnInit() {
