@@ -2,15 +2,54 @@
 <p>Here's a list of products: </p>
 <p *ngIf="!products"><em>Loading...</em></p>
 
-<button mat-flat-button color="primary"
-        class="btn-add" *ngIf="products && !compact" [routerLink]="['/product']">
-  Add a new Product
-</button>
+<!-- FILTER BAR -->
+<div *ngIf="products"
+     class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
-<mat-form-field class="w-full" [hidden]="!products">
-  <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
-         placeholder="Filter by name (or part of it)...">
-</mat-form-field>
+  <!-- LEFT: Filters -->
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+
+    <!-- Search -->
+    <mat-form-field appearance="outline" class="w-full sm:w-64">
+      <mat-label>Search</mat-label>
+      <input matInput
+             placeholder="Search products"
+             (keyup)="onFilterTextChanged($any($event.target).value)">
+    </mat-form-field>
+
+    <!-- Category -->
+    <mat-form-field appearance="outline" class="w-full sm:w-48">
+      <mat-label>Category</mat-label>
+      <mat-select (selectionChange)="onCategoryChanged($event.value)">
+        <mat-option [value]="null">All</mat-option>
+        <mat-option *ngFor="let c of categories" [value]="c.id">
+          {{ c.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Status -->
+    <mat-form-field appearance="outline" class="w-full sm:w-40">
+      <mat-label>Status</mat-label>
+      <mat-select (selectionChange)="onStatusChanged($event.value)">
+        <mat-option [value]="null">All</mat-option>
+        <mat-option [value]="true">Active</mat-option>
+        <mat-option [value]="false">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+  <!-- RIGHT: Action -->
+  <button mat-flat-button
+          color="primary"
+          class="self-start sm:self-auto"
+          *ngIf="!compact"
+          [routerLink]="['/product']">
+    Add Product
+  </button>
+
+</div>
 
 <div class="w-full overflow-x-auto">
   <table mat-table [dataSource]="products"

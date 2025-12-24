@@ -16,13 +16,12 @@ import { SalesTransactionsComponent } from './sales-transactions/components/sale
 import { SalesTransactionEditComponent } from './sales-transactions/components/sales-transaction-edit/sales-transaction-edit.component';
 import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.component';
-import { ProductListPageComponent } from './products/components/product-list/product-list-page.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'fetch-data', component: FetchDataComponent },
   { path: 'health-check', component: HealthCheckComponent },
-  //{ path: 'products', component: ProductsComponent },
+  { path: 'products', component: ProductsComponent },
   { path: 'product/:id', component: ProductEditComponent, canActivate: [AuthGuard] },
   { path: 'product', component: ProductEditComponent, canActivate: [AuthGuard] },
   { path: 'categories', component: CategoriesComponent },
@@ -38,7 +37,6 @@ const routes: Routes = [
   { path: 'expenses', component: ExpensesComponent },
   { path: 'expense', component: ExpenseEditComponent, canActivate: [AuthGuard] },
   { path: 'expense/:id', component: ExpenseEditComponent, canActivate: [AuthGuard] },
-  { path: 'products', component: ProductListPageComponent},
 ];
 
 @NgModule({
