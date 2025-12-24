@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
+import { Category } from '../../../categories/models/category';
 
 @Component({
   selector: 'app-product-list-core',
@@ -25,6 +26,7 @@ export class ProductListCoreComponent {
     'actions'
   ];
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
+  public categories: Category[] = [];
   @Input() categoryId?: number;
   @Input() compact = false;
 
@@ -103,5 +105,13 @@ export class ProductListCoreComponent {
 
   onDelete(id: number): void {
     this.productService.confirmAndDelete(id, undefined, () => this.loadData());
+  }
+
+  onCategoryChanged(event: Event) {
+
+  }
+
+  onStatusChanged(event: Event) {
+
   }
 }
