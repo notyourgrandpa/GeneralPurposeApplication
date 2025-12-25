@@ -12,9 +12,9 @@
     <!-- Search -->
     <mat-form-field appearance="outline" class="w-full sm:w-64">
       <mat-label>Search</mat-label>
-      <input matInput
+      <input matInput #searchInput
              placeholder="Search products"
-             (keyup)="onFilterTextChanged($any($event.target).value)">
+             (keyup)="onFilterTextChanged(searchInput.value)">
     </mat-form-field>
 
     <!-- Category -->
