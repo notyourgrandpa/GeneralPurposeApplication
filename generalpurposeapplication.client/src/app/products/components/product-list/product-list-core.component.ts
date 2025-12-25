@@ -107,11 +107,11 @@ export class ProductListCoreComponent {
     this.productService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 
-  onCategoryChanged(event: Event) {
+  onCategoryChanged(categoryId: number) {
 
   }
 
-  onStatusChanged(event: Event) {
+  onStatusChanged(status: string) {
 
   }
 }
