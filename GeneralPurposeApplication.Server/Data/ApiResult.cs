@@ -92,9 +92,7 @@ namespace GeneralPurposeApplication.Server.Data
                && IsValidProperty(parameters.filterColumn))
             {
                 source = source.Where(
-                    string.Format("{0}.StartsWith(@0)",
-                    parameters.filterColumn),
-                    parameters.filterQuery);
+                    $"{parameters.filterColumn}.Contains(@0)", parameters.filterQuery);
             }
 
             var count = await source.CountAsync();
