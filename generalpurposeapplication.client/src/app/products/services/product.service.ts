@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ProductQueryParams } from '../models/product-query-params';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +45,35 @@ export class ProductService
     }
     return this.http.get<ApiResult<Product>>(url, { params });
   }
+
+  getProducts(params: ProductQueryParams): Observable<ApiResult<Product>> {
+    const url = this.getUrl('api/products');
+
+    let httpParams = new HttpParams()
+      .set('pageIndex', params.pageIndex)
+      .set('pageSize', params.pageSize);
+
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+
+    if (params.categoryId != null) {
+      httpParams = httpParams.set('categoryId', params.categoryId);
+    }
+
+    if (params.isActive != null) {
+      httpParams = httpParams.set('isActive', params.isActive);
+    }
+
+    if (params.sort) {
+      httpParams = httpParams
+        .set('sort', params.sort)
+        .set('direction', params.direction ?? 'asc');
+    }
+
+    return this.http.get<ApiResult<Product>>(url, { params: httpParams });
+  }
+
   get(id: number): Observable<Product> {
     var url = this.getUrl("api/products/" + id);
     return this.http.get<Product>(url);
