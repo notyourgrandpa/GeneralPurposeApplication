@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BaseService, ApiResult } from '../../shared/services/base.service';
 import { Observable, catchError, filter, of, switchMap, tap } from 'rxjs';
-import { Product } from '../models/product'; 
+import { Product } from '../models/product';
 import { Category } from '../../categories/models/category';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -92,27 +92,6 @@ export class ProductService
     return this.http.delete<Product>(url);
   }
 
-  getCategories(
-    pageIndex: number,
-    pageSize: number,
-    sortColumn: string,
-    sortOrder: string,
-    filterColumn: string | null,
-    filterQuery: string | null
-  ): Observable<ApiResult<Category>> {
-    var url = this.getUrl("api/Categories");
-    var params = new HttpParams()
-      .set("pageIndex", pageIndex.toString())
-      .set("pageSize", pageSize.toString())
-      .set("sortColumn", sortColumn)
-      .set("sortOrder", sortOrder);
-    if (filterColumn && filterQuery) {
-      params = params
-        .set("filterColumn", filterColumn)
-        .set("filterQuery", filterQuery);
-    }
-    return this.http.get<ApiResult<Category>>(url, { params });
-  }
   isDupeProduct(item: Product): Observable<boolean> {
     var url = this.getUrl("api/Products/IsDupeProduct");
     return this.http.post<boolean>(url, item);
