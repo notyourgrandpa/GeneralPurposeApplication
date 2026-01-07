@@ -15,6 +15,7 @@ import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-d
 import { ProductService } from '../../services/product.service';
 import { ProductGraphQlService } from '../../services/product-graphql.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CategoryService } from '../../../categories/services/category.service';
 
 @Component({
   selector: 'app-product-edit',
@@ -46,6 +47,7 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
     private router: Router,
     private productService: ProductService,
     private productGraphQlService: ProductGraphQlService,
+    private categoryService: CategoryService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog) {
     super();
@@ -130,11 +132,11 @@ export class ProductEditComponent extends BaseFormComponent implements OnInit, O
 
   loadCategories() {
     // fetch all the countries from the server
-    this.categories = this.productService
-      .getCategories(0, 9999, "name", "asc", null, null)
+    this.categories = this.categoryService
+      .getData(0, 9999, "name", "asc", null, null)
       .pipe(map(x => x.data));
   }
-  
+
   onSubmit() {
     var product = (this.id) ? this.product : <Product>{};
     if (product) {
