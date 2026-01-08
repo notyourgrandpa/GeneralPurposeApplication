@@ -48,22 +48,6 @@ export class SalesTransactionService extends BaseService<SalesTransaction> {
     return this.http.delete<SalesTransaction>(url);
   }
 
-  getProducts(pageIndex: number, pageSize: number, sortColumn: string, sortOrder: string, filterColumn: string | null, filterQuery: string | null): Observable<ApiResult<Product>> {
-    var url = this.getUrl("/api/products");
-    var params = new HttpParams()
-      .set("pageIndex", pageIndex.toString())
-      .set("pageSize", pageSize.toString())
-      .set("sortColumn", sortColumn)
-      .set("sortOrder", sortOrder);
-    if (filterColumn && filterQuery) {
-      params = params
-        .set("filterColumn", filterColumn)
-        .set("filterQuery", filterQuery)
-    }
-
-    return this.http.get<ApiResult<Product>>(url, { params });
-  }
-
   confirmAndDelete(id: number, redirectTo?: string, reloadCallback?: () => void): void {
     this.dialog.open(ConfirmDialogComponent, {
       data: {
