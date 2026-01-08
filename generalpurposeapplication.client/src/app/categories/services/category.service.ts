@@ -7,6 +7,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CategoryQueryParams } from '../../inventory-logs/models/category-query-params';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +43,28 @@ export class CategoryService
         .set("filterQuery", filterQuery);
     }
     return this.http.get<ApiResult<Category>>(url, { params });
+  }
+
+  getCategories(
+    params: CategoryQueryParams
+  ): Observable<ApiResult<Category>> {
+    const url = this.getUrl('api/categories');
+
+    let httpParams = new HttpParams()
+      .set('pageIndex', params.pageIndex)
+      .set('pageSize', params.pageSize);
+
+    if (params.search) {
+      httpParams = httpParams.set('search', params.search);
+    }
+
+    if (params.sort) {
+      httpParams = httpParams
+        .set('sort', params.sort)
+        .set('direction', params.direction ?? 'asc');
+    }
+
+    return this.http.get<ApiResult<Category>>(url, { params: httpParams });
   }
 
   get(id: number): Observable<Category> {
