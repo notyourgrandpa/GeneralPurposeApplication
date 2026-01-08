@@ -135,8 +135,8 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
 
   loadProducts() {
     // fetch all the countries from the server
-    this.products = this.salesTransactionService
-      .getProducts(0, 9999, "name", "asc", null, null)
+    this.products = this.productService
+      .getData(0, 9999, "name", "asc", null, null)
       .pipe(map(x => x.data));
   }
 
@@ -189,7 +189,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
     }
 
     // clear the autocomplete input
-    this.productSearch.reset(''); 
+    this.productSearch.reset('');
     this.selectedProduct = undefined;
   }
 

@@ -1,11 +1,14 @@
+import { ProductQueryParams } from './../../models/product-query-params';
 import { Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { Category } from '../../../categories/models/category';
+import { CategoryQueryParams } from '../../../inventory-logs/models/category-query-params';
+import { CategoryService } from '../../../categories/services/category.service';
 
 @Component({
   selector: 'app-product-list-core',
@@ -26,7 +29,7 @@ export class ProductListCoreComponent {
     'actions'
   ];
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
-  public categories: Category[] = [];
+  public categories?: Observable<Category[]> ;
   @Input() categoryId?: number;
   @Input() compact = false;
 
@@ -44,7 +47,8 @@ export class ProductListCoreComponent {
   filterTextChanged: Subject<string> = new Subject<string>();
 
   constructor(
-    private productService: ProductService) {
+    private productService: ProductService,
+    private categoryService: CategoryService) {
   }
 
   ngOnInit() {
@@ -101,6 +105,19 @@ export class ProductListCoreComponent {
         },
         error: (error) => console.error(error)
       });
+  }
+
+  loadCategories(){
+    const categoryQueryParams: CategoryQueryParams = {
+      pageIndex: 0,
+      pageSize: 999,
+      sort: 'name',
+      search: '',
+      direction: 'asc'
+    }
+    this.categories = this.categoryService
+      .getCategories(categoryQueryParams)
+      .pipe(map(x => x.data));
   }
 
   onDelete(id: number): void {
