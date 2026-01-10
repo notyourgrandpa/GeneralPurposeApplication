@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+import { ProductService } from '../../../products/services/product.service';
 
 @Component({
   selector: 'app-inventory-log-edit',
@@ -30,6 +31,7 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private inventoryLogService: InventoryLogService,
+    private productService: ProductService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public productId: number,
@@ -121,8 +123,8 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
 
   loadProducts() {
     // fetch all the countries from the server
-    this.products = this.inventoryLogService
-      .getProducts(0, 9999, "name", "asc", null, null)
+    this.products = this.productService
+      .getData(0, 9999, "name", "asc", null, null)
       .pipe(map(x => x.data));
   }
 
