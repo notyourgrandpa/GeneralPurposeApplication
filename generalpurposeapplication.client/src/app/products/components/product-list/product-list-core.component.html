@@ -22,7 +22,7 @@
       <mat-label>Category</mat-label>
       <mat-select (selectionChange)="onCategoryChanged($event.value)">
         <mat-option [value]="null">All</mat-option>
-        <mat-option *ngFor="let c of categories" [value]="c.id">
+        <mat-option *ngFor="let c of categories | async" [value]="c.id">
           {{ c.name }}
         </mat-option>
       </mat-select>
