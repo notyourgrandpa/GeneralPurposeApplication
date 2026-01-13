@@ -54,5 +54,15 @@ namespace GeneralPurposeApplication.Server.Repositories
         {
             return await _context.Set<T>().Where(predicate, values).AnyAsync();
         }
+        public async Task<int> CountAsync(Specification<T> spec)
+        {
+            var query = SpecificationEvaluator.GetQuery(_context.Set<T>(), spec);
+            return await query.CountAsync();
+        }
+        public async Task<IReadOnlyList<T>> ListAsync(Specification<T> spec)
+        {
+            var query = SpecificationEvaluator.GetQuery(_context.Set<T>(), spec);
+            return await query.ToListAsync();
+        }
     }
 }
