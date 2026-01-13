@@ -1,6 +1,7 @@
 ﻿using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Data.QueryParameters;
 using GeneralPurposeApplication.Server.Repositories;
 using System;
 using System.Collections.Generic;
