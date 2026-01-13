@@ -1,7 +1,7 @@
 import { ProductQueryParams } from './../../models/product-query-params';
 import { Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject, debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Product } from '../../models/product';
@@ -53,6 +53,7 @@ export class ProductListCoreComponent {
 
   ngOnInit() {
     this.loadData();
+    this.loadCategories();
   }
 
   // debounce filter text changes
@@ -87,24 +88,45 @@ export class ProductListCoreComponent {
       : null;
     var filterQuery = (this.filterQuery)
       ? this.filterQuery
-      : null;
+      : undefined;
 
-    this.productService.getData(
-      event.pageIndex,
-      event.pageSize,
-      sortColumn,
-      sortOrder,
-      filterColumn,
-      filterQuery)
-      .subscribe({
-        next: (result) => {
-          this.paginator.length = result.totalCount;
-          this.paginator.pageIndex = result.pageIndex;
-          this.paginator.pageSize = result.pageSize;
-          this.products = new MatTableDataSource<Product>(result.data);
-        },
-        error: (error) => console.error(error)
-      });
+    const categoryId = this.categoryId ?? undefined;
+
+    const productQueryParams: ProductQueryParams = {
+      pageIndex: event.pageIndex,
+      pageSize: event.pageSize,
+      search: filterQuery,
+      categoryId: categoryId,
+      sort: sortColumn,
+      direction: sortOrder
+    }
+
+    this.productService.getProducts(productQueryParams).subscribe({
+      next: (result) => {
+        this.paginator.length = result.totalCount,
+        this.paginator.pageIndex = result.pageIndex,
+        this.paginator.pageSize = result.pageSize,
+        this.products = new MatTableDataSource<Product>(result.data);
+      },
+      error: (error) => console.log(error)
+    })
+
+    //this.productService.getData(
+    //  event.pageIndex,
+    //  event.pageSize,
+    //  sortColumn,
+    //  sortOrder,
+    //  filterColumn,
+    //  filterQuery)
+    //  .subscribe({
+    //    next: (result) => {
+    //      this.paginator.length = result.totalCount;
+    //      this.paginator.pageIndex = result.pageIndex;
+    //      this.paginator.pageSize = result.pageSize;
+    //      this.products = new MatTableDataSource<Product>(result.data);
+    //    },
+    //    error: (error) => console.error(error)
+    //  });
   }
 
   loadCategories(){
@@ -125,7 +147,8 @@ export class ProductListCoreComponent {
   }
 
   onCategoryChanged(categoryId: number) {
-
+    this.categoryId = categoryId;
+    this.loadData();
   }
 
   onStatusChanged(status: string) {
