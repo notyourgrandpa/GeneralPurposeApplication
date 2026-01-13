@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
+using GeneralPurposeApplication.Server.Data.QueryParameters;
 
 namespace GeneralPurposeApplication.Server.Data
 {

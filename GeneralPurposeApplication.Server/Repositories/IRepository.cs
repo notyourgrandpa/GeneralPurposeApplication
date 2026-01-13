@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneralPurposeApplication.Server.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -22,5 +23,7 @@ namespace GeneralPurposeApplication.Server.Repositories
         IQueryable<T> GetQueryable();
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         Task<bool> AnyAsync(string predicate, params object[] values);
+        Task<int> CountAsync(Specification<T> spec);
+        Task<IReadOnlyList<T>> ListAsync(Specification<T> spec);
     }
 }

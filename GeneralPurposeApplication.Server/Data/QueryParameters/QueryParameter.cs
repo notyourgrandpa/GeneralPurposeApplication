@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralPurposeApplication.Server.Data
+namespace GeneralPurposeApplication.Server.Data.QueryParameters
 {
     public class QueryParameter
     {
@@ -14,6 +14,5 @@ namespace GeneralPurposeApplication.Server.Data
         public string? sortOrder = null;
         public string? filterColumn = null;
         public string? filterQuery = null;
-
     }
 }

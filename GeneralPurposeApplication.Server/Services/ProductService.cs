@@ -1,6 +1,8 @@
 ﻿using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Data.QueryParameters;
+using GeneralPurposeApplication.Server.Data.Specs;
 using GeneralPurposeApplication.Server.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -44,6 +46,31 @@ namespace GeneralPurposeApplication.Server.Services
                 sortOrder,
                 filterColumn,
                 filterQuery);
+        }
+
+        public async Task<PagedResult<ProductDTO>> GetProductsAsync(ProductQueryParameter param)
+        {
+            var spec = new ProductsFilteredSpec(param);
+
+            var count = await _unitOfWork.Repository<Product>().CountAsync(spec);
+
+            var products = await _unitOfWork.Repository<Product>().ListAsync(spec);
+
+            var data = products.Select(x => new ProductDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                CategoryId = x.CategoryId,
+                CategoryName = x.Category!.Name,
+                CostPrice = x.CostPrice,
+                SellingPrice = x.SellingPrice,
+                Stock = x.Stock,
+                IsActive = x.IsActive,
+                DateAdded = x.DateAdded,
+                LastUpdated = x.LastUpdated
+            }).ToList();
+
+            return new PagedResult<ProductDTO>(data, count, param.pageIndex, param.pageSize);
         }
 
         public async Task<Product?> GetProductAsync(int productId)
