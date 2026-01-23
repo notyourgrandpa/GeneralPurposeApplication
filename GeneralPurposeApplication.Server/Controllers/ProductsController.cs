@@ -1,6 +1,7 @@
 ﻿using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Server.Data.QueryParameters;
 using GeneralPurposeApplication.Server.Services;
 using Humanizer;
 using Microsoft.AspNetCore.Authentication;
@@ -30,15 +31,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/Cities/?pageIndex=0&pageSize=10
         // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ActionResult<ApiResult<ProductDTO>>> GetProductsAsync(
-            int pageIndex = 0, 
-            int pageSize = 10, 
-            string? sortColumn = null,
-            string? sortOrder = null, 
-            string? filterColumn = null, 
-            string? filterQuery = null)
+        public async Task<ActionResult<PagedResult<ProductDTO>>> GetProductsAsync([FromQuery]ProductQueryParameter parameters)
         {
-            var result = await _productService.GetProductsAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            var result = await _productService.GetProductsAsync(parameters);
             return Ok(result);
         }
 
