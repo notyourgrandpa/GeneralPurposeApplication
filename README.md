@@ -81,21 +81,30 @@ A collection of applications I develop.
    npm install
    ```
 
-3. Migrate (Or use provided sample database):
+3. Configure database connection (User Secrets or appsettings.json):
+   ```
+      {
+        "ConnectionStrings": {
+             "DefaultConnection": "Server=SAMPLEDESKTOP\\SQLEXPRESS;Database=GeneralPurposeApplication;User Id=GeneralPurposeApplication;Password=SamplePassword;TrustServerCertificate=True;MultipleActiveResultSets=True"
+        }
+      }
+   ```
+
+5. Migrate (Or use provided sample database):
    ```
    dotnet ef migrations add "Initial" -o "Data/Migrations"
    ```
    ```
    dotnet ef database update
    ```
-4. Populate database using Seed (If taken Migrate Path):  
+6. Populate database using Seed (If taken Migrate Path):  
    * Creating default users requires "DefaultPasswords" on secrets.json/appsettings.json):
    - secrets.json/appsettings.json:
    ```
-      "DefaultPasswords": {
-        "RegisteredUser": "Sampl3Pa$$_User",
-        "Administrator": "Sampl3Pa$$_Admin"
-      }
+   "DefaultPasswords": {
+     "RegisteredUser": "Sampl3Pa$$_User",
+     "Administrator": "Sampl3Pa$$_Admin"
+   }
    ```
    - Create default users:
    ```
@@ -106,7 +115,7 @@ A collection of applications I develop.
    https://localhost:8701/api/Seed/Import:
    ```
    
-6. Run the application:
+7. Run the application:
    - Start the backend (ASP.NET Core):
       ```sh
       dotnet run
