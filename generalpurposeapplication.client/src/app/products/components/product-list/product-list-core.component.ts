@@ -159,6 +159,6 @@ export class ProductListCoreComponent implements OnChanges {
   }
 
   onStatusChanged(status: string) {
-
+    this.loadData();
   }
 }
