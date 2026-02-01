@@ -1,5 +1,5 @@
 import { ProductQueryParams } from './../../models/product-query-params';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { CategoryService } from '../../../categories/services/category.service';
   templateUrl: './product-list-core.component.html',
   styleUrl: './product-list-core.component.scss'
 })
-export class ProductListCoreComponent {
+export class ProductListCoreComponent implements OnChanges {
   public displayedColumns: string[] = [
     'id',
     'name',
@@ -32,6 +32,7 @@ export class ProductListCoreComponent {
   public categories?: Observable<Category[]> ;
   @Input() categoryId?: number;
   @Input() compact = false;
+  selectedCategoryId: number | null = null;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -49,6 +50,12 @@ export class ProductListCoreComponent {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['categoryId']){
+      this.selectedCategoryId = this.categoryId ?? null;
+    }
   }
 
   ngOnInit() {
@@ -90,7 +97,7 @@ export class ProductListCoreComponent {
       ? this.filterQuery
       : undefined;
 
-    const categoryId = this.categoryId ?? undefined;
+    const categoryId = this.selectedCategoryId ?? undefined;
 
     const productQueryParams: ProductQueryParams = {
       pageIndex: event.pageIndex,
@@ -147,7 +154,7 @@ export class ProductListCoreComponent {
   }
 
   onCategoryChanged(categoryId: number) {
-    this.categoryId = categoryId;
+    this.selectedCategoryId = categoryId;
     this.loadData();
   }
 
