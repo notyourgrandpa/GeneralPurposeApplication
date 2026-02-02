@@ -57,12 +57,12 @@ export class ProductService
       httpParams = httpParams.set('search', params.search);
     }
 
-    if (params.categoryId != null) {
-      httpParams = httpParams.set('categoryId', params.categoryId);
+    if (params.filter?.categoryId != null) {
+      httpParams = httpParams.set('categoryId', params.filter.categoryId);
     }
 
-    if (params.isActive != null) {
-      httpParams = httpParams.set('isActive', params.isActive);
+    if (params.filter?.isActive != null) {
+      httpParams = httpParams.set('isActive', params.filter.isActive);
     }
 
     if (params.sort) {

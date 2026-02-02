@@ -9,8 +9,9 @@ namespace GeneralPurposeApplication.Server.Data.Specs
         public ProductsFilteredSpec(ProductQueryParameter param)
         {
             Criteria = p =>
-                (param.categoryId.HasValue && p.CategoryId == param.categoryId) &&
-                (string.IsNullOrEmpty(param.filterQuery) || p.Name.Contains(param.filterQuery));
+                (!param.categoryId.HasValue || p.CategoryId == param.categoryId) &&
+                (string.IsNullOrEmpty(param.filterQuery) || p.Name.Contains(param.filterQuery)) &&
+                (!param.isActive.HasValue || p.IsActive == param.isActive);
 
             Includes.Add(p => p.Category!);
 

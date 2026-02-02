@@ -33,6 +33,7 @@ export class ProductListCoreComponent implements OnChanges {
   @Input() categoryId?: number;
   @Input() compact = false;
   selectedCategoryId: number | null = null;
+  selectedStatus: boolean | null = null;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -98,12 +99,15 @@ export class ProductListCoreComponent implements OnChanges {
       : undefined;
 
     const categoryId = this.selectedCategoryId ?? undefined;
-
+    const status = this.selectedStatus ?? undefined;
     const productQueryParams: ProductQueryParams = {
       pageIndex: event.pageIndex,
       pageSize: event.pageSize,
       search: filterQuery,
-      categoryId: categoryId,
+      filter: {
+        categoryId: categoryId,
+        isActive: status
+      },
       sort: sortColumn,
       direction: sortOrder
     }
@@ -158,7 +162,8 @@ export class ProductListCoreComponent implements OnChanges {
     this.loadData();
   }
 
-  onStatusChanged(status: string) {
+  onStatusChanged(status: boolean) {
+    this.selectedStatus = status;
     this.loadData();
   }
 }
