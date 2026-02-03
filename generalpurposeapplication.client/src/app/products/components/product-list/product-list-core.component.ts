@@ -103,7 +103,7 @@ export class ProductListCoreComponent implements OnChanges {
     const productQueryParams: ProductQueryParams = {
       pageIndex: event.pageIndex,
       pageSize: event.pageSize,
-      search: filterQuery,
+      filterQuery: filterQuery,
       filter: {
         categoryId: categoryId,
         isActive: status

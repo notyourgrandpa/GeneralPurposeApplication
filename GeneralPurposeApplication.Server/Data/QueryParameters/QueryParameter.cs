@@ -8,11 +8,11 @@ namespace GeneralPurposeApplication.Server.Data.QueryParameters
 {
     public class QueryParameter
     {
-        public int pageIndex = 0;
-        public int pageSize = 10;
-        public string? sortColumn = null;
-        public string? sortOrder = null;
-        public string? filterColumn = null;
-        public string? filterQuery = null;
+        public int PageIndex { get; set; } = 0;
+        public int PageSize { get; set; } = 10;
+        public string? SortColumn { get; set; } = null;
+        public string? SortOrder { get; set; } = null;
+        public string? FilterColumn { get; set; } = null;
+        public string? FilterQuery { get; set; } = null;
     }
 }

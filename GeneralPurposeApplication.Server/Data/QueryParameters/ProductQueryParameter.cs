@@ -8,7 +8,7 @@ namespace GeneralPurposeApplication.Server.Data.QueryParameters
 {
     public class ProductQueryParameter: QueryParameter
     {
-        public int? categoryId { get; set; }
-        public bool? isActive { get; set; }
+        public int? CategoryId { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

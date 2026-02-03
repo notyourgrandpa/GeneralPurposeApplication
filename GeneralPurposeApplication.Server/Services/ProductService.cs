@@ -44,7 +44,7 @@ namespace GeneralPurposeApplication.Server.Services
                 LastUpdated = x.LastUpdated
             }).ToList();
 
-            return new PagedResult<ProductDTO>(data, count, param.pageIndex, param.pageSize);
+            return new PagedResult<ProductDTO>(data, count, param.PageIndex, param.PageSize);
         }
 
         public async Task<Product?> GetProductAsync(int productId)

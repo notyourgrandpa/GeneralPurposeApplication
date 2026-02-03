@@ -3,7 +3,7 @@ import { SortDirection } from '@angular/material/sort';
 export interface ProductQueryParams {
   pageIndex: number;
   pageSize: number;
-  search?: string;
+  filterQuery?: string;
   filter?: ProductFilter;
   sort?: string;
   direction?: SortDirection;
