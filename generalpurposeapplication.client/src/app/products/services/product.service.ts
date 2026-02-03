@@ -53,8 +53,8 @@ export class ProductService
       .set('pageIndex', params.pageIndex)
       .set('pageSize', params.pageSize);
 
-    if (params.search) {
-      httpParams = httpParams.set('search', params.search);
+    if (params.filterQuery) {
+      httpParams = httpParams.set('filterQuery', params.filterQuery);
     }
 
     if (params.filter?.categoryId != null) {
