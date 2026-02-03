@@ -9,23 +9,23 @@ namespace GeneralPurposeApplication.Server.Data.Specs
         public ProductsFilteredSpec(ProductQueryParameter param)
         {
             Criteria = p =>
-                (!param.categoryId.HasValue || p.CategoryId == param.categoryId) &&
-                (string.IsNullOrEmpty(param.filterQuery) || p.Name.Contains(param.filterQuery)) &&
-                (!param.isActive.HasValue || p.IsActive == param.isActive);
+                (!param.CategoryId.HasValue || p.CategoryId == param.CategoryId) &&
+                (string.IsNullOrEmpty(param.FilterQuery) || p.Name.Contains(param.FilterQuery)) &&
+                (!param.IsActive.HasValue || p.IsActive == param.IsActive);
 
             Includes.Add(p => p.Category!);
 
 
-            if(!string.IsNullOrWhiteSpace(param.sortColumn) && ProductSortMap.Map.TryGetValue(param.sortColumn, out var sortExpression))
+            if(!string.IsNullOrWhiteSpace(param.SortColumn) && ProductSortMap.Map.TryGetValue(param.SortColumn, out var sortExpression))
             {
-                if(param.sortOrder == "asc")
+                if(param.SortOrder == "asc")
                     OrderBy = sortExpression;
-                else if(param.sortOrder == "desc")
+                else if(param.SortOrder == "desc")
                     OrderByDescending = sortExpression;
             }
 
-            Skip = param.pageIndex * param.pageSize;
-            Take = param.pageSize;
+            Skip = param.PageIndex * param.PageSize;
+            Take = param.PageSize;
             IsPagingEnabled = true;
         }
     }

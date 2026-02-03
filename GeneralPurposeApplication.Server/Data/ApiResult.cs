@@ -88,31 +88,31 @@ namespace GeneralPurposeApplication.Server.Data
             IQueryable<T> source,
             QueryParameter parameters)
         {
-            if (!string.IsNullOrEmpty(parameters.filterColumn)
-               && !string.IsNullOrEmpty(parameters.filterQuery)
-               && IsValidProperty(parameters.filterColumn))
+            if (!string.IsNullOrEmpty(parameters.FilterColumn)
+               && !string.IsNullOrEmpty(parameters.FilterQuery)
+               && IsValidProperty(parameters.FilterColumn))
             {
                 source = source.Where(
-                    $"{parameters.filterColumn}.Contains(@0)", parameters.filterQuery);
+                    $"{parameters.FilterColumn}.Contains(@0)", parameters.FilterQuery);
             }
 
             var count = await source.CountAsync();
-            if (!string.IsNullOrEmpty(parameters.sortColumn) && IsValidProperty(parameters.sortColumn))
+            if (!string.IsNullOrEmpty(parameters.SortColumn) && IsValidProperty(parameters.SortColumn))
             {
-                parameters.sortOrder = !string.IsNullOrEmpty(parameters.sortOrder)
-                    && parameters.sortOrder.ToUpper() == "ASC"
+                parameters.SortOrder = !string.IsNullOrEmpty(parameters.SortOrder)
+                    && parameters.SortOrder.ToUpper() == "ASC"
                     ? "ASC"
                     : "DESC";
-                source = source.OrderBy(string.Format("{0} {1}", parameters.sortColumn, parameters.sortOrder)
+                source = source.OrderBy(string.Format("{0} {1}", parameters.SortColumn, parameters.SortOrder)
                     );
             }
             source = source
-                .Skip(parameters.pageIndex * parameters.pageSize)
-                .Take(parameters.pageSize);
+                .Skip(parameters.PageIndex * parameters.PageSize)
+                .Take(parameters.PageSize);
 
             var data = await source.ToListAsync();
 
-            return new ApiResult<T>(data, count, parameters.pageIndex, parameters.pageSize, parameters.sortColumn, parameters.sortOrder, parameters.filterColumn, parameters.filterQuery);
+            return new ApiResult<T>(data, count, parameters.PageIndex, parameters.PageSize, parameters.SortColumn, parameters.SortOrder, parameters.FilterColumn, parameters.FilterQuery);
 
         }
         #endregion
