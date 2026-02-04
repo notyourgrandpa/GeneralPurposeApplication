@@ -28,8 +28,8 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         // GET: api/Products
-        // GET: api/Cities/?pageIndex=0&pageSize=10
-        // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
+        // GET: api/Products/?pageIndex=0&pageSize=10
+        // GET: api/Products/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
         public async Task<ActionResult<PagedResult<ProductDTO>>> GetProductsAsync([FromQuery]ProductQueryParameter parameters)
         {

@@ -78,7 +78,10 @@
       <ng-container matColumnDef="categoryName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
         <td mat-cell *matCellDef="let product">
-          <a [routerLink]="['/category', product.categoryId]">{{product.categoryName}}</a>
+          <a [routerLink]="['/category', product.categoryId]" *ngIf="!compact; else compactCategory" >{{product.categoryName}}</a>
+          <ng-template #compactCategory>
+            <p>{{product.categoryName}}</p>
+          </ng-template>
         </td>
       </ng-container>
 

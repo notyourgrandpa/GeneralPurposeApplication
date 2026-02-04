@@ -16,7 +16,7 @@ import { CategoryService } from '../../../categories/services/category.service';
   styleUrl: './product-list-core.component.scss'
 })
 export class ProductListCoreComponent implements OnChanges {
-  public displayedColumns: string[] = [
+  private readonly baseColumns: string[] = [
     'id',
     'name',
     'categoryName',
@@ -25,9 +25,9 @@ export class ProductListCoreComponent implements OnChanges {
     'stock',
     'isActive',
     'dateAdded',
-    'lastUpdated',
-    'actions'
+    'lastUpdated'
   ];
+  public displayedColumns: string[] = [...this.baseColumns, 'actions'];
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
   public categories?: Observable<Category[]> ;
   @Input() categoryId?: number;
@@ -54,14 +54,23 @@ export class ProductListCoreComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['categoryId']){
+    if (changes['categoryId']) {
       this.selectedCategoryId = this.categoryId ?? null;
+    }
+
+    if (changes['compact']) {
+      this.updateDisplayedColumns();
     }
   }
 
   ngOnInit() {
+    this.updateDisplayedColumns();
     this.loadData();
     this.loadCategories();
+  }
+
+  private updateDisplayedColumns(): void {
+    this.displayedColumns = this.compact ? [...this.baseColumns] : [...this.baseColumns, 'actions'];
   }
 
   // debounce filter text changes
