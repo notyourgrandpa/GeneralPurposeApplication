@@ -67,8 +67,8 @@ export class ProductService
 
     if (params.sort) {
       httpParams = httpParams
-        .set('sort', params.sort)
-        .set('direction', params.direction ?? 'asc');
+        .set('sortColumn', params.sort)
+        .set('sortOrder', params.direction ?? 'asc');
     }
 
     return this.http.get<ApiResult<Product>>(url, { params: httpParams });
