@@ -17,7 +17,6 @@ import { CategoryService } from '../../../categories/services/category.service';
 })
 export class ProductListCoreComponent implements OnChanges {
   private readonly baseColumns: string[] = [
-    'id',
     'name',
     'categoryName',
     'costPrice',

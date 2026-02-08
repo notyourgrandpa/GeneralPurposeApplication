@@ -16,7 +16,6 @@ export class SalesTransactionsComponent implements OnInit {
     this.loadData();
   }
   public displayedColumns: string[] = [
-    'id',
     'totalAmount',
     'paymentMethod',
     'processedByUsername',

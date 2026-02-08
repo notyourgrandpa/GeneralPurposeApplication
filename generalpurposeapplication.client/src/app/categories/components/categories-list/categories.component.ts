@@ -21,7 +21,6 @@ import { ProductListDialogComponent } from '../../../products/components/product
 })
 export class CategoriesComponent implements OnInit {
   public displayedColumns: string[] = [
-    'id',
     'name',
     'totalProducts',
     'action'
