@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularMaterialModule } from '../../shared/angular-material.module';
+import { AngularMaterialModule } from '../../../shared/angular-material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ProductsComponent } from './products.component';
-import { Product } from '../models/product';
-import { ProductService } from '../services/product.service';
-import { ApiResult } from '../../shared/services/base.service';
+import { ProductListComponent } from '../product-list/product-list.component';
+import { Product } from '../../models/product';
+import { ProductService } from '../../services/product.service';
+import { ApiResult } from '../../../shared/services/base.service';
 
-describe('ProductsComponent', () => {
-  let component: ProductsComponent;
-  let fixture: ComponentFixture<ProductsComponent>;
+describe('ProductListComponent', () => {
+  let component: ProductListComponent;
+  let fixture: ComponentFixture<ProductListComponent>;
   beforeEach(async () => {
     // Create a mock productService object with a mock 'getData' method
     let productService = jasmine.createSpyObj<ProductService>('ProductService',
@@ -41,7 +41,7 @@ describe('ProductsComponent', () => {
         pageSize: 10
       }));
     await TestBed.configureTestingModule({
-      declarations: [ProductsComponent],
+      declarations: [ProductListComponent],
       imports: [
         BrowserAnimationsModule,
         AngularMaterialModule,
@@ -57,7 +57,7 @@ describe('ProductsComponent', () => {
       .compileComponents();
   });
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductsComponent);
+    fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     component.paginator = jasmine.createSpyObj(
       "MatPaginator", ["length", "pageIndex", "pageSize"]

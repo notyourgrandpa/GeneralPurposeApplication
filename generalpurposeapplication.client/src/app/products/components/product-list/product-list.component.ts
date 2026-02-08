@@ -1,4 +1,4 @@
-import { ProductQueryParams } from './../../models/product-query-params';
+import { ProductQueryParams } from '../../models/product-query-params';
 import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
@@ -12,12 +12,11 @@ import { CategoryService } from '../../../categories/services/category.service';
 
 @Component({
   selector: 'app-product-list-core',
-  templateUrl: './product-list-core.component.html',
-  styleUrl: './product-list-core.component.scss'
+  templateUrl: './product-list.component.html',
+  styleUrl: './product-list.component.scss'
 })
-export class ProductListCoreComponent implements OnChanges {
+export class ProductListComponent implements OnChanges {
   private readonly baseColumns: string[] = [
-    'id',
     'name',
     'categoryName',
     'costPrice',
