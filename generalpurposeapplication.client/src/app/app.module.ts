@@ -13,7 +13,6 @@ import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HealthCheckComponent } from './health-check/health-check.component';
-import { ProductsComponent } from './products/components/product-list/products.component';
 import { ProductEditComponent } from './products/components/product-edit/product-edit.component';
 import { CategoriesComponent } from './categories/components/categories-list/categories.component';
 import { CategoryEditComponent } from './categories/components/category-edit/category-edit.component';
@@ -33,7 +32,7 @@ import { SalesTransactionEditComponent } from './sales-transactions/components/s
 import { ProductDialogComponent } from './products/components/product-dialog/product-dialog.component';
 import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.component';
-import { ProductListCoreComponent } from './products/components/product-list/product-list-core.component';
+import { ProductListComponent } from './products/components/product-list/product-list.component';
 import { ProductListDialogComponent } from './products/components/product-list-dialog/product-list-dialog.component';
 
 
@@ -44,7 +43,7 @@ import { ProductListDialogComponent } from './products/components/product-list-d
     NavMenuComponent,
     FetchDataComponent,
     HealthCheckComponent,
-    ProductsComponent,
+    ProductListComponent,
     ProductEditComponent,
     CategoriesComponent,
     CategoryEditComponent,
@@ -58,7 +57,6 @@ import { ProductListDialogComponent } from './products/components/product-list-d
     ProductDialogComponent,
     ExpensesComponent,
     ExpenseEditComponent,
-    ProductListCoreComponent,
     ProductListDialogComponent
   ],
   imports: [
