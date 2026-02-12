@@ -38,3 +38,6 @@ table {
 .custom-dialog-container {
   border-radius: 32px;
 }
+.mdc-notched-outline__notch {
+  border-right: none;
+}
