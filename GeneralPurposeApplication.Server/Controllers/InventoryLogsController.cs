@@ -1,4 +1,5 @@
-﻿using GeneralPurposeApplication.Server.Data;
+﻿using GeneralPurposeApplication.Server.Application.UseCases;
+using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Extensions;
@@ -18,10 +19,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class InventoryLogsController : ControllerBase
     {
         private readonly IInventoryLogService _inventoryLogService;
+        private readonly AddStockUseCase _addStockUseCase;
 
-        public InventoryLogsController(IInventoryLogService inventoryLogService)
+        public InventoryLogsController(IInventoryLogService inventoryLogService, AddStockUseCase addStockUseCase)
         {
             _inventoryLogService = inventoryLogService;
+            _addStockUseCase = addStockUseCase;
         }
         // GET: api/InventoryLogs
         // GET: api/InventoryLogs/?pageIndex=0&pageSize=10
@@ -54,7 +57,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<InventoryLogDTO>> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
-            InventoryLogDTO inventoryLog = await _inventoryLogService.CreateInventoryLogAsync(inventoryLogDto);
+            InventoryLogDTO inventoryLog = await _addStockUseCase.ExecuteAsync(inventoryLogDto);
 
             return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, inventoryLog);
         }
