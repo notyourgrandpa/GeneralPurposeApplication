@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 using GeneralPurposeApplication.Server.Repositories;
 using GeneralPurposeApplication.Server.Services;
 using Microsoft.AspNetCore.Diagnostics;
+using GeneralPurposeApplication.Server.Application.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +80,7 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
+builder.Services.AddScoped<AddStockUseCase>();
 
 builder.Services.AddAuthentication(opt =>
 {
