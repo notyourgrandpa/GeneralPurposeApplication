@@ -14,7 +14,6 @@ namespace GeneralPurposeApplication.Server.Services
     public class SalesTransactionService : ISalesTransactionService
     {
         private readonly IUnitOfWork _unitOfWork;
-
         public SalesTransactionService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -99,7 +98,7 @@ namespace GeneralPurposeApplication.Server.Services
                 TotalAmount = salesTransaction.TotalAmount,
                 PaymentMethod = salesTransaction.PaymentMethod,
                 ProcessedByUserId = salesTransaction.ProcessedByUserId,
-                ProcessedByUserName = salesTransaction.ProcessedByUser.UserName!,
+                //ProcessedByUserName = salesTransaction.ProcessedByUser.UserName!,
                 Date = salesTransaction.Date,
             };
         }
