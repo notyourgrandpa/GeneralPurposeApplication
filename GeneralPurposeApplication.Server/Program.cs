@@ -81,6 +81,7 @@ builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<AddStockUseCase>();
+builder.Services.AddScoped<AddSalesTransactionUseCase>();
 
 builder.Services.AddAuthentication(opt =>
 {
