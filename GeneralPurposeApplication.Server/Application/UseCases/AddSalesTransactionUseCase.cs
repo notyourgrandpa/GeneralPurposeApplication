@@ -24,7 +24,6 @@ namespace GeneralPurposeApplication.Server.Application.UseCases
         public async Task<SalesTransactionsDTO> ExecuteAsync(SalesTransactionCreateDTO salesTransactionCreateDTO, string UserId)
         {
             var salesTransaction = await _salesTransactionService.CreateSalesTransactionAsync(salesTransactionCreateDTO, UserId);
-            await _unitOfWork.SaveChangesAsync();
             return salesTransaction;
         }
     }
