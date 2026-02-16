@@ -14,9 +14,11 @@ namespace GeneralPurposeApplication.Server.Services
     public class SalesTransactionService : ISalesTransactionService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public SalesTransactionService(IUnitOfWork unitOfWork)
+        private readonly IInventoryLogService _inventoryLogService;
+        public SalesTransactionService(IUnitOfWork unitOfWork, IInventoryLogService inventoryLogService)
         {
             _unitOfWork = unitOfWork;
+            _inventoryLogService = inventoryLogService;
         }
 
         public async Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync(int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
@@ -78,13 +80,13 @@ namespace GeneralPurposeApplication.Server.Services
                 };
                 salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
 
-                InventoryLog inventoryLog = new()
+                InventoryLogCreateDto inventoryLog = new()
                 {
                     ProductId = row.ProductId,
                     Quantity = row.Quantity,
-                    Date = DateTime.UtcNow,
                     ChangeType = InventoryChangeType.StockOut
                 };
+                await _inventoryLogService.CreateInventoryLogAsync(inventoryLog);
                 salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
             }
 
