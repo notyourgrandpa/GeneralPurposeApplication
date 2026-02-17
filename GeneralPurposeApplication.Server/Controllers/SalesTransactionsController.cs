@@ -1,4 +1,5 @@
-﻿using GeneralPurposeApplication.Server.Data;
+﻿using GeneralPurposeApplication.Server.Application.UseCases;
+using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
 using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Extensions;
@@ -13,10 +14,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class SalesTransactionsController: ControllerBase
     {
         private readonly ISalesTransactionService _salesTransactionService;
+        private readonly AddSalesTransactionUseCase _addSalesTransactionUseCase;
 
-        public SalesTransactionsController(ISalesTransactionService salesTransactionService)
+        public SalesTransactionsController(ISalesTransactionService salesTransactionService, AddSalesTransactionUseCase addSalesTransactionUseCase)
         {
             _salesTransactionService = salesTransactionService;
+            _addSalesTransactionUseCase = addSalesTransactionUseCase;
         }
         // GET: api/SalesTransactions
         // GET: api/SalesTransactions/?pageIndex=0&pageSize=10
@@ -53,7 +56,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<SalesTransaction>> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionLogDto)
         {
-            var salesTransactionDto = await _salesTransactionService.CreateSalesTransactionAsync(salesTransactionLogDto, User.GetUserId());
+            var salesTransactionDto = await _addSalesTransactionUseCase.ExecuteAsync(salesTransactionLogDto, User.GetUserId());
 
             return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
         }

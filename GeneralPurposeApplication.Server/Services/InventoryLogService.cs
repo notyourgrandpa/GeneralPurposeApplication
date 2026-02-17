@@ -79,8 +79,6 @@ namespace GeneralPurposeApplication.Server.Services
 
             await _productService.UpdateStockAsync(inventoryLog);
 
-            await _unitOfWork.SaveChangesAsync();
-
             return new InventoryLogDTO
             {
                 Id = inventoryLog.Id,
