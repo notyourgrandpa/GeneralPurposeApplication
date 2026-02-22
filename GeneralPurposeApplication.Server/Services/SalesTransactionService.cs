@@ -31,7 +31,7 @@ namespace GeneralPurposeApplication.Server.Services
                         TotalAmount = x.TotalAmount,
                         PaymentMethod = x.PaymentMethod,
                         ProcessedByUserId = x.ProcessedByUserId,
-                        ProcessedByUserName = x.ProcessedByUser.UserName!,
+                        //ProcessedByUserName = x.ProcessedByUser.UserName!,
                         Date = x.Date,
                     }),
                 pageIndex,

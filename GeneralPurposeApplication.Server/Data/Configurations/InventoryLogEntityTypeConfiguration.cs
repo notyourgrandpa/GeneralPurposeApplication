@@ -26,10 +26,10 @@ namespace GeneralPurposeApplication.Server.Data.Configurations
                 .HasOne(x => x.Product)
                 .WithMany(x => x.InventoryLogs)
                 .HasForeignKey(x => x.ProductId);
-            builder
-                .HasOne(x => x.VoidedByUser)
-                .WithMany(x => x.InventoryLogs)
-                .HasForeignKey(x => x.VoidedByUserId);
+            //builder
+            //    .HasOne(x => x.VoidedByUser)
+            //    .WithMany(x => x.InventoryLogs)
+            //    .HasForeignKey(x => x.VoidedByUserId);
         }
     }
 }

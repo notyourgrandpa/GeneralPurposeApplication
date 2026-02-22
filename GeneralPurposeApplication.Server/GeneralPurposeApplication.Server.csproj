@@ -43,6 +43,7 @@
     <ProjectReference Include="..\generalpurposeapplication.client\generalpurposeapplication.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\GeneralPurposeApplication.Domain\GeneralPurposeApplication.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
