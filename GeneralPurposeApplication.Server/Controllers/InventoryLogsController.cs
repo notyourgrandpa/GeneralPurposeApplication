@@ -1,7 +1,6 @@
 ﻿using GeneralPurposeApplication.Server.Application.UseCases;
 using GeneralPurposeApplication.Server.Data;
 using GeneralPurposeApplication.Server.Data.DTOs;
-using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Extensions;
 using GeneralPurposeApplication.Server.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeneralPurposeApplication.Server.Data.Models;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
