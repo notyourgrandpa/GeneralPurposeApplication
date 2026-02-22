@@ -87,7 +87,6 @@ namespace GeneralPurposeApplication.Server.Services
                     ChangeType = InventoryChangeType.StockOut
                 };
                 await _inventoryLogService.CreateInventoryLogAsync(inventoryLog);
-                salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
             }
 
             await _unitOfWork.Repository<SalesTransaction>().AddAsync(salesTransaction);
