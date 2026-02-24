@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using GeneralPurposeApplication.Domain.Sales;
 
-namespace GeneralPurposeApplication.Server.Data.Models
+namespace GeneralPurposeApplication.Domain.Customers
 {
     public class Customer
     {

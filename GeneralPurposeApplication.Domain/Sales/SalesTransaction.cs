@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeneralPurposeApplication.Domain.Customers;
 
-namespace GeneralPurposeApplication.Server.Data.Models {
+namespace GeneralPurposeApplication.Domain.Sales {
     public class SalesTransaction
     {
         public int Id { get; set; }        

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GeneralPurposeApplication.Server.Controllers;
-using GeneralPurposeApplication.Server.Data.Models;
 using GeneralPurposeApplication.Server.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,7 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Microsoft.Extensions.Configuration;
-using GeneralPurposeApplication.Server.Services;
+using GeneralPurposeApplication.Application.Services;
+using GeneralPurposeApplication.Infrastructure.Persistence;
+using GeneralPurposeApplication.Infrastructure.Identity;
 
 namespace GeneralPurposeApplication.Tests
 {

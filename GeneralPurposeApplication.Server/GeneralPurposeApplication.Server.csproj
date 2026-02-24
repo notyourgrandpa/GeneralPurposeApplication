@@ -11,6 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\Commands\**" />
+    <Compile Remove="Application\Queries\**" />
+    <Content Remove="Application\Commands\**" />
+    <Content Remove="Application\Queries\**" />
+    <EmbeddedResource Remove="Application\Commands\**" />
+    <EmbeddedResource Remove="Application\Queries\**" />
+    <None Remove="Application\Commands\**" />
+    <None Remove="Application\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.9.14" />
     <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.9.14" />
@@ -40,15 +51,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GeneralPurposeApplication.Application\GeneralPurposeApplication.Application.csproj" />
     <ProjectReference Include="..\generalpurposeapplication.client\generalpurposeapplication.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\GeneralPurposeApplication.Domain\GeneralPurposeApplication.Domain.csproj" />
+    <ProjectReference Include="..\GeneralPurposeApplication.Infrastructure\GeneralPurposeApplication.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Commands\" />
-    <Folder Include="Application\Queries\" />
+    <Folder Include="Application\" />
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 

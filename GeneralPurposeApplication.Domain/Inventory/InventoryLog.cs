@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeneralPurposeApplication.Domain.Products;
 
-namespace GeneralPurposeApplication.Server.Data.Models
+namespace GeneralPurposeApplication.Domain.Inventory
 {
     public class InventoryLog
     {

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics.Metrics;
+﻿using GeneralPurposeApplication.Domain.Categories;
+using GeneralPurposeApplication.Domain.Inventory;
+using GeneralPurposeApplication.Domain.Sales;
 
-namespace GeneralPurposeApplication.Server.Data.Models
+namespace GeneralPurposeApplication.Domain.Products
 {
     public class Product
     {

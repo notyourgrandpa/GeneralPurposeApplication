@@ -1,8 +1,9 @@
-﻿using GeneralPurposeApplication.Server.Application.UseCases;
-using GeneralPurposeApplication.Server.Data;
-using GeneralPurposeApplication.Server.Data.DTOs;
-using GeneralPurposeApplication.Server.Extensions;
-using GeneralPurposeApplication.Server.Services;
+﻿using GeneralPurposeApplication.Application.Common.Paging;
+using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Services;
+using GeneralPurposeApplication.Application.UseCases;
+using GeneralPurposeApplication.Domain.Inventory;
+using GeneralPurposeApplication.Infrastructure.Persistence.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GeneralPurposeApplication.Server.Data.Models;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {

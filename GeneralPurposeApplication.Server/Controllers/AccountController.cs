@@ -1,9 +1,9 @@
-﻿using GeneralPurposeApplication.Server.Data.Models;
+﻿using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Infrastructure.Identity;
 using GeneralPurposeApplication.Server.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
-using GeneralPurposeApplication.Server.Data.DTOs;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {

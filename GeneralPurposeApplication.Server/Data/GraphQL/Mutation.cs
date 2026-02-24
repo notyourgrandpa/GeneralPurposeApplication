@@ -1,5 +1,7 @@
-﻿using GeneralPurposeApplication.Server.Data.DTOs;
-using GeneralPurposeApplication.Server.Data.Models;
+﻿using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Domain.Categories;
+using GeneralPurposeApplication.Domain.Products;
+using GeneralPurposeApplication.Infrastructure.Persistence;
 using HotChocolate.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;

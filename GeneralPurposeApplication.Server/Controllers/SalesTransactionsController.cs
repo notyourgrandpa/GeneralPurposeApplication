@@ -1,9 +1,9 @@
-﻿using GeneralPurposeApplication.Server.Application.UseCases;
-using GeneralPurposeApplication.Server.Data;
-using GeneralPurposeApplication.Server.Data.DTOs;
-using GeneralPurposeApplication.Server.Data.Models;
-using GeneralPurposeApplication.Server.Extensions;
-using GeneralPurposeApplication.Server.Services;
+﻿using GeneralPurposeApplication.Application.Common.Paging;
+using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Services;
+using GeneralPurposeApplication.Application.UseCases;
+using GeneralPurposeApplication.Domain.Sales;
+using GeneralPurposeApplication.Infrastructure.Persistence.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
