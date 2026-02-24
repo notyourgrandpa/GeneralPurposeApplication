@@ -1,5 +1,4 @@
 ﻿using GeneralPurposeApplication.Server.Data;
-using GeneralPurposeApplication.Server.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,9 @@ using System.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Path = System.IO.Path;
-using GeneralPurposeApplication.Server.Services;
+using GeneralPurposeApplication.Infrastructure.Persistence;
+using GeneralPurposeApplication.Infrastructure.Identity;
+using GeneralPurposeApplication.Application.Services;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {

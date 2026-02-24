@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using GeneralPurposeApplication.Server.Data.Models;
+using GeneralPurposeApplication.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 

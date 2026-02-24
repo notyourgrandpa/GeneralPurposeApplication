@@ -1,6 +1,6 @@
-﻿using GeneralPurposeApplication.Server.Controllers;
-using GeneralPurposeApplication.Server.Data.DTOs;
-using GeneralPurposeApplication.Server.Services;
+﻿using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Services;
+using GeneralPurposeApplication.Server.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;

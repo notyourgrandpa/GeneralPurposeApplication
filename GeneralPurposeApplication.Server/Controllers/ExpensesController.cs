@@ -1,8 +1,8 @@
-﻿using GeneralPurposeApplication.Server.Data;
-using GeneralPurposeApplication.Server.Data.DTOs;
-using GeneralPurposeApplication.Server.Data.Models;
-using GeneralPurposeApplication.Server.Data.QueryParameters;
-using GeneralPurposeApplication.Server.Services;
+﻿using GeneralPurposeApplication.Application.Common.Paging;
+using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.QueryParameters;
+using GeneralPurposeApplication.Application.Services;
+using GeneralPurposeApplication.Domain.Expenses;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

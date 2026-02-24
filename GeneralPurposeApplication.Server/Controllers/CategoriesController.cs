@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GeneralPurposeApplication.Server.Data;
-using GeneralPurposeApplication.Server.Data.Models;
 using System.Linq.Dynamic.Core;
-using GeneralPurposeApplication.Server.Data.DTOs;
 using Microsoft.AspNetCore.Authorization;
-using GeneralPurposeApplication.Server.Services;
+using GeneralPurposeApplication.Application.Services;
+using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Domain.Categories;
+using GeneralPurposeApplication.Application.Common.Paging;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {

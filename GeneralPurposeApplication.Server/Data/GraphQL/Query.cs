@@ -1,14 +1,17 @@
 ﻿using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
-using GeneralPurposeApplication.Server.Data.DTOs;
-using GeneralPurposeApplication.Server.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using GeneralPurposeApplication.Domain.Products;
+using GeneralPurposeApplication.Infrastructure.Persistence;
+using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Common.Paging;
+using GeneralPurposeApplication.Domain.Categories;
 
 namespace GeneralPurposeApplication.Server.Data.GraphQL
 {

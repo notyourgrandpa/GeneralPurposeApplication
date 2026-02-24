@@ -1,20 +1,23 @@
 ﻿global using GeneralPurposeApplication.Server;
-using GeneralPurposeApplication.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
-using GeneralPurposeApplication.Server.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Cors;
 using GeneralPurposeApplication.Server.Data.GraphQL;
 using Microsoft.AspNetCore.SignalR;
-using GeneralPurposeApplication.Server.Repositories;
-using GeneralPurposeApplication.Server.Services;
 using Microsoft.AspNetCore.Diagnostics;
-using GeneralPurposeApplication.Server.Application.UseCases;
+using GeneralPurposeApplication.Infrastructure.Persistence;
+using GeneralPurposeApplication.Infrastructure.Identity;
+using GeneralPurposeApplication.Server.Data;
+using GeneralPurposeApplication.Domain.Abstractions;
+using GeneralPurposeApplication.Application.Services;
+using GeneralPurposeApplication.Infrastructure.Services;
+using GeneralPurposeApplication.Application.UseCases;
+using GeneralPurposeApplication.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
