@@ -56,9 +56,14 @@ A collection of applications I develop.
   
 6. What's the Fodo for today???? - PLANNED
    - _I want to track my food stocks on my refrigerator; I need an app for this._
-   - List the ingredients when planming to from the list of food stocks
-   - Automatically manage the food stocks based on the added ingredients for the planned meal
-   - Ingredients for planned meal are not on the stock? Add a temporary ingredients for that
+   - List the ingredients when planming to from the list of food stocks.
+   - Automatically manage the food stocks based on the added ingredients for the planned meal.
+   - Ingredients for planned meal are not on the stock? Add a temporary ingredients for that.
+
+7. Test your Japanese! - Under Development
+   - _I'm learning Japanese, there should be an app to test my japanese writing, reading, and listening skills!._
+   - Select your Hiragana, Katakana, Kanji alphabet for recognizing random alphabets.
+   - Learn Japanese Alphabet.
   
 ## Documentation
 
