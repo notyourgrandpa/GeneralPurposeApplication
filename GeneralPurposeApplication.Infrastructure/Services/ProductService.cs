@@ -62,9 +62,9 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 CostPrice = productCreateDTO.CostPrice,
                 SellingPrice = productCreateDTO.SellingPrice,
                 IsActive = productCreateDTO.IsActive,
-                LastUpdated = DateTime.UtcNow,
-                DateAdded = DateTime.UtcNow
             };
+
+            product.SetCreated(DateTime.Now);
 
             await _unitOfWork.Repository<Product>().AddAsync(product);
             await _unitOfWork.SaveChangesAsync();
@@ -93,7 +93,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             product.CostPrice = productUpdateDTO.CostPrice;
             product.SellingPrice = productUpdateDTO.SellingPrice;
             product.IsActive = productUpdateDTO.IsActive;
-            product.LastUpdated = DateTime.Now;
+            product.SetUpdated(DateTime.Now);
 
             await _unitOfWork.SaveChangesAsync();
             return true;
