@@ -11,14 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Application\Commands\**" />
-    <Compile Remove="Application\Queries\**" />
-    <Content Remove="Application\Commands\**" />
-    <Content Remove="Application\Queries\**" />
-    <EmbeddedResource Remove="Application\Commands\**" />
-    <EmbeddedResource Remove="Application\Queries\**" />
-    <None Remove="Application\Commands\**" />
-    <None Remove="Application\Queries\**" />
+    <Compile Remove="Application\**" />
+    <Content Remove="Application\**" />
+    <EmbeddedResource Remove="Application\**" />
+    <None Remove="Application\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,7 +56,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\" />
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
