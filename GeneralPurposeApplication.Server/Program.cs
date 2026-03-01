@@ -18,6 +18,7 @@ using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Infrastructure.Services;
 using GeneralPurposeApplication.Application.UseCases;
 using GeneralPurposeApplication.Infrastructure.Repositories;
+using GeneralPurposeApplication.Application.Common.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +86,7 @@ builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddScoped<AddStockUseCase>();
 builder.Services.AddScoped<AddSalesTransactionUseCase>();
 
