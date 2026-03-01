@@ -145,7 +145,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 if (product != null)
                 {
                     product.Stock += item.Quantity; // restore stock
-                    product.LastUpdated = DateTime.UtcNow;
+                    product.SetUpdated(DateTime.UtcNow);
                 }
             }
 
