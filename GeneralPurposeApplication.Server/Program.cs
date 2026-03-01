@@ -18,6 +18,7 @@ using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Infrastructure.Services;
 using GeneralPurposeApplication.Application.UseCases;
 using GeneralPurposeApplication.Infrastructure.Repositories;
+using GeneralPurposeApplication.Application.Common.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +77,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<JwtHandler>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IInventoryLogService, InventoryLogService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -85,6 +87,7 @@ builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddScoped<AddStockUseCase>();
 builder.Services.AddScoped<AddSalesTransactionUseCase>();
 

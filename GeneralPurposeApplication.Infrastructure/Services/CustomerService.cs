@@ -1,4 +1,5 @@
-﻿using GeneralPurposeApplication.Application.DTOs;
+﻿using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Domain.Abstractions;
 using GeneralPurposeApplication.Domain.Customers;
@@ -13,10 +14,10 @@ namespace GeneralPurposeApplication.Infrastructure.Services
 {
     public class CustomerService : ICustomerService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public CustomerService(IUnitOfWork unitOfWork)
+        private readonly ICustomerRepository _customerRepository;
+        public CustomerService(ICustomerRepository customerRepository)
         {
-            _unitOfWork = unitOfWork;
+            _customerRepository = customerRepository;
         }
 
         public async Task<IEnumerable<CustomerDTO>> SearchCustomer(string term)
@@ -24,19 +25,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             if (string.IsNullOrWhiteSpace(term))
                 return new List<CustomerDTO>(); // empty list if no search term
 
-            var customers = await _unitOfWork.Repository<Customer>().GetQueryable()
-                .Where(c => c.Name.Contains(term))
-                .OrderBy(c => c.Name)
-                .Take(20) // limit results for performance
-                .Select(c => new CustomerDTO
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    ContactNumber = c.ContactNumber
-                })
-                .ToListAsync();
-
-            return customers;
+            return await _customerRepository.SearchCustomer(term);
         }
     }
 }

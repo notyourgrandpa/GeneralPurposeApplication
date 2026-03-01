@@ -128,10 +128,9 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     CostPrice = costPrice,
                     SellingPrice = sellingPrice,
                     CategoryId = categoryId,
-                    IsActive = isActive,
-                    DateAdded = dateAdded,
-                    LastUpdated = lastUpdated
+                    IsActive = isActive
                 };
+                product.SetCreated(DateTime.UtcNow);
                 await _unitOfWork.Repository<Product>().AddAsync(product);
                 numberOfProductsAdded++;
             }

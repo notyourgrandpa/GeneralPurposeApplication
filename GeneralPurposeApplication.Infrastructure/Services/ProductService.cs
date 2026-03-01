@@ -127,7 +127,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             else if (inventoryLog.ChangeType == InventoryChangeType.Adjustment)
                 product.Stock = inventoryLog.Quantity;
 
-            product.LastUpdated = DateTime.Now;
+            product.SetUpdated(DateTime.Now);
         }
 
         public async Task<bool> IsDupeProduct(Product product)
