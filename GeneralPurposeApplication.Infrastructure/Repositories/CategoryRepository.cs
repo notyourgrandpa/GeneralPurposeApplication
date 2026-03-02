@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Application.Common.Interfaces;
 using GeneralPurposeApplication.Domain.Categories;
+using GeneralPurposeApplication.Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,16 @@ namespace GeneralPurposeApplication.Infrastructure.Repositories
         public CategoryRepository(IApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public async Task AddAsync(Category category)
+        {
+            await _context.Categories.AddAsync(category);
+        }
+
+        public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken ct)
+        {
+            return await _context.Categories.AsNoTracking().ToListAsync();
         }
 
         public async Task<Dictionary<string, Category>> GetDictionaryAsync()
