@@ -21,6 +21,6 @@ namespace GeneralPurposeApplication.Application.Common.Interfaces
         DbSet<InventoryLog> InventoryLogs { get; }
         DbSet<Expense> Expenses { get; }
         DbSet<Customer> Customers { get; }
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

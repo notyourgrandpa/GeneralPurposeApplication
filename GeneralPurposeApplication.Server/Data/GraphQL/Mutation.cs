@@ -28,10 +28,9 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
                 SellingPrice = productDTO.SellingPrice,
                 CostPrice = productDTO.CostPrice,
                 IsActive = productDTO.IsActive,
-                CategoryId = productDTO.CategoryId,
-                DateAdded = DateTime.UtcNow,
-                LastUpdated = DateTime.UtcNow
+                CategoryId = productDTO.CategoryId
             };
+            product.SetCreated(DateTime.UtcNow);
             context.Products.Add(product);
             await context.SaveChangesAsync();
             return product;
@@ -58,7 +57,7 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
             product.CostPrice = productDTO.CostPrice;
             product.IsActive = productDTO.IsActive;
             product.CategoryId = productDTO.CategoryId;
-            product.LastUpdated = DateTime.UtcNow;
+            product.SetUpdated(DateTime.UtcNow);
             context.Products.Update(product);
             await context.SaveChangesAsync();
             return product;

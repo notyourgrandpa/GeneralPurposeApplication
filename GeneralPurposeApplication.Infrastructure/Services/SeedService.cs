@@ -16,29 +16,106 @@ using GeneralPurposeApplication.Infrastructure.Identity;
 using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Domain.Products;
+using GeneralPurposeApplication.Application.Common.Interfaces;
 
 namespace GeneralPurposeApplication.Infrastructure.Services
 {
     public class SeedService : ISeedService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostingEnvironment _env;
         private readonly IConfiguration _configuration;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IApplicationDbContext _context;
 
-        public SeedService(IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IHostingEnvironment env, IConfiguration configuration)
+        public SeedService(
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager, 
+            IHostingEnvironment env, 
+            IConfiguration configuration, 
+            ICategoryRepository categoryRepository,
+            IProductRepository productRepository,
+            IApplicationDbContext context)
         {
-            _unitOfWork = unitOfWork;
             _roleManager = roleManager;
             _userManager = userManager;
             _env = env;
             _configuration = configuration;
+            _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
+            _context = context;
         }
 
-        public Task CreateDefaultUser()
+        public async Task CreateDefaultUser()
         {
-            throw new NotImplementedException();
+            // setup the default role names
+            string role_RegisteredUser = "RegisteredUser";
+            string role_Administrator = "Administrator";
+
+            // create the default roles (if they don't exist yet)
+            if (await _roleManager.FindByNameAsync(role_RegisteredUser) == null)
+                await _roleManager.CreateAsync(new IdentityRole(role_RegisteredUser));
+
+            if (await _roleManager.FindByNameAsync(role_Administrator) == null)
+                await _roleManager.CreateAsync(new IdentityRole(role_Administrator));
+
+            // create a list to track the newly added users
+            var addedUserList = new List<ApplicationUser>();
+
+            // check if the admin user already exists
+            var email_Admin = "admin@email.com";
+
+            if (await _userManager.FindByNameAsync(email_Admin) == null)
+            {
+                // create a new admin ApplicationUser account
+                var user_Admin = new ApplicationUser()
+                {
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = email_Admin,
+                    Email = email_Admin,
+                };
+                // insert the admin user into the DB
+                await _userManager.CreateAsync(user_Admin, _configuration["DefaultPasswords:Administrator"]);
+
+                // assign the "RegisteredUser" and "Administrator" roles
+                await _userManager.AddToRoleAsync(user_Admin, role_RegisteredUser);
+                await _userManager.AddToRoleAsync(user_Admin, role_Administrator);
+
+                // confirm the e-mail and remove lockout
+                user_Admin.EmailConfirmed = true;
+                user_Admin.LockoutEnabled = false;
+
+                // add the admin user to the added users list
+                addedUserList.Add(user_Admin);
+            }
+            // check if the standard user already exists
+            var email_User = "user@email.com";
+
+            if (await _userManager.FindByNameAsync(email_User) == null)
+            {
+                // create a new standard ApplicationUser account
+                var user_User = new ApplicationUser()
+                {
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = email_User,
+                    Email = email_User
+                };
+                // insert the standard user into the DB
+                await _userManager.CreateAsync(user_User, _configuration["DefaultPasswords:RegisteredUser"]);
+                // assign the "RegisteredUser" role
+                await _userManager.AddToRoleAsync(user_User,
+                        role_RegisteredUser);
+                // confirm the e-mail and remove lockout
+                user_User.EmailConfirmed = true;
+                user_User.LockoutEnabled = false;
+                // add the standard user to the added users list
+                addedUserList.Add(user_User);
+            }
+            // if we added at least one user, persist the changes into the DB
+            if (addedUserList.Count > 0)
+                await _context.SaveChangesAsync();
         }
 
         public async Task<SeedResultDTO> Import()
@@ -55,9 +132,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             var numberOfProductsAdded = 0;
 
             // Create a lookup dictionary containing all the categories already existing into the Database (it will be empty on first run).
-            var categoriesByName = _unitOfWork.Repository<Category>().GetQueryable()
-                .AsNoTracking()
-                .ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
+            var categoriesByName = await _categoryRepository.GetDictionaryAsync();
 
             // Iterates through all rows, skipping the first one 
             for (int nRow = 2; nRow <= nEndRow; nRow++)
@@ -74,27 +149,16 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 {
                     Name = categoryName
                 };
-                await _unitOfWork.Repository<Category>().AddAsync(category);
+                await _categoryRepository.AddAsync(category);
                 categoriesByName.Add(categoryName, category);
                 numberOfCategoriesAdded++;
             }
 
             if (numberOfCategoriesAdded > 0)
-                await _unitOfWork.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
 
             // Create a lookup dictionary containing all the cities already existing into the Database (it will be empty on first run). 
-            var products = _unitOfWork.Repository<Product>()
-                .GetQueryable()
-                .AsNoTracking()
-                .ToDictionary(x => (
-                Name: x.Name,
-                CostPrice: x.CostPrice,
-                SellingPrice: x.SellingPrice,
-                Category: x.CategoryId,
-                IsActive: x.IsActive,
-                DateAdded: x.DateAdded,
-                LastUpdated: x.LastUpdated
-                ));
+            var existingKeys = await _productRepository.GetProductCompositeKeysAsync();
 
             for (int nRow = 2; nRow <= nEndRow; nRow++)
             {
@@ -104,21 +168,14 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 var categoryName = row[nRow, 2].GetValue<string>();
                 var costPrice = row[nRow, 3].GetValue<decimal>();
                 var sellingPrice = row[nRow, 4].GetValue<decimal>();
-                var isActive = row[nRow, 5].GetValue<bool>();
-                var dateAdded = row[nRow, 6].GetValue<DateTime>();
-                var lastUpdated = row[nRow, 7].GetValue<DateTime>();
+                //var isActive = row[nRow, 5].GetValue<bool>();
 
                 // Retrieve category Id by categoryName
                 var categoryId = categoriesByName[categoryName].Id;
 
-                if (products.ContainsKey((
-                                   Name: name,
-                                   CostPrice: costPrice,
-                                   SellingPrice: sellingPrice,
-                                   Category: categoryId,
-                                   IsActive: isActive,
-                                   DateAdded: dateAdded,
-                                   LastUpdated: lastUpdated)))
+                var key = new ProductCompositeKey(name, sellingPrice, costPrice, categoryId);
+
+                if (existingKeys.Contains(key))
                     continue;
 
                 // create the product entity and fill it with xlsx data 
@@ -128,16 +185,15 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     CostPrice = costPrice,
                     SellingPrice = sellingPrice,
                     CategoryId = categoryId,
-                    IsActive = isActive,
-                    DateAdded = dateAdded,
-                    LastUpdated = lastUpdated
+                    IsActive = true
                 };
-                await _unitOfWork.Repository<Product>().AddAsync(product);
+                product.SetCreated(DateTime.UtcNow);
+                await _productRepository.AddAsync(product);
                 numberOfProductsAdded++;
             }
 
             if (numberOfProductsAdded > 0)
-                await _unitOfWork.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
             return new SeedResultDTO { Categories = numberOfCategoriesAdded, Products = numberOfProductsAdded };
         }
