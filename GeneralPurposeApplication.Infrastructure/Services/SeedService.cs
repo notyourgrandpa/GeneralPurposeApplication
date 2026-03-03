@@ -155,7 +155,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             }
 
             if (numberOfCategoriesAdded > 0)
-                await _context.SaveChangesAsync(cancellationToken);
+                await _context.SaveChangesAsync();
 
             // Create a lookup dictionary containing all the cities already existing into the Database (it will be empty on first run). 
             var existingKeys = await _productRepository.GetProductCompositeKeysAsync();
