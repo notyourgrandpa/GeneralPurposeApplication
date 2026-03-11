@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Common.Interfaces
 {
-    public interface IQueryExecutor<TEntity, TDto> where TEntity : class
+    public interface IQueryExecutor
     {
-        Task<PagingResult<TDto>> ExecuteAsync(PagingQuery query);
+        Task<PagingResult<TDto>> ExecuteAsync<TEntity, TDto>(PagingQuery query) where TEntity : class;
     }
 }
