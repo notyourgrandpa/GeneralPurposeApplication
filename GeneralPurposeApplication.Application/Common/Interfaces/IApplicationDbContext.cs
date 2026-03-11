@@ -21,6 +21,7 @@ namespace GeneralPurposeApplication.Application.Common.Interfaces
         DbSet<InventoryLog> InventoryLogs { get; }
         DbSet<Expense> Expenses { get; }
         DbSet<Customer> Customers { get; }
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
