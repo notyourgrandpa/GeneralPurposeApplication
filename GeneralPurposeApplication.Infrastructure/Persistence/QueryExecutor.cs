@@ -2,6 +2,7 @@
 using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.QueryParameters;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,31 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence
             var lambda = Expression.Lambda<Func<TEntity, bool>>(combinedExpression, param);
 
             return source.Where(lambda);
+        }
+
+        private IQueryable<TEntity> ApplySorting<TEntity> (IQueryable<TEntity> source, string? sortColumn, string? sortDirection) where TEntity : class
+        {
+            if (sortColumn == null)
+                return source;
+            var param = Expression.Parameter(typeof(TEntity), "x");
+
+            Expression property = Expression.PropertyOrField(param, sortColumn);
+
+            var lambda = Expression.Lambda(property, param);
+
+            string methodName =
+                sortDirection?.ToUpper() == "DESC"
+                ? "OrderByDescending"
+                : "OrderBy";
+
+            var resultExpression = Expression.Call(
+                typeof(Queryable),
+                methodName,
+                new Type[] { typeof(TEntity), property.Type },
+                source.Expression,
+                Expression.Quote(lambda));
+
+            return source.Provider.CreateQuery<TEntity>(resultExpression);
         }
     }
 }
