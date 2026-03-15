@@ -2,9 +2,11 @@
 using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.QueryParameters;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
@@ -22,14 +24,28 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence
             _context = context;
         }
 
-        public Task<PagingResult<TDto>> ExecuteAsync<TEntity,TDto>(PagingQuery query) where TEntity : class
+        public async Task<PagingResult<TDto>> ExecuteAsync<TEntity,TDto>(PagingQuery query, Expression<Func<TEntity, TDto>> selector) where TEntity : class
         {
             IQueryable<TEntity> source = _context.Set<TEntity>().AsNoTracking();
 
             source = ApplyFilters(source, query.Filters ?? new List<FilterCondition>());
+            source = ApplySorting(source, query.SortColumn, query.SortDirection);
+
+            var count = await source.CountAsync();
+
+            var pageData = await source
+                .Skip(query.PageIndex * query.PageSize)
+                .Take(query.PageSize)
+                .Select(selector)
+                .ToListAsync();
 
 
-            throw new NotImplementedException();
+            return new PagingResult<TDto>(
+                pageData,
+                query.PageIndex,
+                query.PageSize,
+                count
+            );
         }
 
         private IQueryable<TEntity> ApplyFilters<TEntity>(IQueryable<TEntity> source, List<FilterCondition> filters)
