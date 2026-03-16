@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralPurposeApplication.Application.Categories.Commands
+namespace GeneralPurposeApplication.Application.Commands
 {
     public class CreateCategoryHandler
     {
@@ -20,7 +21,7 @@ namespace GeneralPurposeApplication.Application.Categories.Commands
             _validator = validator;
         }
 
-        public async Task<int> Handle(CreateCategoryCommand command)
+        public async Task<Category> Handle(CreateCategoryCommand command)
         {
             await _validator.ValidateAndThrowAsync(command);
 
@@ -30,9 +31,8 @@ namespace GeneralPurposeApplication.Application.Categories.Commands
             };
 
             _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
 
-            return category.Id;
+            return category;
         }
     }
 }
