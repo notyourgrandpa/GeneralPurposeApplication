@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralPurposeApplication.Application.Categories.Commands
+namespace GeneralPurposeApplication.Application.Commands
 {
     public class CreateCategoryValidator: AbstractValidator<CreateCategoryCommand>
     {
