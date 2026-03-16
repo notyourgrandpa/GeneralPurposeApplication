@@ -17,6 +17,8 @@ using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Domain.Products;
 using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.Queries.Categories;
+using GeneralPurposeApplication.Application.Commands;
 
 namespace GeneralPurposeApplication.Infrastructure.Services
 {
@@ -26,7 +28,8 @@ namespace GeneralPurposeApplication.Infrastructure.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostingEnvironment _env;
         private readonly IConfiguration _configuration;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly GetCategoryDictionaryHandler _getCategoryDictionaryHandler;
+        private readonly CreateCategoryHandler _createCategoryHandler;
         private readonly IProductRepository _productRepository;
         private readonly IApplicationDbContext _context;
 
@@ -34,8 +37,9 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager, 
             IHostingEnvironment env, 
-            IConfiguration configuration, 
-            ICategoryRepository categoryRepository,
+            IConfiguration configuration,
+            GetCategoryDictionaryHandler getCategoryDictionaryHandler,
+            CreateCategoryHandler createCategoryHandler,
             IProductRepository productRepository,
             IApplicationDbContext context)
         {
@@ -43,7 +47,8 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _userManager = userManager;
             _env = env;
             _configuration = configuration;
-            _categoryRepository = categoryRepository;
+            _getCategoryDictionaryHandler = getCategoryDictionaryHandler;
+            _createCategoryHandler = createCategoryHandler;
             _productRepository = productRepository;
             _context = context;
         }
@@ -120,82 +125,89 @@ namespace GeneralPurposeApplication.Infrastructure.Services
 
         public async Task<SeedResultDTO> Import()
         {
-            // Prevents non-development environments from running this method
-            if (!_env.IsDevelopment())
-                throw new SecurityException("Not allowed");
-            var path = Path.Combine(_env.ContentRootPath, "Data/Source/pinoy_products.xlsx");
-            using var stream = System.IO.File.OpenRead(path);
-            using var excelPackage = new ExcelPackage(stream);
-            var worksheet = excelPackage.Workbook.Worksheets[0];
-            var nEndRow = worksheet.Dimension.End.Row;
-            var numberOfCategoriesAdded = 0;
-            var numberOfProductsAdded = 0;
-
-            // Create a lookup dictionary containing all the categories already existing into the Database (it will be empty on first run).
-            var categoriesByName = await _categoryRepository.GetDictionaryAsync();
-
-            // Iterates through all rows, skipping the first one 
-            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            try
             {
-                var row = worksheet.Cells[
-                                   nRow,
-               1, nRow, worksheet.Dimension.End.Column];
-                var categoryName = row[nRow, 2].GetValue<string>();
+                // Prevents non-development environments from running this method
+                if (!_env.IsDevelopment())
+                    throw new SecurityException("Not allowed");
+                var path = Path.Combine(_env.ContentRootPath, "Data/Source/pinoy_products.xlsx");
+                using var stream = System.IO.File.OpenRead(path);
+                using var excelPackage = new ExcelPackage(stream);
+                var worksheet = excelPackage.Workbook.Worksheets[0];
+                var nEndRow = worksheet.Dimension.End.Row;
+                var numberOfCategoriesAdded = 0;
+                var numberOfProductsAdded = 0;
 
-                if (categoriesByName.ContainsKey(categoryName))
-                    continue;
+                // Create a lookup dictionary containing all the categories already existing into the Database (it will be empty on first run).
+                var categoriesByName = await _context.Categories.ToDictionaryAsync(c => c.Name, StringComparer.OrdinalIgnoreCase);
 
-                var category = new Category
+                var newCategories = new List<Category>();
+
+                // Iterates through all rows, skipping the first one 
+                for (int nRow = 2; nRow <= nEndRow; nRow++)
                 {
-                    Name = categoryName
-                };
-                await _categoryRepository.AddAsync(category);
-                categoriesByName.Add(categoryName, category);
-                numberOfCategoriesAdded++;
+                    var row = worksheet.Cells[
+                                       nRow,
+                   1, nRow, worksheet.Dimension.End.Column];
+                    var categoryName = row[nRow, 2].GetValue<string>();
+
+                    if (categoriesByName.ContainsKey(categoryName))
+                        continue;
+
+                    var category = await _createCategoryHandler.Handle(new CreateCategoryCommand(categoryName));
+                    newCategories.Add(category);
+                    categoriesByName.Add(categoryName, category);
+                    numberOfCategoriesAdded++;
+                }
+
+                if (newCategories.Count > 0)
+                    await _context.SaveChangesAsync();
+
+                // Create a lookup dictionary containing all the cities already existing into the Database (it will be empty on first run). 
+                var existingKeys = await _productRepository.GetProductCompositeKeysAsync();
+
+                for (int nRow = 2; nRow <= nEndRow; nRow++)
+                {
+                    var row = worksheet.Cells[
+                                       nRow, 1, nRow, worksheet.Dimension.End.Column];
+                    var name = row[nRow, 1].GetValue<string>();
+                    var categoryName = row[nRow, 2].GetValue<string>();
+                    var costPrice =  row[nRow, 3].GetValue<decimal>();
+                    var sellingPrice = row[nRow, 4].GetValue<decimal>();
+                    //var isActive = row[nRow, 5].GetValue<bool>();
+
+                    // Retrieve category Id by categoryName
+                    var categoryId = categoriesByName[categoryName].Id;
+
+                    var key = new ProductCompositeKey(name, sellingPrice, costPrice, categoryId);
+
+                    if (existingKeys.Contains(key))
+                        continue;
+
+                    // create the product entity and fill it with xlsx data 
+                    var product = new Product
+                    {
+                        Name = name,
+                        CostPrice = costPrice,
+                        SellingPrice = sellingPrice,
+                        CategoryId = categoryId,
+                        IsActive = true
+                    };
+                    product.SetCreated(DateTime.UtcNow);
+                    await _productRepository.AddAsync(product);
+                    numberOfProductsAdded++;
+                }
+
+                if (numberOfProductsAdded > 0)
+                    await _context.SaveChangesAsync();
+
+                return new SeedResultDTO { Categories = numberOfCategoriesAdded, Products = numberOfProductsAdded };
             }
-
-            if (numberOfCategoriesAdded > 0)
-                await _context.SaveChangesAsync();
-
-            // Create a lookup dictionary containing all the cities already existing into the Database (it will be empty on first run). 
-            var existingKeys = await _productRepository.GetProductCompositeKeysAsync();
-
-            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            catch (DbUpdateException ex)
             {
-                var row = worksheet.Cells[
-                                   nRow, 1, nRow, worksheet.Dimension.End.Column];
-                var name = row[nRow, 1].GetValue<string>();
-                var categoryName = row[nRow, 2].GetValue<string>();
-                var costPrice = row[nRow, 3].GetValue<decimal>();
-                var sellingPrice = row[nRow, 4].GetValue<decimal>();
-                //var isActive = row[nRow, 5].GetValue<bool>();
-
-                // Retrieve category Id by categoryName
-                var categoryId = categoriesByName[categoryName].Id;
-
-                var key = new ProductCompositeKey(name, sellingPrice, costPrice, categoryId);
-
-                if (existingKeys.Contains(key))
-                    continue;
-
-                // create the product entity and fill it with xlsx data 
-                var product = new Product
-                {
-                    Name = name,
-                    CostPrice = costPrice,
-                    SellingPrice = sellingPrice,
-                    CategoryId = categoryId,
-                    IsActive = true
-                };
-                product.SetCreated(DateTime.UtcNow);
-                await _productRepository.AddAsync(product);
-                numberOfProductsAdded++;
+                var message = ex.InnerException?.Message;
+                throw new Exception(message, ex);
             }
-
-            if (numberOfProductsAdded > 0)
-                await _context.SaveChangesAsync();
-
-            return new SeedResultDTO { Categories = numberOfCategoriesAdded, Products = numberOfProductsAdded };
         }
     }
 }
