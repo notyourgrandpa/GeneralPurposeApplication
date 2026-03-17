@@ -75,13 +75,13 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       switchMap(term => this.customerService.search(term || ''))
     );
 
-    this.filteredProducts = this.productSearch.valueChanges.pipe(
+    this.filteredCustomers = this.form.get('customer')!.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      filter((term): term is string => typeof term === 'string' && term.trim().length > 0),
-      switchMap(term => this.productService.search(term))
+      map(value => typeof value === 'string' ? value : value?.name ?? ''),
+      filter(term => term.length > 0),
+      switchMap(term => this.customerService.search(term))
     );
-
     this.items.valueChanges.subscribe(() => {
       this.dataSource.data = this.items.controls;
     });
