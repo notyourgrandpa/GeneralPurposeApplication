@@ -22,6 +22,7 @@ using GeneralPurposeApplication.Application.Common.Interfaces;
 using GeneralPurposeApplication.Application.Queries.Categories;
 using GeneralPurposeApplication.Application.Commands;
 using FluentValidation;
+using GeneralPurposeApplication.Application.Queries.Customers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,7 +83,6 @@ builder.Services.AddScoped<JwtHandler>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IInventoryLogService, InventoryLogService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -98,6 +98,7 @@ builder.Services.AddScoped<AddStockUseCase>();
 builder.Services.AddScoped<AddSalesTransactionUseCase>();
 builder.Services.AddScoped<GetCategoryDictionaryHandler>();
 builder.Services.AddScoped<CreateCategoryHandler>();
+builder.Services.AddScoped<SearchCustomersHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryValidator>();
 
 builder.Services.AddAuthentication(opt =>
