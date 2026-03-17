@@ -30,7 +30,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
         private readonly IConfiguration _configuration;
         private readonly GetCategoryDictionaryHandler _getCategoryDictionaryHandler;
         private readonly CreateCategoryHandler _createCategoryHandler;
-        private readonly IProductRepository _productRepository;
         private readonly IApplicationDbContext _context;
 
         public SeedService(
@@ -40,7 +39,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             IConfiguration configuration,
             GetCategoryDictionaryHandler getCategoryDictionaryHandler,
             CreateCategoryHandler createCategoryHandler,
-            IProductRepository productRepository,
             IApplicationDbContext context)
         {
             _roleManager = roleManager;
@@ -49,7 +47,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _configuration = configuration;
             _getCategoryDictionaryHandler = getCategoryDictionaryHandler;
             _createCategoryHandler = createCategoryHandler;
-            _productRepository = productRepository;
             _context = context;
         }
 
