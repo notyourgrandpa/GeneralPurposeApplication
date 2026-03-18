@@ -43,13 +43,13 @@ namespace GeneralPurposeApplication.Tests
                 mockConfiguration.SetupGet(x => x[It.Is<string>(s => s == "DefaultPasswords:Administrator")]).Returns("M0ckP$$word");
                 // create a ApplicationDbContext instance using the
                 // in-memory DB
-                using var context = new ApplicationDbContext(options);
+                using var context = new ApplicationDbContext(options, null!);
                 // create a RoleManager instance
                 var roleManager = IdentityHelper.GetRoleManager(new RoleStore<IdentityRole>(context));
                 // create a UserManager instance
                 var userManager = IdentityHelper.GetUserManager(new UserStore<ApplicationUser>(context));
                 // create a SeedController instance
-                var controller = new SeedController(context, roleManager, userManager, mockEnv, mockConfiguration.Object, mockSeedService.Object
+                var controller = new SeedController(mockSeedService.Object
                 );
                 // define the variables for the users we want to test
                 ApplicationUser user_Admin = null!;

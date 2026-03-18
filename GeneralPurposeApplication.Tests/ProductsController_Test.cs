@@ -28,7 +28,7 @@ namespace GeneralPurposeApplication.Tests
                 .UseInMemoryDatabase(databaseName: "GeneralPurposeApplication")
                 .Options;
 
-            using var context = new ApplicationDbContext(options);
+            using var context = new ApplicationDbContext(options, null!);
             context.Add(new Product()
             {
                 Id = 1,
