@@ -57,8 +57,4 @@
     <ProjectReference Include="..\GeneralPurposeApplication.Infrastructure\GeneralPurposeApplication.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
 </Project>
