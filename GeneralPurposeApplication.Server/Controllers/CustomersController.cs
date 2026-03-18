@@ -1,4 +1,5 @@
 ﻿using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Queries.Customers;
 using GeneralPurposeApplication.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,16 +15,16 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class CustomersController: ControllerBase
     {
-        private readonly ICustomerService _customerService;
-        public CustomersController(ICustomerService customerService) 
+        private readonly SearchCustomersHandler _searchCustomerHandler;
+        public CustomersController(SearchCustomersHandler searchCustomersHandler) 
         { 
-            _customerService = customerService;
+            _searchCustomerHandler = searchCustomersHandler;
         }
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> Search(string term)
         {
-            var customers = await _customerService.SearchCustomer(term);
+            var customers = await _searchCustomerHandler.Handle(new SearchCustomersQuery(term));
 
             return Ok(customers);
         }

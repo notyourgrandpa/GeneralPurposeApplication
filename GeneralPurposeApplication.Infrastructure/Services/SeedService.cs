@@ -30,7 +30,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
         private readonly IConfiguration _configuration;
         private readonly GetCategoryDictionaryHandler _getCategoryDictionaryHandler;
         private readonly CreateCategoryHandler _createCategoryHandler;
-        private readonly IProductRepository _productRepository;
         private readonly IApplicationDbContext _context;
 
         public SeedService(
@@ -40,7 +39,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             IConfiguration configuration,
             GetCategoryDictionaryHandler getCategoryDictionaryHandler,
             CreateCategoryHandler createCategoryHandler,
-            IProductRepository productRepository,
             IApplicationDbContext context)
         {
             _roleManager = roleManager;
@@ -49,7 +47,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _configuration = configuration;
             _getCategoryDictionaryHandler = getCategoryDictionaryHandler;
             _createCategoryHandler = createCategoryHandler;
-            _productRepository = productRepository;
             _context = context;
         }
 
@@ -164,7 +161,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     await _context.SaveChangesAsync();
 
                 // Create a lookup dictionary containing all the cities already existing into the Database (it will be empty on first run). 
-                var existingKeys = await _productRepository.GetProductCompositeKeysAsync();
+                var existingKeys = _context.Products.AsNoTracking().ToHashSet();
 
                 for (int nRow = 2; nRow <= nEndRow; nRow++)
                 {
@@ -179,22 +176,19 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     // Retrieve category Id by categoryName
                     var categoryId = categoriesByName[categoryName].Id;
 
-                    var key = new ProductCompositeKey(name, sellingPrice, costPrice, categoryId);
+                    var key = new Product 
+                    { 
+                        Name = name, 
+                        CategoryId = categoryId,
+                        CostPrice = costPrice,
+                        SellingPrice = sellingPrice,
+                    };
 
                     if (existingKeys.Contains(key))
                         continue;
 
-                    // create the product entity and fill it with xlsx data 
-                    var product = new Product
-                    {
-                        Name = name,
-                        CostPrice = costPrice,
-                        SellingPrice = sellingPrice,
-                        CategoryId = categoryId,
-                        IsActive = true
-                    };
-                    product.SetCreated(DateTime.UtcNow);
-                    await _productRepository.AddAsync(product);
+                    key.SetCreated(DateTime.UtcNow);
+                    await _context.Products.AddAsync(key);
                     numberOfProductsAdded++;
                 }
 
