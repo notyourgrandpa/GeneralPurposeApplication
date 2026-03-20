@@ -23,6 +23,7 @@ using GeneralPurposeApplication.Application.Queries.Categories;
 using GeneralPurposeApplication.Application.Commands;
 using FluentValidation;
 using GeneralPurposeApplication.Application.Queries.Customers;
+using GeneralPurposeApplication.Application.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -117,6 +118,10 @@ builder.Services.AddAuthentication(opt =>
          IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecurityKey"]!))
      };
  });
+
+// Add MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
 
 builder.Services.AddGraphQLServer()
    .AddAuthorization()
