@@ -100,7 +100,6 @@ builder.Services.AddScoped<AddSalesTransactionUseCase>();
 builder.Services.AddScoped<GetCategoryDictionaryHandler>();
 builder.Services.AddScoped<CreateCategoryHandler>();
 builder.Services.AddScoped<SearchCustomersHandler>();
-c
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -124,6 +123,9 @@ builder.Services.AddAuthentication(opt =>
 // Add MediatR
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
+
+// Register FluentValidation validators from application assembly
+builder.Services.AddValidatorsFromAssemblyContaining<GeneralPurposeApplication.Application.Commands.CreateCategoryValidator>();
 
 builder.Services.AddTransient(
     typeof(IPipelineBehavior<,>),
