@@ -2,6 +2,7 @@
 using GeneralPurposeApplication.Application.Common.Interfaces;
 using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Commands
 {
-    public class CreateCategoryHandler
+    public class CreateCategoryHandler: IRequestHandler<CreateCategoryCommand, int>
     {
         private readonly IApplicationDbContext _context;
-        private readonly CreateCategoryValidator _validator;
+        private readonly IValidator<CreateCategoryCommand> _validator;
 
-        public CreateCategoryHandler(IApplicationDbContext context, CreateCategoryValidator validator)
+        public CreateCategoryHandler(IApplicationDbContext context, IValidator<CreateCategoryCommand> validator)
         {
             _context = context;
             _validator = validator;
         }
 
-        public async Task<Category> Handle(CreateCategoryCommand command)
+        public async Task<int> Handle(CreateCategoryCommand command, CancellationToken cancellationToken = default)
         {
             await _validator.ValidateAndThrowAsync(command);
 
@@ -32,7 +33,7 @@ namespace GeneralPurposeApplication.Application.Commands
 
             _context.Categories.Add(category);
 
-            return category;
+            return category.Id;
         }
     }
 }
