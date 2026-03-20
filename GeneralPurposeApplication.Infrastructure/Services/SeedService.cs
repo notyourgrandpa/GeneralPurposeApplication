@@ -28,8 +28,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostingEnvironment _env;
         private readonly IConfiguration _configuration;
-        private readonly GetCategoryDictionaryHandler _getCategoryDictionaryHandler;
-        private readonly CreateCategoryHandler _createCategoryHandler;
         private readonly IApplicationDbContext _context;
 
         public SeedService(
@@ -37,16 +35,12 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             UserManager<ApplicationUser> userManager, 
             IHostingEnvironment env, 
             IConfiguration configuration,
-            GetCategoryDictionaryHandler getCategoryDictionaryHandler,
-            CreateCategoryHandler createCategoryHandler,
             IApplicationDbContext context)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _env = env;
             _configuration = configuration;
-            _getCategoryDictionaryHandler = getCategoryDictionaryHandler;
-            _createCategoryHandler = createCategoryHandler;
             _context = context;
         }
 
@@ -151,7 +145,9 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     if (categoriesByName.ContainsKey(categoryName))
                         continue;
 
-                    var category = await _createCategoryHandler.Handle(new CreateCategoryCommand(categoryName));
+                    var  category = new Category() { Name =  categoryName };
+
+                    await _context.Categories.AddAsync(category);
                     newCategories.Add(category);
                     categoriesByName.Add(categoryName, category);
                     numberOfCategoriesAdded++;

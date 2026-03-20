@@ -12,7 +12,8 @@ namespace GeneralPurposeApplication.Application.Commands
     {
         public CreateCategoryValidator()
         {
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name)
+                .NotEmpty();
         }
     }
 }

@@ -23,6 +23,9 @@ using GeneralPurposeApplication.Application.Queries.Categories;
 using GeneralPurposeApplication.Application.Commands;
 using FluentValidation;
 using GeneralPurposeApplication.Application.Queries.Customers;
+using GeneralPurposeApplication.Application.Common;
+using MediatR;
+using GeneralPurposeApplication.Application.Common.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,7 +100,6 @@ builder.Services.AddScoped<AddSalesTransactionUseCase>();
 builder.Services.AddScoped<GetCategoryDictionaryHandler>();
 builder.Services.AddScoped<CreateCategoryHandler>();
 builder.Services.AddScoped<SearchCustomersHandler>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryValidator>();
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -117,6 +119,18 @@ builder.Services.AddAuthentication(opt =>
          IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecurityKey"]!))
      };
  });
+
+// Add MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
+
+// Register FluentValidation validators from application assembly
+builder.Services.AddValidatorsFromAssemblyContaining<GeneralPurposeApplication.Application.Commands.CreateCategoryValidator>();
+
+builder.Services.AddTransient(
+    typeof(IPipelineBehavior<,>),
+    typeof(ValidationBehavior<,>)
+);
 
 builder.Services.AddGraphQLServer()
    .AddAuthorization()
