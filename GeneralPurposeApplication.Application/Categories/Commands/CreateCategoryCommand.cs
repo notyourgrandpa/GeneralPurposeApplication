@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralPurposeApplication.Application.Commands
+namespace GeneralPurposeApplication.Application.Categories.Commands
 { 
     public record CreateCategoryCommand(string Name): IRequest<CategoryDTO> { }
 }

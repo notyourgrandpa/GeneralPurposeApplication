@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralPurposeApplication.Application.Commands
+namespace GeneralPurposeApplication.Application.Categories.Commands
 {
     public class CreateCategoryHandler: IRequestHandler<CreateCategoryCommand, CategoryDTO>
     {
