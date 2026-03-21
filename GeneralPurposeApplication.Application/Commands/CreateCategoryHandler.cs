@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Commands
 {
-    public class CreateCategoryHandler: IRequestHandler<CreateCategoryCommand, int>
+    public class CreateCategoryHandler: IRequestHandler<CreateCategoryCommand, CategoryDTO>
     {
         private readonly IApplicationDbContext _context;
         private readonly IValidator<CreateCategoryCommand> _validator;
@@ -22,7 +22,7 @@ namespace GeneralPurposeApplication.Application.Commands
             _validator = validator;
         }
 
-        public async Task<int> Handle(CreateCategoryCommand command, CancellationToken cancellationToken = default)
+        public async Task<CategoryDTO> Handle(CreateCategoryCommand command, CancellationToken cancellationToken = default)
         {
             await _validator.ValidateAndThrowAsync(command);
 
@@ -33,7 +33,9 @@ namespace GeneralPurposeApplication.Application.Commands
 
             _context.Categories.Add(category);
 
-            return category.Id;
+            await _context.SaveChangesAsync();
+
+            return new CategoryDTO { Id = category.Id, Name =  category.Name };
         }
     }
 }

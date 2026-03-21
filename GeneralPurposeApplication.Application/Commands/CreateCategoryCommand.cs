@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using GeneralPurposeApplication.Application.DTOs;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,5 +9,5 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Commands
 { 
-    public record CreateCategoryCommand(string Name): IRequest<int> { }
+    public record CreateCategoryCommand(string Name): IRequest<CategoryDTO> { }
 }
