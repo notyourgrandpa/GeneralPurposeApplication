@@ -20,12 +20,12 @@ using GeneralPurposeApplication.Application.UseCases;
 using GeneralPurposeApplication.Infrastructure.Repositories;
 using GeneralPurposeApplication.Application.Common.Interfaces;
 using GeneralPurposeApplication.Application.Queries.Categories;
-using GeneralPurposeApplication.Application.Commands;
 using FluentValidation;
 using GeneralPurposeApplication.Application.Queries.Customers;
 using GeneralPurposeApplication.Application.Common;
 using MediatR;
 using GeneralPurposeApplication.Application.Common.Behaviors;
+using GeneralPurposeApplication.Application.Categories.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -125,7 +125,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
 
 // Register FluentValidation validators from application assembly
-builder.Services.AddValidatorsFromAssemblyContaining<GeneralPurposeApplication.Application.Commands.CreateCategoryValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryValidator>();
 
 builder.Services.AddTransient(
     typeof(IPipelineBehavior<,>),

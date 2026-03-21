@@ -12,6 +12,8 @@ using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Application.Common.Paging;
+using MediatR;
+using GeneralPurposeApplication.Application.Categories.Commands;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -20,10 +22,12 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+        private readonly IMediator _mediator;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService, IMediator mediator)
         {
             _categoryService = categoryService;
+            _mediator = mediator;
         }
 
         // GET: api/Categories
@@ -73,9 +77,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategoryAsync(CategoryCreateInputDTO category)
+        public async Task<ActionResult<CategoryDTO>> PostCategoryAsync(CategoryCreateInputDTO category)
         {
-            var newCategory = await _categoryService.CreateCategoryAsync(category);
+            var newCategory = _mediator.Send(new CreateCategoryCommand(category.Name));
 
             return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
         }
@@ -85,7 +89,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
-            await _categoryService.DeleteCategoryAsync(id);
+            await _mediator.Send(new DeleteCategoryCommand(id));
 
             return NoContent();
         }
