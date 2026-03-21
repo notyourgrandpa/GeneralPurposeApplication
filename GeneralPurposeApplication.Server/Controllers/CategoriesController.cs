@@ -13,7 +13,7 @@ using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Application.Common.Paging;
 using MediatR;
-using GeneralPurposeApplication.Application.Commands;
+using GeneralPurposeApplication.Application.Categories.Commands;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -89,7 +89,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
-            await _categoryService.DeleteCategoryAsync(id);
+            await _mediator.Send(new DeleteCategoryCommand(id));
 
             return NoContent();
         }
