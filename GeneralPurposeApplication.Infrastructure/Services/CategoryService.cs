@@ -42,23 +42,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
 
         public async Task<Category?> GetCategoryAsync(int id) => await _unitOfWork.Repository<Category>().GetByIdAsync(id);
 
-        public async Task<Category> CreateCategoryAsync(CategoryCreateInputDTO categoryCreateDTO)
-        {
-            var exists = await this.CategoryExists(categoryCreateDTO.Name);
-            if (exists)
-            {
-                throw new InvalidOperationException($"Category {categoryCreateDTO.Name} already exists.");
-            }
-
-            Category category = new Category { 
-                Name = categoryCreateDTO.Name 
-            };
-
-            await _unitOfWork.Repository<Category>().AddAsync(category);
-            await _unitOfWork.SaveChangesAsync();
-
-            return category;
-        }
 
         public async Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO)
         {
