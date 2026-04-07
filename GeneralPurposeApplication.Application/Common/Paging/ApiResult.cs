@@ -14,9 +14,6 @@ namespace GeneralPurposeApplication.Application.Common.Paging
     public class ApiResult<T>
     {
         
-        /// <summary>
-        /// Private constructor called by the CreateAsync method.
-        /// </summary>
         private ApiResult(List<T> data, int count, int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
         {
             Data = data;
@@ -30,21 +27,6 @@ namespace GeneralPurposeApplication.Application.Common.Paging
             FilterQuery = filterQuery;
         }
 
-        #region Methods
-        /// <summary>
-        /// Pages, sorts and/or filters a IQueryable source.
-        /// </summary>
-        /// <param name="source">An IQueryable source of generic type</param>
-        /// <param name="pageIndex">Zero-based current page index (0 = first page)</param>
-        /// <param name="pageSize">The actual size of each 
-        /// page</param>
-        /// <param name="sortColumn">The sorting column name</param>
-        /// <param name="sortOrder">The sorting order ("ASC" or  "DESC")</param>
-        /// <param name="filterColumn">The filtering column name</param>
-        /// <param name="filterQuery">The filtering query (value to lookup)</param>
-        /// <returns>
-        /// A object containing the paged result and all the relevant paging navigation info.
-        /// </returns>
         public static async Task<ApiResult<T>> CreateAsync(
             IQueryable<T> source, 
             int pageIndex, 
@@ -115,12 +97,7 @@ namespace GeneralPurposeApplication.Application.Common.Paging
             return new ApiResult<T>(data, count, parameters.PageIndex, parameters.PageSize, parameters.SortColumn, parameters.SortOrder, parameters.FilterColumn, parameters.FilterQuery);
 
         }
-        #endregion
 
-        #region Methods
-        /// <summary>
-        /// Checks if the given property name exists to protect against SQL injection attacks
-        /// </summary>
         public static bool IsValidProperty(
             string propertyName,
             bool throwExceptionIfNotFound = true)
@@ -137,32 +114,11 @@ namespace GeneralPurposeApplication.Application.Common.Paging
                     );
             return prop != null;
         }
-        #endregion
-        #region Properties
-        /// <summary>
-        /// The data result.
-        /// </summary>
         public List<T> Data { get; private set; }
-        /// <summary>
-        /// Zero-based index of current page.
-        /// </summary>
         public int PageIndex { get; private set; }
-        /// <summary>
-        /// Number of items contained in each page.
-        /// </summary>
         public int PageSize { get; private set; }
-        /// <summary>
-        /// Total items count
-        /// </summary>
         public int TotalCount { get; private set; }
-        /// <summary>
-        /// Total pages count
-        /// </summary>
         public int TotalPages { get; private set; }
-        /// <summary>
-        /// TRUE if the current page has a previous page, 
-        /// FALSE otherwise.
-        /// </summary>
         public bool HasPreviousPage
         {
             get
@@ -170,9 +126,6 @@ namespace GeneralPurposeApplication.Application.Common.Paging
                 return (PageIndex > 0);
             }
         }
-        /// <summary>
-        /// TRUE if the current page has a next page, FALSE otherwise.
-        /// </summary>
         public bool HasNextPage
         {
             get
@@ -181,23 +134,9 @@ namespace GeneralPurposeApplication.Application.Common.Paging
             }
         }
 
-        /// <summary>
-        /// Sorting Column name (or null if none set)
-        /// </summary>
         public string? SortColumn { get; set; }
-        /// <summary>
-        /// Sorting Order ("ASC", "DESC" or null if none set)
-        /// </summary>
         public string? SortOrder { get; set; }
-        /// <summary>
-        /// Filter Column name (or null if none set)
-        /// </summary>
         public string? FilterColumn { get; set; }
-        /// <summary>
-        /// Filter Query string 
-        /// (to be used within the given FilterColumn)
-        /// </summary>
         public string? FilterQuery { get; set; }
-        #endregion
     }
 }
