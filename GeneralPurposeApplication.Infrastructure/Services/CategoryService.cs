@@ -71,17 +71,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteCategoryAsync(int id)
-        {
-            Category? category = await GetCategoryAsync(id);
-            if (category == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            _unitOfWork.Repository<Category>().Delete(category);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
         public async Task<bool> CategoryExists(string categoryName)
         {
             return await _unitOfWork.Repository<Category>().AnyAsync(x => x.Name == categoryName);
