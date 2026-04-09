@@ -60,8 +60,8 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence
 
                 Expression? condition = filter.Operator switch
                 {
-                    FilterOperator.Contains => Expression.Call(property, typeof(string).GetMethod("Contains", new[] { typeof(string) })!, constant),
-                    FilterOperator.StartsWith => Expression.Call(property, typeof(string).GetMethod("StartsWith", new[] { typeof(string) })!, constant),
+                    FilterOperator.Contains => Expression.Call(property, typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!, constant),
+                    FilterOperator.StartsWith => Expression.Call(property, typeof(string).GetMethod(nameof(string.StartsWith), new[] { typeof(string) })!, constant),
                     FilterOperator.Equals => Expression.Equal(property, constant),
                     FilterOperator.GreaterThan => Expression.GreaterThan(property, constant),
                     FilterOperator.LessThan => Expression.LessThan(property, constant),
