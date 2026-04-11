@@ -26,6 +26,10 @@ using GeneralPurposeApplication.Application.Common;
 using MediatR;
 using GeneralPurposeApplication.Application.Common.Behaviors;
 using GeneralPurposeApplication.Application.Categories.Commands;
+using GeneralPurposeApplication.Infrastructure.Persistence.Querying;
+using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Filtering;
+using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Sorting;
+using GeneralPurposeApplication.Application.Categories.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -98,8 +102,9 @@ builder.Services.AddScoped<IQueryExecutor, EfQueryExecutor>();
 builder.Services.AddScoped<AddStockUseCase>();
 builder.Services.AddScoped<AddSalesTransactionUseCase>();
 builder.Services.AddScoped<GetCategoryDictionaryHandler>();
-builder.Services.AddScoped<CreateCategoryHandler>();
 builder.Services.AddScoped<SearchCustomersHandler>();
+builder.Services.AddScoped<EfFilterBuilder>();
+builder.Services.AddScoped<EfSortBuilder>();
 
 builder.Services.AddAuthentication(opt =>
 {

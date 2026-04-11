@@ -14,6 +14,8 @@ using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Application.Common.Paging;
 using MediatR;
 using GeneralPurposeApplication.Application.Categories.Commands;
+using GeneralPurposeApplication.Application.QueryParameters;
+using GeneralPurposeApplication.Application.Categories.Queries;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
@@ -32,15 +34,13 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<ApiResult<CategoryDTO>>> GetCategoriesAsync(
-            int pageIndex = 0,
-            int pageSize = 10,
-            string? sortColumn = null,
-            string? sortOrder = null,
-            string? filterColumn = null,
-            string? filterQuery = null)
+        public async Task<ActionResult<PagingResult<CategoryDTO>>> GetCategoriesAsync(
+            PagingQuery query)
         {
-            return await _categoryService.GetCategoriesAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            return Ok(await _mediator.Send(new GetCategoriesQuery
+            {
+                Query = query
+            }));
         }
 
         // GET: api/Categories/5

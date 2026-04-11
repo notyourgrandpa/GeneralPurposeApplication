@@ -26,4 +26,8 @@
     <ProjectReference Include="..\GeneralPurposeApplication.Domain\GeneralPurposeApplication.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Extensions\" />
+  </ItemGroup>
+
 </Project>

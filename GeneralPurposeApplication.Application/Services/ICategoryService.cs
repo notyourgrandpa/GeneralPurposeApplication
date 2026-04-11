@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.QueryParameters;
 using GeneralPurposeApplication.Domain.Categories;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,6 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface ICategoryService
     {
-        Task<ApiResult<CategoryDTO>> GetCategoriesAsync(
-            int pageIndex,
-            int pageSize,
-            string? sortColumn,
-            string? sortOrder,
-            string? filterColumn,
-            string? filterQuery);
-
         Task<Category?> GetCategoryAsync(int id);
         Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO);
         Task<bool> CategoryExists(string categoryName);

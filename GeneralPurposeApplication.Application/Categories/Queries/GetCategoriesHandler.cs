@@ -2,6 +2,8 @@
 using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Application.QueryParameters;
+using GeneralPurposeApplication.Domain.Categories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,27 +13,22 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Categories.Queries
 {
-    public class GetCategoriesHandler
+    public class GetCategoriesHandler: IRequestHandler<GetCategoriesQuery, PagingResult<CategoryDTO>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IQueryExecutor _queryExecutor;
 
-        public GetCategoriesHandler(IApplicationDbContext context)
+        public GetCategoriesHandler(IApplicationDbContext context, IQueryExecutor queryExecutor)
         {
-            _context = context;
+            _queryExecutor = queryExecutor;
         }
 
-        public async Task<ApiResult<CategoryDTO>> Handle(QueryParameter parameters)
+        public async Task<PagingResult<CategoryDTO>> Handle(GetCategoriesQuery command, CancellationToken cancellationToken = default)
         {
-            return await ApiResult<CategoryDTO>.CreateAsync(
-                 _context.Categories
-                .AsNoTracking()
-                .Select(c => new CategoryDTO
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    TotalProducts = c.Products.Count(),
-                }), parameters);
-
+            return await _queryExecutor.ExecuteAsync<Category, CategoryDTO>(command.Query, x => new CategoryDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+            });
         }
     }
 }
