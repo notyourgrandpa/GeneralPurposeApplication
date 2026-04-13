@@ -35,7 +35,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<PagingResult<CategoryDTO>>> GetCategoriesAsync(
-            PagingQuery query)
+            [FromQuery] PagingQuery query)
         {
             return Ok(await _mediator.Send(new GetCategoriesQuery
             {

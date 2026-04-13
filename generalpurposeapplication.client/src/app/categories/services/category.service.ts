@@ -36,7 +36,7 @@ export class CategoryService
       .set("pageIndex", pageIndex.toString())
       .set("pageSize", pageSize.toString())
       .set("sortColumn", sortColumn)
-      .set("sortOrder", sortOrder);
+      .set("sortDirection", sortOrder);
     if (filterColumn && filterQuery) {
       params = params
         .set("filterColumn", filterColumn)
