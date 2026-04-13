@@ -1,4 +1,5 @@
-﻿using GeneralPurposeApplication.Application.QueryParameters;
+﻿using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.QueryParameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Infrastructure.Persistence.Querying.Filtering
 {
-    public class EfFilterBuilder
+    public class EfFilterBuilder: IFilterBuilder
     {
         public IQueryable<TEntity> Apply<TEntity>(IQueryable<TEntity> source, List<FilterCondition> filters) where TEntity : class
         {

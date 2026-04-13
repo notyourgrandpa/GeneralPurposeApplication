@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneralPurposeApplication.Application.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Infrastructure.Persistence.Querying.Sorting
 {
-    public class EfSortBuilder
+    public class EfSortBuilder: ISortBuilder
     {
         public IQueryable<TEntity> Apply<TEntity>(IQueryable<TEntity> source, string? sortColumn, string? sortDirection) where TEntity : class
         {
