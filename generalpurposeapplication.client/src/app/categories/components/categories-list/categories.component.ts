@@ -84,7 +84,7 @@ export class CategoriesComponent implements OnInit {
       ? this.filterQuery
       : null;
 
-    this.categoryGraphQlService.getData(
+    this.categoryService.getData(
       event.pageIndex,
       event.pageSize,
       sortColumn,
