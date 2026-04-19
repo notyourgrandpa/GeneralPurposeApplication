@@ -99,6 +99,8 @@ builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IQueryExecutor, EfQueryExecutor>();
+builder.Services.AddScoped<IFilterBuilder, EfFilterBuilder>();
+builder.Services.AddScoped<ISortBuilder, EfSortBuilder>();
 builder.Services.AddScoped<AddStockUseCase>();
 builder.Services.AddScoped<AddSalesTransactionUseCase>();
 builder.Services.AddScoped<GetCategoryDictionaryHandler>();
