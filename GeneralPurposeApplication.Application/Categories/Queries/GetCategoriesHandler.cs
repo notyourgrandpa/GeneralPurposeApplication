@@ -15,20 +15,39 @@ namespace GeneralPurposeApplication.Application.Categories.Queries
 {
     public class GetCategoriesHandler: IRequestHandler<GetCategoriesQuery, PagingResult<CategoryDTO>>
     {
-        private readonly IQueryExecutor _queryExecutor;
+        private readonly IApplicationDbContext _context;
+        private readonly IFilterBuilder _filterBuilder;
+        private readonly ISortBuilder _sortBuilder;
 
-        public GetCategoriesHandler(IApplicationDbContext context, IQueryExecutor queryExecutor)
+        public GetCategoriesHandler(IApplicationDbContext context, IFilterBuilder filterBuilder, ISortBuilder sortBuilder)
         {
-            _queryExecutor = queryExecutor;
+            _context = context;
+            _filterBuilder = filterBuilder;
+            _sortBuilder = sortBuilder;
         }
 
         public async Task<PagingResult<CategoryDTO>> Handle(GetCategoriesQuery command, CancellationToken cancellationToken = default)
         {
-            return await _queryExecutor.ExecuteAsync<Category, CategoryDTO>(command.Query, x => new CategoryDTO
-            {
-                Id = x.Id,
-                Name = x.Name,
-            });
+            var query = command.Query;
+            var categoriesQuery = _context.Categories
+                .Include(x => x.Products)
+                .AsNoTracking()
+                .AsQueryable();
+
+            categoriesQuery = _filterBuilder.Apply(categoriesQuery, query.Filters ?? new List<FilterCondition>());
+            categoriesQuery = _sortBuilder.Apply(categoriesQuery, query.SortColumn, query.SortDirection);
+
+            var items = await categoriesQuery
+                .Skip((query.PageIndex - 1) * query.PageSize)
+                .Take(query.PageSize)
+                .Select(x => new CategoryDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    TotalProducts = x.Products.Count()
+                }).ToListAsync(cancellationToken);
+
+            return new PagingResult<CategoryDTO>(items, query.PageIndex, query.PageSize, items.Count());
         }
     }
 }
