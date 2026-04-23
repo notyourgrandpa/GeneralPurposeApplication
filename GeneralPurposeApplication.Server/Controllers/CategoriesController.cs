@@ -79,7 +79,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<CategoryDTO>> PostCategoryAsync(CategoryCreateInputDTO category)
         {
-            var newCategory = _mediator.Send(new CreateCategoryCommand(category.Name));
+            var newCategory = await _mediator.Send(new CreateCategoryCommand(category.Name));
 
             return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
         }
