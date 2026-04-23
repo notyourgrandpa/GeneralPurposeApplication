@@ -30,22 +30,34 @@ namespace GeneralPurposeApplication.Application.Categories.Queries
         {
             var query = command.Query;
             var categoriesQuery = _context.Categories
-                .Include(x => x.Products)
                 .AsNoTracking()
                 .AsQueryable();
 
             categoriesQuery = _filterBuilder.Apply(categoriesQuery, query.Filters ?? new List<FilterCondition>());
-            categoriesQuery = _sortBuilder.Apply(categoriesQuery, query.SortColumn, query.SortDirection);
+
+            var isCustomSort = query.SortColumn?.ToLower() == "totalproducts";
+
+            if (isCustomSort)
+            {
+                categoriesQuery = query.SortDirection?.ToLower() == "desc"
+                    ? categoriesQuery.OrderByDescending(x => x.Products.Count())
+                    : categoriesQuery.OrderBy(x => x.Products.Count());
+            }
+            else
+            {
+                categoriesQuery = _sortBuilder.Apply(categoriesQuery, query.SortColumn, query.SortDirection);
+            }
 
             var items = await categoriesQuery
-                .Skip((query.PageIndex - 1) * query.PageSize)
+                .Skip(query.PageIndex * query.PageSize)
                 .Take(query.PageSize)
                 .Select(x => new CategoryDTO
                 {
                     Id = x.Id,
                     Name = x.Name,
                     TotalProducts = x.Products.Count()
-                }).ToListAsync(cancellationToken);
+                })
+                .ToListAsync(cancellationToken);
 
             return new PagingResult<CategoryDTO>(items, query.PageIndex, query.PageSize, items.Count());
         }
