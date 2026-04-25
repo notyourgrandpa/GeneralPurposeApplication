@@ -63,14 +63,8 @@ namespace GeneralPurposeApplication.Server.Controllers
         [Authorize(Roles = "RegisteredUser")]
         public async Task<IActionResult> PutCategoryAsync(int id, CategoryUpdateDTO category)
         {
-            if (id != category.Id)
-            {
-                return BadRequest();
-            }
-
-            await _categoryService.UpdateCategoryAsync(id, category);
-
-            return NoContent();
+            var updateCommand = new UpdateCategoryCommand() { Id = id, Name = category.Name };
+            return Ok(await _mediator.Send(updateCommand));
         }
 
         // POST: api/Categories
