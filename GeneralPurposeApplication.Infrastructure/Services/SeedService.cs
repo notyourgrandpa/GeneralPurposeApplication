@@ -17,7 +17,6 @@ using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Domain.Products;
 using GeneralPurposeApplication.Application.Common.Interfaces;
-using GeneralPurposeApplication.Application.Queries.Categories;
 
 namespace GeneralPurposeApplication.Infrastructure.Services
 {

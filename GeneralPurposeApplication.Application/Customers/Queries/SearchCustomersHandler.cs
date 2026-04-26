@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Application.Common.Interfaces;
 using GeneralPurposeApplication.Application.DTOs;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneralPurposeApplication.Application.Queries.Customers
+namespace GeneralPurposeApplication.Application.Customers.Queries
 {
-    public class SearchCustomersHandler
+    public class SearchCustomersHandler: IRequestHandler<SearchCustomersQuery, IEnumerable<CustomerDTO>>
     {
         private readonly IApplicationDbContext _context;
 
@@ -18,7 +19,7 @@ namespace GeneralPurposeApplication.Application.Queries.Customers
             _context = context;
         }
 
-        public async Task<IEnumerable<CustomerDTO>> Handle(SearchCustomersQuery searchCustomersQuery)
+        public async Task<IEnumerable<CustomerDTO>> Handle(SearchCustomersQuery searchCustomersQuery, CancellationToken cancellationToken = default)
         {
             return await _context.Customers
                 .Where(x => x.Name.Contains(searchCustomersQuery.Term))
