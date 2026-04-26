@@ -1,6 +1,8 @@
-﻿using GeneralPurposeApplication.Application.DTOs;
-using GeneralPurposeApplication.Application.Queries.Customers;
+﻿using GeneralPurposeApplication.Application.Customers;
+using GeneralPurposeApplication.Application.Customers.Queries;
+using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Application.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,16 +17,16 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class CustomersController: ControllerBase
     {
-        private readonly SearchCustomersHandler _searchCustomerHandler;
-        public CustomersController(SearchCustomersHandler searchCustomersHandler) 
+        private readonly IMediator _mediator;
+        public CustomersController(IMediator mediator) 
         { 
-            _searchCustomerHandler = searchCustomersHandler;
+            _mediator = mediator;
         }
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> Search(string term)
         {
-            var customers = await _searchCustomerHandler.Handle(new SearchCustomersQuery(term));
+            var customers = await _mediator.Send(new SearchCustomersQuery() { Term = term});
 
             return Ok(customers);
         }

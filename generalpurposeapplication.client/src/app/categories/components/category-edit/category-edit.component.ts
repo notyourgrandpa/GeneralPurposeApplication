@@ -73,7 +73,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
       category.name = this.form.controls['name'].value;
       if (this.id) {
         // EDIT mode
-        this.categoryGraphQlService
+        this.categoryService
           .put(category)
           .subscribe({
             next: (result) => {
@@ -86,7 +86,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
       }
       else {
         // ADD NEW mode
-        this.categoryGraphQlService
+        this.categoryService
           .post(category)
           .subscribe({
             next: (result) => {
