@@ -69,10 +69,12 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       paidAmount: [0, [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]]
     }, { validators: paidEnoughValidator });
 
-    this.filteredCustomers = this.form.get('customer')!.valueChanges.pipe(
-      debounceTime(300),            // wait until user stops typing
-      distinctUntilChanged(),        // only if the text really changed
-      switchMap(term => this.customerService.search(term || ''))
+    this.filteredProducts = this.productSearch.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      map(value => typeof value === 'string' ? value :  ''),
+      filter(term => term.length > 0),
+      switchMap(term => this.productService.search(term))
     );
 
     this.filteredCustomers = this.form.get('customer')!.valueChanges.pipe(
@@ -82,6 +84,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
       filter(term => term.length > 0),
       switchMap(term => this.customerService.search(term))
     );
+
     this.items.valueChanges.subscribe(() => {
       this.dataSource.data = this.items.controls;
     });
@@ -134,7 +137,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
   }
 
   loadProducts() {
-    // fetch all the countries from the server
+    // fetch all the products from the server
     this.products = this.productService
       .getData(0, 9999, "name", "asc", null, null)
       .pipe(map(x => x.data));
@@ -254,7 +257,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
             this.router.navigate(['/sales-transactions']);
           },
           error: (error) => {
-            this.snackBar.open(error);
+            this.snackBar.open(error.error.message);
           }
         });
       }
