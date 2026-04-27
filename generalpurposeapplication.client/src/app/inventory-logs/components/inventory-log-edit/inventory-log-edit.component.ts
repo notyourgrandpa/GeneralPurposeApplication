@@ -93,7 +93,7 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
 
   loadData() {
 
-    // load categories
+    // load products
     this.loadProducts();
 
     // retrieve the ID from the 'id' parameter
@@ -122,7 +122,7 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
   }
 
   loadProducts() {
-    // fetch all the countries from the server
+    // fetch all the products from the server
     this.products = this.productService
       .getData(0, 9999, "name", "asc", null, null)
       .pipe(map(x => x.data));
