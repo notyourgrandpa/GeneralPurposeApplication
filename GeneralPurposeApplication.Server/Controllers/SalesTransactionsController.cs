@@ -56,9 +56,16 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<SalesTransaction>> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionLogDto)
         {
-            var salesTransactionDto = await _addSalesTransactionUseCase.ExecuteAsync(salesTransactionLogDto, User.GetUserId());
+            try
+            {
+                var salesTransactionDto = await _addSalesTransactionUseCase.ExecuteAsync(salesTransactionLogDto, User.GetUserId());
 
-            return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
+                return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception(ex.InnerException?.Message ?? ex.Message);
+            }
         }
 
 
