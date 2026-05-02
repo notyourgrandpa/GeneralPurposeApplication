@@ -12,7 +12,6 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface ICategoryService
     {
-        Task<Category?> GetCategoryAsync(int id);
         Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO);
         Task<bool> CategoryExists(string categoryName);
         Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue);

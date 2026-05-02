@@ -47,14 +47,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategoryAsync(int id)
         {
-            var category = await _categoryService.GetCategoryAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return category;
+            return await _mediator.Send(new GetCategoryQuery { Id = id });
         }
 
         // PUT: api/Categories/5
