@@ -121,7 +121,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             else if (inventoryLog.ChangeType == InventoryChangeType.StockOut)
             {
                 if (product.Stock < inventoryLog.Quantity)
-                    throw new InvalidOperationException("Not enough stock available.");
+                    throw new InvalidOperationException($"{product.Name}: Not enough stock available.");
                 product.Stock -= inventoryLog.Quantity;
             }
             else if (inventoryLog.ChangeType == InventoryChangeType.Adjustment)
