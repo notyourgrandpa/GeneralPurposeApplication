@@ -21,25 +21,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResult<CategoryDTO>> GetCategoriesAsync(int pageIndex, int pageSize, string? sortColumn, string? sortOrder, string? filterColumn, string? filterQuery)
-        {
-            return await ApiResult<CategoryDTO>.CreateAsync(
-                _unitOfWork.Repository<Category>().GetQueryable()
-                    .AsNoTracking()
-                    .Select(x => new CategoryDTO
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        TotalProducts = x.Products!.Count
-                    }),
-                pageIndex,
-                pageSize,
-                sortColumn,
-                sortOrder,
-                filterColumn,
-                filterQuery);
-        }
-
         public async Task<Category?> GetCategoryAsync(int id) => await _unitOfWork.Repository<Category>().GetByIdAsync(id);
 
 
