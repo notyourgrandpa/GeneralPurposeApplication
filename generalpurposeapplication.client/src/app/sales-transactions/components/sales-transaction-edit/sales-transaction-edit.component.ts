@@ -257,7 +257,7 @@ export class SalesTransactionEditComponent extends BaseFormComponent implements 
             this.router.navigate(['/sales-transactions']);
           },
           error: (error) => {
-            this.snackBar.open(error.error.message);
+            this.snackBar.open(error.error.message, "Ok", {duration: 3000});
           }
         });
       }
