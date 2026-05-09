@@ -19,19 +19,9 @@ namespace GeneralPurposeApplication.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Category category)
+        public async Task<bool> CategoryExists(string categoryName, CancellationToken ct = default)
         {
-            await _context.Categories.AddAsync(category);
-        }
-
-        public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken ct)
-        {
-            return await _context.Categories.AsNoTracking().ToListAsync();
-        }
-
-        public async Task<Dictionary<string, Category>> GetDictionaryAsync()
-        {
-            return await _context.Categories.AsNoTracking().ToDictionaryAsync(c => c.Name, StringComparer.OrdinalIgnoreCase);
+            return await _context.Categories.AnyAsync(x => x.Name == categoryName, ct) ;
         }
     }
 }

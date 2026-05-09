@@ -81,11 +81,6 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
-        private async Task<bool> CategoryExists(string categoryName)
-        {
-            return await _categoryService.CategoryExists(categoryName);
-        }
-
         [HttpPost]
         [Route("IsDupeField")]
         public async Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue)
