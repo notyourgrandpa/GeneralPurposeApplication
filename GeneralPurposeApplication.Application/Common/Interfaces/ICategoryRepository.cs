@@ -10,8 +10,6 @@ namespace GeneralPurposeApplication.Application.Common.Interfaces
 {
     public interface ICategoryRepository
     {
-        public Task AddAsync(Category category);
-        public Task<IEnumerable<Category>> GetAllAsync(CancellationToken ct);
-        public Task<Dictionary<string, Category>> GetDictionaryAsync();
+        public Task<bool> CategoryExists(string categoryName, CancellationToken ct);
     }
 }

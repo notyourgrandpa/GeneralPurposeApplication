@@ -10,10 +10,13 @@ namespace GeneralPurposeApplication.Application.Categories.Commands
 {
     public class CreateCategoryValidator: AbstractValidator<CreateCategoryCommand>
     {
-        public CreateCategoryValidator()
+        public CreateCategoryValidator(ICategoryRepository repository)
         {
             RuleFor(x => x.Name)
-                .NotEmpty();
+                .NotEmpty()
+                .MustAsync(async (name, ct) => 
+                    !await repository.CategoryExists(name, ct))
+                .WithMessage("Category already exist!");
         }
     }
 }
