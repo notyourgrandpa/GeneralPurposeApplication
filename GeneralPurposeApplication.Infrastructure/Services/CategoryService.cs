@@ -21,25 +21,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Category?> GetCategoryAsync(int id) => await _unitOfWork.Repository<Category>().GetByIdAsync(id);
-
-
-        public async Task UpdateCategoryAsync(int id, CategoryUpdateDTO categoryUpdateDTO)
-        {
-            Category? category = await _unitOfWork.Repository<Category>().GetByIdAsync(id);
-            if (category == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            category.Name = categoryUpdateDTO.Name;
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task<bool> CategoryExists(string categoryName)
-        {
-            return await _unitOfWork.Repository<Category>().AnyAsync(x => x.Name == categoryName);
-        }
-
         public async Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue)
         {
 
