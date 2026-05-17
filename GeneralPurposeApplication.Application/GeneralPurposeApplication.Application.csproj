@@ -17,4 +17,8 @@
     <ProjectReference Include="..\GeneralPurposeApplication.Domain\GeneralPurposeApplication.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Products\Commands\" />
+  </ItemGroup>
+
 </Project>

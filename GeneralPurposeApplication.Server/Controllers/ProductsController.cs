@@ -1,10 +1,12 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Products.Queries;
 using GeneralPurposeApplication.Application.QueryParameters;
 using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Domain.Products;
 using GeneralPurposeApplication.Server.Data;
 using Humanizer;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +24,7 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IMediator _mediator;
 
         public ProductsController(IProductService productService)
         {
@@ -42,12 +45,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductAsync(int id)
         {
-            var product = await _productService.GetProductAsync(id);
-
-            if (product == null)
-                return NotFound();
-
-            return Ok(product);
+            return await _mediator.Send(new GetProductQuery { Id = id });
         }
 
         // PUT: api/Products/5
