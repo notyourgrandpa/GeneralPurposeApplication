@@ -26,9 +26,10 @@ namespace GeneralPurposeApplication.Server.Controllers
         private readonly IProductService _productService;
         private readonly IMediator _mediator;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IMediator mediator)
         {
             _productService = productService;
+            _mediator = mediator;
         }
 
         // GET: api/Products
