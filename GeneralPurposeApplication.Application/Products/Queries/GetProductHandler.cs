@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Products.Queries
 {
-    public class GetCategoryHandler : IRequestHandler<GetProductQuery, Product>
+    public class GetProductHandler : IRequestHandler<GetProductQuery, Product>
     {
         private readonly IApplicationDbContext _context;
 
-        public GetCategoryHandler(IApplicationDbContext context)
+        public GetProductHandler(IApplicationDbContext context)
         {
             _context = context;
         }
