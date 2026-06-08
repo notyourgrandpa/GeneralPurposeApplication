@@ -56,22 +56,22 @@ namespace GeneralPurposeApplication.Application.Products.Queries
 
             query = (param.SortColumn, param.SortOrder?.ToLower()) switch
             {
-                ("Name", "desc") =>
+                ("name", "desc") =>
                     query.OrderByDescending(p => p.Name),
 
-                ("Name", _) =>
+                ("name", _) =>
                     query.OrderBy(p => p.Name),
 
-                ("CostPrice", "desc") =>
+                ("costPrice", "desc") =>
                     query.OrderByDescending(p => p.CostPrice),
 
-                ("CostPrice", _) =>
+                ("costPrice", _) =>
                     query.OrderBy(p => p.CostPrice),
 
                 ("Stock", "desc") =>
                     query.OrderByDescending(p => p.Stock),
 
-                ("Stock", _) =>
+                ("stock", _) =>
                     query.OrderBy(p => p.Stock),
 
                 _ =>
