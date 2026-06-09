@@ -38,8 +38,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedResult<ProductDTO>>> GetProductsAsync([FromQuery]ProductQueryParameter parameters)
         {
-            var result = await _productService.GetProductsAsync(parameters);
-            return Ok(result);
+            return await _mediator.Send(new GetProductsQuery { ProductQuery = parameters } );
         }
 
         // GET: api/Products/5
