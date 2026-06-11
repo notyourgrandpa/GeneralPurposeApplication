@@ -101,7 +101,7 @@ export class ProductListComponent implements OnChanges {
       : this.defaultSortOrder;
     var filterColumn = (this.filterQuery)
       ? this.defaultFilterColumn
-      : null;
+      : undefined;
     var filterQuery = (this.filterQuery)
       ? this.filterQuery
       : undefined;
@@ -111,6 +111,7 @@ export class ProductListComponent implements OnChanges {
     const productQueryParams: ProductQueryParams = {
       pageIndex: event.pageIndex,
       pageSize: event.pageSize,
+      filterColumn: filterColumn,
       filterQuery: filterQuery,
       filter: {
         categoryId: categoryId,
