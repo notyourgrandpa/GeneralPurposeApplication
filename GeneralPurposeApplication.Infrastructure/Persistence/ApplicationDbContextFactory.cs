@@ -12,6 +12,7 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+                .AddUserSecrets<ApplicationDbContextFactory>(optional: true)
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
