@@ -1,4 +1,5 @@
 ﻿using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Products;
 using MediatR;
@@ -6,14 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using GeneralPurposeApplication.Application.Common.Paging;
 
 namespace GeneralPurposeApplication.Application.Products.Queries
 {
-    public class GetProductsHandler : IRequestHandler<GetProductsQuery, Common.Paging.PagedResult<ProductDTO>>
+    public class GetProductsHandler : IRequestHandler<GetProductsQuery, PagedResult<ProductDTO>>
     {
         private readonly IApplicationDbContext _context;
 
@@ -22,87 +22,93 @@ namespace GeneralPurposeApplication.Application.Products.Queries
             _context = context;
         }
 
-        public async Task<Common.Paging.PagedResult<ProductDTO>> Handle(
-    GetProductsQuery request,
-    CancellationToken cancellationToken)
+        public async Task<PagedResult<ProductDTO>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
-            var param = request.ProductQuery;
-
-            IQueryable<Product> query = _context.Products
+            var query = request.ProductQuery;
+            IQueryable<Product> products = _context.Products
                 .Include(p => p.Category)
                 .AsNoTracking();
 
-            // Filtering
-
-            if (param.CategoryId.HasValue)
+            if (query.CategoryId != null)
             {
-                query = query.Where(p =>
-                    p.CategoryId == param.CategoryId);
+                products = products.Where(p => p.CategoryId == query.CategoryId);
             }
 
-            if (!string.IsNullOrWhiteSpace(param.FilterQuery))
+            if (query.IsActive != null)
             {
-                query = query.Where(p =>
-                    p.Name.Contains(param.FilterQuery));
+                products = products.Where(p => p.IsActive == query.IsActive);
             }
 
-            if (param.IsActive.HasValue)
+            // For dynamic filtering
+            //Expression<Func<Product, bool>>? predicate = null;
+            //if (query.FilterColumn != null && query.FilterQuery != null) 
+            //{
+            //    ParameterExpression param = Expression.Parameter(typeof(Product), "p");
+            //    var property = Expression.PropertyOrField(param, query.FilterColumn);
+            //    var constant = Expression.Constant(query.FilterQuery);
+
+            //    predicate = Expression.Lambda<Func<Product, bool>>(
+            //        Expression.Call(property, typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!, constant),
+            //        param
+            //    );
+            //}
+
+            //if(predicate != null)
+            //{
+            //    products = products.Where(predicate);
+            //}
+
+            if (query.FilterQuery != null)
             {
-                query = query.Where(p =>
-                    p.IsActive == param.IsActive);
+                products = products.Where(p =>
+                p.Name.Contains(query.FilterQuery)
+                );
             }
 
-            // Sorting
-
-            query = (param.SortColumn, param.SortOrder?.ToLower()) switch
+            products = (query.SortColumn, query.SortOrder?.ToLower()) switch
             {
-                ("name", "desc") =>
-                    query.OrderByDescending(p => p.Name),
-
-                ("name", _) =>
-                    query.OrderBy(p => p.Name),
-
-                ("costPrice", "desc") =>
-                    query.OrderByDescending(p => p.CostPrice),
-
-                ("costPrice", _) =>
-                    query.OrderBy(p => p.CostPrice),
-
-                ("Stock", "desc") =>
-                    query.OrderByDescending(p => p.Stock),
-
-                ("stock", _) =>
-                    query.OrderBy(p => p.Stock),
-
-                _ =>
-                    query.OrderBy(p => p.Id)
+                ("name", "asc") => products.OrderBy(p => p.Name),
+                ("name", "desc") => products.OrderByDescending(p => p.Name),
+                ("costPrice", "asc") => products.OrderBy(p => p.CostPrice),
+                ("costPrice", "desc") => products.OrderByDescending(p => p.CostPrice),
+                ("sellingPrice", "asc") => products.OrderBy(p => p.SellingPrice),
+                ("sellingPrice", "desc") => products.OrderByDescending(p => p.SellingPrice),
+                ("categoryName", "asc") => products.OrderByDescending(p => p.CategoryId),
+                ("categoryName", "desc") => products.OrderByDescending(p => p.CategoryId),
+                ("stock", "asc") => products.OrderBy(p => p.Stock),
+                ("stock", "desc") => products.OrderByDescending(p => p.Stock),
+                ("isActive", "asc") => products.OrderBy(p => p.IsActive),
+                ("isActive", "desc") => products.OrderByDescending(p => p.IsActive),
+                ("dateAdded", "asc") => products.OrderBy(p => p.DateAdded),
+                ("dateAdded", "desc") => products.OrderByDescending(p => p.DateAdded),
+                ("lastUpdated", "asc") => products.OrderBy(p => p.LastUpdated),
+                ("lastUpdated", "desc") => products.OrderByDescending(p => p.LastUpdated),
+                _ => products.OrderBy(p => p.Name)
             };
 
-            var totalCount = await query.CountAsync(cancellationToken);
-
-            var data = await query
-                .Skip(param.PageIndex * param.PageSize)
-                .Take(param.PageSize)
-                .Select(p => new ProductDTO
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    CategoryId = p.CategoryId,
-                    CategoryName = p.Category!.Name,
-                    CostPrice = p.CostPrice,
-                    SellingPrice = p.SellingPrice,
-                    Stock = p.Stock,
-                    IsActive = p.IsActive,
-                    DateAdded = p.DateAdded,
-                    LastUpdated = p.LastUpdated
-                })
-                .ToListAsync(cancellationToken);
-
-            return new Common.Paging.PagedResult<ProductDTO>(
-                data,
-                totalCount,
-                param.PageIndex,
-                param.PageSize);
+            var result = new PagedResult<ProductDTO>(
+                await products
+                    .Skip((query.PageIndex) * query.PageSize)
+                    .Take(query.PageSize)
+                    .Select(p => new ProductDTO
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        CategoryId = p.CategoryId,
+                        CategoryName = p.Category!.Name,
+                        CostPrice = p.CostPrice,
+                        SellingPrice = p.SellingPrice,
+                        Stock = p.Stock,
+                        IsActive = p.IsActive,
+                        DateAdded = p.DateAdded,
+                        LastUpdated = p.LastUpdated
+                    })
+                    .ToListAsync(),
+                await products.CountAsync(),
+                query.PageIndex,
+                query.PageSize
+                );
+            return result;
         }
     }
 }
