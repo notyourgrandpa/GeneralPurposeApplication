@@ -24,31 +24,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PagedResult<ProductDTO>> GetProductsAsync(ProductQueryParameter param)
-        {
-            var spec = new ProductsFilteredSpec(param.PageIndex, param.PageSize, param.SortColumn!, param.SortOrder!, param.FilterColumn!, param.FilterQuery, param.CategoryId, param.IsActive);
-
-            var count = await _unitOfWork.Repository<Product>().CountAsync(spec);
-
-            var products = await _unitOfWork.Repository<Product>().ListAsync(spec);
-
-            var data = products.Select(x => new ProductDTO
-            {
-                Id = x.Id,
-                Name = x.Name,
-                CategoryId = x.CategoryId,
-                CategoryName = x.Category!.Name,
-                CostPrice = x.CostPrice,
-                SellingPrice = x.SellingPrice,
-                Stock = x.Stock,
-                IsActive = x.IsActive,
-                DateAdded = x.DateAdded,
-                LastUpdated = x.LastUpdated
-            }).ToList();
-
-            return new PagedResult<ProductDTO>(data, count, param.PageIndex, param.PageSize);
-        }
-
         public async Task<Product?> GetProductAsync(int productId)
         {
             return await _unitOfWork.Repository<Product>().GetByIdAsync(productId);

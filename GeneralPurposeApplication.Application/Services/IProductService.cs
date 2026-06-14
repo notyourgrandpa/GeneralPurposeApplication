@@ -13,7 +13,6 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface IProductService
     {
-        Task<PagedResult<ProductDTO>> GetProductsAsync(ProductQueryParameter parameters);
         Task<Product?> GetProductAsync(int productId);
         Task<ProductDTO> CreateProductAsync(ProductCreateDTO productCreateDTO);
         Task<bool> UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO);
