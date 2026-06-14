@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Products.Commands;
 using GeneralPurposeApplication.Application.Products.Queries;
 using GeneralPurposeApplication.Application.QueryParameters;
 using GeneralPurposeApplication.Application.Services;
@@ -57,7 +58,12 @@ namespace GeneralPurposeApplication.Server.Controllers
             if (id != product.Id)
                 return BadRequest(new { message = "ID mismatch between route and body." });
 
-            var updated = await _productService.UpdateProductAsync(id, product);
+            var updated = await _mediator.Send(new UpdateProductCommand
+            {
+                ProductId = id,
+                ProductUpdateDTO = product
+            });
+
             if (!updated)
             {
                 return NotFound();
