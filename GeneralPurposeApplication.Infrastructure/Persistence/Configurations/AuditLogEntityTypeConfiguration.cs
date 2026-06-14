@@ -20,6 +20,7 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Action).IsRequired();
             builder.Property(x => x.EntityName).IsRequired();
             builder.Property(x => x.EntityId);
+            builder.Property(x => x.EntityKey).HasMaxLength(500).IsUnicode(false);
             builder.Property(x => x.PerformedBy).IsRequired();
             builder.Property(x => x.Changes).IsRequired();
         }

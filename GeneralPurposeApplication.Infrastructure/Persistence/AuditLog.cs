@@ -16,7 +16,9 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence
         public DateTime Date { get; set; } = DateTime.Now;
         public required string Action { get; set; }
         public required string EntityName { get; set; }
+        // Keep EntityId for legacy/int-based lookups, but store the canonical key in EntityKey
         public int EntityId { get; set; }
+        public string? EntityKey { get; set; }
         public required string PerformedBy { get; set; }
         public required string Changes { get; set; }
     }

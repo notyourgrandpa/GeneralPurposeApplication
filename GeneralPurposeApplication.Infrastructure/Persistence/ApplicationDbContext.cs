@@ -33,19 +33,54 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var auditEntries = ChangeTracker.Entries()
+            var auditEntries = new List<AuditLog>();
+
+            var entries = ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added
                          || e.State == EntityState.Modified
-                         || e.State == EntityState.Deleted)
-                .Select(e => new AuditLog
+                         || e.State == EntityState.Deleted);
+
+            foreach (var e in entries)
+            {
+                // Build a canonical string key from primary key properties (supports composite keys)
+                var pk = e.Metadata.FindPrimaryKey();
+                string? entityKey = null;
+                int entityId = 0;
+
+                if (pk != null)
+                {
+                    var keyParts = pk.Properties.Select(p =>
+                    {
+                        var prop = e.Property(p.Name);
+                        var cv = prop.CurrentValue;
+                        return cv?.ToString() ?? "null";
+                    });
+
+                    entityKey = string.Join(":", keyParts);
+
+                    // If single int key, try to parse for EntityId convenience
+                    if (pk.Properties.Count == 1)
+                    {
+                        var singleVal = pk.Properties[0];
+                        var propVal = e.Property(singleVal.Name).CurrentValue;
+                        if (propVal is int i)
+                            entityId = i;
+                        else if (propVal != null)
+                            int.TryParse(propVal.ToString(), out entityId);
+                    }
+                }
+
+                auditEntries.Add(new AuditLog
                 {
                     Action = e.State.ToString(),
                     EntityName = e.Entity.GetType().Name,
-                    EntityId = (int)e.Property("Id").CurrentValue,
+                    EntityId = entityId,
+                    EntityKey = entityKey,
                     PerformedBy = _currentUserService?.UserId ?? "Unknown",
                     Changes = string.Join(", ", e.Properties
                         .Select(p => $"{p.Metadata.Name}: {p.CurrentValue}"))
-                }).ToList();
+                });
+            }
 
             AuditLogs.AddRange(auditEntries);
             return await base.SaveChangesAsync(cancellationToken);
