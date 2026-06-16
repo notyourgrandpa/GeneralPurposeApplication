@@ -16,7 +16,6 @@ namespace GeneralPurposeApplication.Application.Services
         Task<Product?> GetProductAsync(int productId);
         Task<ProductDTO> CreateProductAsync(ProductCreateDTO productCreateDTO);
         Task<bool> UpdateProductAsync(int productId, ProductUpdateDTO productUpdateDTO);
-        Task<bool> DeleteProductAsync(int productId);
         Task UpdateStockAsync(InventoryLog inventoryLog);
         Task<bool> IsDupeProduct(Product product);
         Task<bool> ProductExistsAsync(int productId);
