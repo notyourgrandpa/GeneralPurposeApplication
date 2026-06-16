@@ -53,7 +53,10 @@ builder.Services.AddHealthChecks()
     .AddCheck("ICMP_02", new ICMPHealthCheck("www.google.com", 100))
     .AddCheck("ICMP_03", new ICMPHealthCheck($"www.{Guid.NewGuid():N}.com", 100));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.SuppressAsyncSuffixInActionNames = false;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
