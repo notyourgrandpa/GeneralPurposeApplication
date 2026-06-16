@@ -88,11 +88,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync(int id)
         {
-            var deleted = await _productService.DeleteProductAsync(id);
-            if (!deleted)
-            {
-                return NotFound();
-            }
+            var deleted = await _mediator.Send(new DeleteProductCommand { ProductId = id });
 
             return NoContent();
         }
