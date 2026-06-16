@@ -78,7 +78,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(ProductCreateDTO product)
         {
-            var productDTO = await _productService.CreateProductAsync(product);
+            var productDTO = await _mediator.Send(new CreateProductCommand { ProductCreateDTO = product });
 
             return CreatedAtAction(nameof(GetProductAsync), new { id = productDTO.Id }, productDTO);
         }
@@ -98,7 +98,6 @@ namespace GeneralPurposeApplication.Server.Controllers
             return await _productService.ProductExistsAsync(id);
         }
 
-        [HttpPost]
         [Route("IsDupeProduct")]
         public async Task<bool> IsDupeProduct(Product product)
         {
