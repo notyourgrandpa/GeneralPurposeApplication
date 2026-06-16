@@ -74,17 +74,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             return true;
         }
 
-        public async Task<bool> DeleteProductAsync(int productId)
-        {
-            var product= await GetProductAsync(productId);
-            if (product == null)
-                return false;
-            _unitOfWork.Repository<Product>().Delete(product);
-            await _unitOfWork.SaveChangesAsync();
-
-            return true;
-        }
-
         public async Task UpdateStockAsync(InventoryLog inventoryLog)
         {
             Product? product = await _unitOfWork.Repository<Product>().GetByIdAsync(inventoryLog.ProductId);
