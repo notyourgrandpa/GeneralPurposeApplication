@@ -19,6 +19,5 @@ namespace GeneralPurposeApplication.Application.Services
         Task UpdateStockAsync(InventoryLog inventoryLog);
         Task<bool> IsDupeProduct(Product product);
         Task<bool> ProductExistsAsync(int productId);
-        Task<IEnumerable<ProductDTO>> SearchProduct(string term);
     }
 }

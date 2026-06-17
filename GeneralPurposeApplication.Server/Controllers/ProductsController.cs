@@ -64,11 +64,6 @@ namespace GeneralPurposeApplication.Server.Controllers
                 ProductUpdateDTO = product
             });
 
-            if (!updated)
-            {
-                return NotFound();
-            }
-
             return NoContent();
         }
 
@@ -107,7 +102,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> Search(string term)
         {
-            return Ok(await _productService.SearchProduct(term));
+            return Ok(await _mediator.Send(new SearchProductQuery { Term = term }));
         }
     }
 }

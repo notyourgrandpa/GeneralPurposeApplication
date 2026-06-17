@@ -8,8 +8,17 @@
       <mat-label>Select a Product...</mat-label>
       <mat-select id="productId" formControlName="productId"
                   (selectionChange)="onProductSelected($event.value)">
-        <mat-option *ngFor="let product of result" [value]="product.id">
-          {{product.name}}
+
+        <mat-option>
+          <ngx-mat-select-search [formControl]="searchCtrl" placeholderLabel="Search..." noEntriesFoundLabel="No matching products">
+
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let product of (filteredProducts | async)"
+                    [value]="product.id">
+
+          {{ product.name }}
+
         </mat-option>
       </mat-select>
       <mat-error *ngFor="let error of getErrors(form.get('productId')!,'Product')">
