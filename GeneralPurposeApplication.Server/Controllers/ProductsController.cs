@@ -102,7 +102,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> Search(string term)
         {
-            return Ok(await _productService.SearchProduct(term));
+            return Ok(_mediator.Send(new SearchProductQuery { Term = term }));
         }
     }
 }
