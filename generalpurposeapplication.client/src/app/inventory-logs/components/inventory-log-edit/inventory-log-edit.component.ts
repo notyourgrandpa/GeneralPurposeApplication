@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { BaseFormComponent } from '../../../shared/components/base-form.component';
 import { InventoryLog } from '../../models/inventory-logs';
-import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { Product } from '../../../products/models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InventoryLogService } from '../../services/inventory-logs.service';
@@ -21,11 +21,14 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
   title?: string;
   inventoryLog?: InventoryLog;
   id?: number;
-  products?: Observable<Product[]>;
+  products!: Observable<Product[]>;
+  filteredProducts?: Observable<Product[]>;
 
   selectedProductStock: number | null = null;
 
   private destroySubject = new Subject();
+
+  searchCtrl = new FormControl();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -74,6 +77,19 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
         }
       });
 
+    this.loadProducts();
+
+    this.filteredProducts = combineLatest([
+      this.products,
+      this.searchCtrl.valueChanges.pipe(startWith(''))
+    ]).pipe(
+      map(([products, search]) =>
+        products.filter(p =>
+          p.name.toLowerCase().includes((search ?? '').toLowerCase())
+        )
+      )
+    );
+
     this.loadData();
   }
 
@@ -92,10 +108,6 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
   }
 
   loadData() {
-
-    // load products
-    this.loadProducts();
-
     // retrieve the ID from the 'id' parameter
     //var idParam = this.activatedRoute.snapshot.paramMap.get('id');
     //this.id = idParam ? +idParam : 0;

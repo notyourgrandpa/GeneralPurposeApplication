@@ -22,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatAutocompleteModule
+    MatProgressSpinnerModule,
+    NgxMatSelectSearchModule,
   ],
   exports: [
     MatButtonModule,
@@ -72,7 +74,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxMatSelectSearchModule,
   ]
 })
 export class AngularMaterialModule { }
