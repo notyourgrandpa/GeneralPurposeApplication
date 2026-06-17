@@ -64,11 +64,6 @@ namespace GeneralPurposeApplication.Server.Controllers
                 ProductUpdateDTO = product
             });
 
-            if (!updated)
-            {
-                return NotFound();
-            }
-
             return NoContent();
         }
 
