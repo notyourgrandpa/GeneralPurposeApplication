@@ -72,14 +72,6 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInventoryLogAsync(int id)
-        {
-            await _inventoryLogService.DeleteInventoryLogAsync(id);
-
-            return NoContent();
-        }
-
         [HttpPatch("{id}")]
         public async Task<IActionResult> VoidInventoryLogAsync(int id)
         {
