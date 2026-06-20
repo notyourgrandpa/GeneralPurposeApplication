@@ -62,16 +62,6 @@ namespace GeneralPurposeApplication.Server.Controllers
             return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, inventoryLog);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDto)
-        {
-            if (id != inventoryLogDto.Id)
-                return BadRequest();
-
-            await _inventoryLogService.UpdateInventoryLogAsync(id, inventoryLogDto);
-            return NoContent();
-        }
-
         [HttpPatch("{id}")]
         public async Task<IActionResult> VoidInventoryLogAsync(int id)
         {
