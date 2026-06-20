@@ -1,9 +1,11 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Products.Commands;
 using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Application.UseCases;
 using GeneralPurposeApplication.Domain.Inventory;
 using GeneralPurposeApplication.Infrastructure.Persistence.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,11 +22,13 @@ namespace GeneralPurposeApplication.Server.Controllers
     {
         private readonly IInventoryLogService _inventoryLogService;
         private readonly AddStockUseCase _addStockUseCase;
+        private readonly IMediator _mediator;
 
-        public InventoryLogsController(IInventoryLogService inventoryLogService, AddStockUseCase addStockUseCase)
+        public InventoryLogsController(IInventoryLogService inventoryLogService, AddStockUseCase addStockUseCase, IMediator mediator)
         {
             _inventoryLogService = inventoryLogService;
             _addStockUseCase = addStockUseCase;
+            _mediator = mediator;
         }
         // GET: api/InventoryLogs
         // GET: api/InventoryLogs/?pageIndex=0&pageSize=10
@@ -62,28 +66,10 @@ namespace GeneralPurposeApplication.Server.Controllers
             return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, inventoryLog);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDto)
-        {
-            if (id != inventoryLogDto.Id)
-                return BadRequest();
-
-            await _inventoryLogService.UpdateInventoryLogAsync(id, inventoryLogDto);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInventoryLogAsync(int id)
-        {
-            await _inventoryLogService.DeleteInventoryLogAsync(id);
-
-            return NoContent();
-        }
-
         [HttpPatch("{id}")]
         public async Task<IActionResult> VoidInventoryLogAsync(int id)
         {
-            await _inventoryLogService.VoidInventoryLogAsync(id,User.GetUserId());
+            await _mediator.Send(new VoidInventoryLogCommand { Id = id, UserId = User.GetUserId() });
             return NoContent();
         }
     }
