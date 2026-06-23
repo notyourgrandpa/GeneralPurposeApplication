@@ -1,8 +1,8 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Inventory_Logs.Commands;
 using GeneralPurposeApplication.Application.Products.Commands;
 using GeneralPurposeApplication.Application.Services;
-using GeneralPurposeApplication.Application.UseCases;
 using GeneralPurposeApplication.Domain.Inventory;
 using GeneralPurposeApplication.Infrastructure.Persistence.Extensions;
 using MediatR;
@@ -21,13 +21,11 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class InventoryLogsController : ControllerBase
     {
         private readonly IInventoryLogService _inventoryLogService;
-        private readonly AddStockUseCase _addStockUseCase;
         private readonly IMediator _mediator;
 
-        public InventoryLogsController(IInventoryLogService inventoryLogService, AddStockUseCase addStockUseCase, IMediator mediator)
+        public InventoryLogsController(IInventoryLogService inventoryLogService, IMediator mediator)
         {
             _inventoryLogService = inventoryLogService;
-            _addStockUseCase = addStockUseCase;
             _mediator = mediator;
         }
         // GET: api/InventoryLogs
@@ -61,7 +59,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<InventoryLogDTO>> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
-            InventoryLogDTO inventoryLog = await _addStockUseCase.ExecuteAsync(inventoryLogDto);
+            InventoryLogDTO inventoryLog = await _mediator.Send(new CreateInventoryLogCommand { InventoryLogDto = inventoryLogDto });
 
             return CreatedAtAction("GetInventoryLogAsync", new { id = inventoryLog.Id }, inventoryLog);
         }
