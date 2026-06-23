@@ -3,6 +3,7 @@ using GeneralPurposeApplication.Application.Products.Commands;
 using GeneralPurposeApplication.Domain.Abstractions;
 using GeneralPurposeApplication.Domain.Inventory;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,9 @@ namespace GeneralPurposeApplication.Application.Inventory_Logs.Commands
         public async Task<Unit> Handle(VoidInventoryLogCommand request, CancellationToken cancellationToken)
         {
 
-            var inventoryLog = await _context.InventoryLogs.FindAsync(request.Id);
+            var inventoryLog = await _context.InventoryLogs
+                .Include(i => i.Product)
+                .FirstOrDefaultAsync(i => i.Id == request.Id);
 
             if (inventoryLog == null)
                 throw new KeyNotFoundException($"Inventory Log {request.Id} not found.");
