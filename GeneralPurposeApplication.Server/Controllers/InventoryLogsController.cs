@@ -63,7 +63,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         {
             InventoryLogDTO inventoryLog = await _addStockUseCase.ExecuteAsync(inventoryLogDto);
 
-            return CreatedAtAction("GetInventoryLog", new { id = inventoryLog.Id }, inventoryLog);
+            return CreatedAtAction("GetInventoryLogAsync", new { id = inventoryLog.Id }, inventoryLog);
         }
 
         [HttpPatch("{id}")]
