@@ -10,6 +10,7 @@ import { InventoryLogService } from '../../services/inventory-logs.service';
 import { ProductDialogService } from '../../../products/services/product-dialog.service'
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InventoryLogDetailsComponent } from '../inventory-log-details/inventory-log-details.component';
 
 @Component({
   selector: 'app-inventory-logs',
@@ -132,5 +133,9 @@ export class InventoryLogsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.loadData();
     });
+  }
+
+  openInventoryLogDetailsDialog(inventoryLogId: number){
+    const dialogRef = this.dialog.open(InventoryLogDetailsComponent, {data: inventoryLogId});
   }
 }
