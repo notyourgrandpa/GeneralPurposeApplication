@@ -1,7 +1,9 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Application.Inventory_Logs.Commands;
+using GeneralPurposeApplication.Application.Inventory_Logs.Queries;
 using GeneralPurposeApplication.Application.Products.Commands;
+using GeneralPurposeApplication.Application.QueryParameters;
 using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Domain.Inventory;
 using GeneralPurposeApplication.Infrastructure.Persistence.Extensions;
@@ -32,15 +34,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/InventoryLogs/?pageIndex=0&pageSize=10
         // GET: api/InventoryLogs/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ApiResult<InventoryLogDTO>> GetInventoryLogs(
-            int pageIndex = 0,
-            int pageSize = 10,
-            string? sortColumn = null,
-            string? sortOrder = null,
-            string? filterColumn = null,
-            string? filterQuery = null)
+        public async Task<PagedResult<InventoryLogDTO>> GetInventoryLogs([FromQuery]QueryParameter parameter)
         {
-            return await _inventoryLogService.GetInventoryLogsAsync(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
+            return await _mediator.Send(new GetInventoryLogsQuery { QueryParameter = parameter});
         }
 
         [HttpGet("{id}")]

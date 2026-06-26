@@ -85,8 +85,8 @@
 
       <button mat-icon-button
               color="primary"
-              (click)="openInventoryLogEditDialog(inventoryLog.id)"
-              matTooltip="Edit"
+              (click)="openInventoryLogDetailsDialog(inventoryLog.id)"
+              matTooltip="Details"
               *ngIf="!inventoryLog.isVoided">
         <mat-icon>edit</mat-icon>
       </button>
