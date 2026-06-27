@@ -1,9 +1,12 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Sales_Transactions.Commands;
+using GeneralPurposeApplication.Application.Sales_Transactions.Query;
 using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Application.UseCases;
 using GeneralPurposeApplication.Domain.Sales;
 using GeneralPurposeApplication.Infrastructure.Persistence.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +18,13 @@ namespace GeneralPurposeApplication.Server.Controllers
     {
         private readonly ISalesTransactionService _salesTransactionService;
         private readonly AddSalesTransactionUseCase _addSalesTransactionUseCase;
+        private readonly IMediator _mediator;
 
-        public SalesTransactionsController(ISalesTransactionService salesTransactionService, AddSalesTransactionUseCase addSalesTransactionUseCase)
+        public SalesTransactionsController(ISalesTransactionService salesTransactionService, AddSalesTransactionUseCase addSalesTransactionUseCase, IMediator mediator)
         {
             _salesTransactionService = salesTransactionService;
             _addSalesTransactionUseCase = addSalesTransactionUseCase;
+            _mediator = mediator;
         }
         // GET: api/SalesTransactions
         // GET: api/SalesTransactions/?pageIndex=0&pageSize=10
@@ -45,11 +50,8 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SalesTransaction>> GetSalesTransactionAsync(int id)
         {
-            var salesTransaction = await _salesTransactionService.GetSalesTransactionAsync(id);
-            if (salesTransaction == null)
-            {
-                return NotFound();
-            }
+            var salesTransaction = await _mediator.Send(new GetSalesTransactionQuery { SalesTransactionId = id });
+
             return salesTransaction;
         }
 
@@ -68,11 +70,11 @@ namespace GeneralPurposeApplication.Server.Controllers
             }
         }
 
-
+        //We should not use this but for development, it's fine. So, I should just leave it here
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalesTransactionAsync(int id)
         {
-            await _salesTransactionService.DeleteSalesTransactionAsync(id);
+            await _mediator.Send(new DeleteSalesTransactionCommand { SalesTransactionId = id });
 
             return NoContent();
         }

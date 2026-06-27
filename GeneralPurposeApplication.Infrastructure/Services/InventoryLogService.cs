@@ -22,11 +22,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _productService = productService;
         }
 
-        public async Task<InventoryLog?> GetInventoryLogAsync(int id)
-        {
-            return await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
-        }
-
         public async Task<InventoryLogDTO> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
             if (inventoryLogDto.Quantity <= 0)
@@ -57,30 +52,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 Remarks = inventoryLog.Remarks,
                 Date = inventoryLog.Date
             };
-        }
-
-        public async Task UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDTO)
-        {
-            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
-            if (inventoryLog == null)
-                throw new KeyNotFoundException();
-
-            inventoryLog.ProductId = inventoryLogDTO.ProductId;
-            inventoryLog.Quantity = inventoryLogDTO.Quantity;
-            inventoryLog.ChangeType = inventoryLog.ChangeType;
-            inventoryLog.Remarks = inventoryLogDTO.Remarks;
-
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task DeleteInventoryLogAsync(int id)
-        {
-            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
-            if (inventoryLog == null)
-                throw new KeyNotFoundException();
-
-            _unitOfWork.Repository<InventoryLog>().Delete(inventoryLog);
-            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
