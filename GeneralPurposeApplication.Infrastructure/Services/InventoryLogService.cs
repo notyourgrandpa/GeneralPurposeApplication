@@ -67,15 +67,5 @@ namespace GeneralPurposeApplication.Infrastructure.Services
 
             await _unitOfWork.SaveChangesAsync();
         }
-
-        public async Task DeleteInventoryLogAsync(int id)
-        {
-            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
-            if (inventoryLog == null)
-                throw new KeyNotFoundException();
-
-            _unitOfWork.Repository<InventoryLog>().Delete(inventoryLog);
-            await _unitOfWork.SaveChangesAsync();
-        }
     }
 }
