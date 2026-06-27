@@ -22,11 +22,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _productService = productService;
         }
 
-        public async Task<InventoryLog?> GetInventoryLogAsync(int id)
-        {
-            return await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
-        }
-
         public async Task<InventoryLogDTO> CreateInventoryLogAsync(InventoryLogCreateDto inventoryLogDto)
         {
             if (inventoryLogDto.Quantity <= 0)
