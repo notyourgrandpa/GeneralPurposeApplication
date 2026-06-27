@@ -53,19 +53,5 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 Date = inventoryLog.Date
             };
         }
-
-        public async Task UpdateInventoryLogAsync(int id, InventoryLogUpdateDTO inventoryLogDTO)
-        {
-            InventoryLog? inventoryLog = await _unitOfWork.Repository<InventoryLog>().GetByIdAsync(id);
-            if (inventoryLog == null)
-                throw new KeyNotFoundException();
-
-            inventoryLog.ProductId = inventoryLogDTO.ProductId;
-            inventoryLog.Quantity = inventoryLogDTO.Quantity;
-            inventoryLog.ChangeType = inventoryLog.ChangeType;
-            inventoryLog.Remarks = inventoryLogDTO.Remarks;
-
-            await _unitOfWork.SaveChangesAsync();
-        }
     }
 }
