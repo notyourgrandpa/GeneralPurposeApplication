@@ -17,8 +17,4 @@
     <ProjectReference Include="..\GeneralPurposeApplication.Domain\GeneralPurposeApplication.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Sales Transactions\Commands\" />
-  </ItemGroup>
-
 </Project>

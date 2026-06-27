@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.Sales_Transactions.Commands;
 using GeneralPurposeApplication.Application.Sales_Transactions.Query;
 using GeneralPurposeApplication.Application.Services;
 using GeneralPurposeApplication.Application.UseCases;
@@ -73,7 +74,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSalesTransactionAsync(int id)
         {
-            await _salesTransactionService.DeleteSalesTransactionAsync(id);
+            await _mediator.Send(new DeleteSalesTransactionCommand { SalesTransactionId = id });
 
             return NoContent();
         }
