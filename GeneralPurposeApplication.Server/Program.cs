@@ -28,7 +28,6 @@ using GeneralPurposeApplication.Infrastructure.Persistence.Querying;
 using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Filtering;
 using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Sorting;
 using GeneralPurposeApplication.Application.Categories.Queries;
-using GeneralPurposeApplication.Application.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,7 +102,6 @@ builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IQueryExecutor, EfQueryExecutor>();
 builder.Services.AddScoped<IFilterBuilder, EfFilterBuilder>();
 builder.Services.AddScoped<ISortBuilder, EfSortBuilder>();
-builder.Services.AddScoped<AddSalesTransactionUseCase>();
 builder.Services.AddScoped<SearchCustomersHandler>();
 builder.Services.AddScoped<EfFilterBuilder>();
 builder.Services.AddScoped<EfSortBuilder>();
