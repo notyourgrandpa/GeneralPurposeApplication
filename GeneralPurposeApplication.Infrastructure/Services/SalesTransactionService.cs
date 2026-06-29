@@ -45,11 +45,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 filterQuery);
         }
 
-        public async Task<SalesTransaction?> GetSalesTransactionAsync(int id)
-        {
-            return await _unitOfWork.Repository<SalesTransaction>().GetByIdAsync(id);
-        }
-
         public async Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userId)
         {
             var productIds = salesTransactionDTO.Items.Select(i => i.ProductId).ToList();
