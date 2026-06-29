@@ -3,7 +3,6 @@ using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Application.Sales_Transactions.Commands;
 using GeneralPurposeApplication.Application.Sales_Transactions.Query;
 using GeneralPurposeApplication.Application.Services;
-using GeneralPurposeApplication.Application.UseCases;
 using GeneralPurposeApplication.Domain.Sales;
 using GeneralPurposeApplication.Infrastructure.Persistence.Extensions;
 using MediatR;
@@ -17,13 +16,11 @@ namespace GeneralPurposeApplication.Server.Controllers
     public class SalesTransactionsController: ControllerBase
     {
         private readonly ISalesTransactionService _salesTransactionService;
-        private readonly AddSalesTransactionUseCase _addSalesTransactionUseCase;
         private readonly IMediator _mediator;
 
-        public SalesTransactionsController(ISalesTransactionService salesTransactionService, AddSalesTransactionUseCase addSalesTransactionUseCase, IMediator mediator)
+        public SalesTransactionsController(ISalesTransactionService salesTransactionService, IMediator mediator)
         {
             _salesTransactionService = salesTransactionService;
-            _addSalesTransactionUseCase = addSalesTransactionUseCase;
             _mediator = mediator;
         }
         // GET: api/SalesTransactions
@@ -60,9 +57,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         {
             try
             {
-                var salesTransactionDto = await _addSalesTransactionUseCase.ExecuteAsync(salesTransactionLogDto, User.GetUserId());
+                var salesTransactionDto = await _mediator.Send(new CreateSalesTransactionCommand { transactionCreateDTO = salesTransactionLogDto, UserId = User.GetUserId() });
 
-                return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
+            return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
             }
             catch (DbUpdateException ex)
             {
@@ -82,7 +79,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost("{id}/void")]
         public async Task<IActionResult> VoidSalesTransaction(int id)
         {
-            await _salesTransactionService.VoidSalesTransactionAsync(id, User.GetUserId());
+            await _mediator.Send(new VoidSalesTransactionCommand { SalesTransactionId = id, UserId = User.GetUserId() });
 
             return NoContent();
         }

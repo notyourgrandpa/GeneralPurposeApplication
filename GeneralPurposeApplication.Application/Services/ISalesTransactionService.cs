@@ -18,9 +18,7 @@ namespace GeneralPurposeApplication.Application.Services
             string? sortOrder,
             string? filterColumn,
             string? filterQuery);
-        Task<SalesTransaction?> GetSalesTransactionAsync(int id);
         Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userID);
-        Task DeleteSalesTransactionAsync(int id);
         Task VoidSalesTransactionAsync(int id, string userId);
     }
 }

@@ -45,11 +45,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 filterQuery);
         }
 
-        public async Task<SalesTransaction?> GetSalesTransactionAsync(int id)
-        {
-            return await _unitOfWork.Repository<SalesTransaction>().GetByIdAsync(id);
-        }
-
         public async Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userId)
         {
             var productIds = salesTransactionDTO.Items.Select(i => i.ProductId).ToList();
@@ -105,16 +100,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 //ProcessedByUserName = salesTransaction.ProcessedByUser.UserName!,
                 Date = salesTransaction.Date,
             };
-        }
-
-        public async Task DeleteSalesTransactionAsync(int id)
-        {
-            var salesTransaction = await GetSalesTransactionAsync(id);
-            if (salesTransaction == null)
-                throw new KeyNotFoundException();
-
-            _unitOfWork.Repository<SalesTransaction>().Delete(salesTransaction);
-            await _unitOfWork.SaveChangesAsync();
         }
         
         public async Task VoidSalesTransactionAsync(int id, string userId)
