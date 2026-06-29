@@ -82,7 +82,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         [HttpPost("{id}/void")]
         public async Task<IActionResult> VoidSalesTransaction(int id)
         {
-            await _salesTransactionService.VoidSalesTransactionAsync(id, User.GetUserId());
+            await _mediator.Send(new VoidSalesTransactionCommand { SalesTransactionId = id, UserId = User.GetUserId() });
 
             return NoContent();
         }
