@@ -106,16 +106,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 Date = salesTransaction.Date,
             };
         }
-
-        public async Task DeleteSalesTransactionAsync(int id)
-        {
-            var salesTransaction = await GetSalesTransactionAsync(id);
-            if (salesTransaction == null)
-                throw new KeyNotFoundException();
-
-            _unitOfWork.Repository<SalesTransaction>().Delete(salesTransaction);
-            await _unitOfWork.SaveChangesAsync();
-        }
         
         public async Task VoidSalesTransactionAsync(int id, string userId)
         {
