@@ -99,6 +99,7 @@ builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddScoped<IUserLookupService, UserLookupService>();
 builder.Services.AddScoped<IQueryExecutor, EfQueryExecutor>();
 builder.Services.AddScoped<IFilterBuilder, EfFilterBuilder>();
 builder.Services.AddScoped<ISortBuilder, EfSortBuilder>();
