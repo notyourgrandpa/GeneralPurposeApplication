@@ -1,5 +1,6 @@
 ﻿using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Application.QueryParameters;
 using GeneralPurposeApplication.Application.Sales_Transactions.Commands;
 using GeneralPurposeApplication.Application.Sales_Transactions.Query;
 using GeneralPurposeApplication.Application.Services;
@@ -27,21 +28,9 @@ namespace GeneralPurposeApplication.Server.Controllers
         // GET: api/SalesTransactions/?pageIndex=0&pageSize=10
         // GET: api/SalesTransactions/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactions(
-            int pageIndex = 0,
-            int pageSize = 10,
-            string? sortColumn = null,
-            string? sortOrder = null,
-            string? filterColumn = null,
-            string? filterQuery = null)
+        public async Task<PagedResult<SalesTransactionsDTO>> GetSalesTransactions([FromQuery]QueryParameter query)
         {
-            return await _salesTransactionService.GetSalesTransactionsAsync(
-                pageIndex,
-                pageSize,
-                sortColumn,
-                sortOrder,
-                filterColumn,
-                filterQuery);
+            return await _mediator.Send(new GetSalesTransactionsQuery { Parameter = query });
         }
 
         [HttpGet("{id}")]
