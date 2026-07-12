@@ -23,39 +23,5 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _unitOfWork = unitOfWork;
             _inventoryLogService = inventoryLogService;
         }
-        public async Task VoidSalesTransactionAsync(int id, string userId)
-        {
-            var transaction = await _unitOfWork.Repository<SalesTransaction>().GetQueryable().Include(t => t.SalesTransactionItems)
-                .FirstOrDefaultAsync(t => t.Id == id);
-
-            if (transaction == null)
-            {
-                throw new KeyNotFoundException("Selected transaction not found.");
-            }    
-
-            if (transaction.IsVoided)
-            {
-                throw new InvalidOperationException("Transaction is already voided.");
-            }
-                
-
-            // Mark as voided
-            transaction.IsVoided = true;
-            transaction.VoidedAt = DateTime.UtcNow;
-            transaction.VoidedByUserId = userId;
-
-            // Reverse inventory changes
-            foreach (var item in transaction.SalesTransactionItems)
-            {
-                var product = await _unitOfWork.Repository<Product>().GetByIdAsync(item.ProductId);
-                if (product != null)
-                {
-                    product.Stock += item.Quantity; // restore stock
-                    product.SetUpdated(DateTime.UtcNow);
-                }
-            }
-
-            await _unitOfWork.SaveChangesAsync();
-        }
     }
 }

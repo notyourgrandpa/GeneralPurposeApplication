@@ -11,6 +11,5 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface ISalesTransactionService
     {
-        Task VoidSalesTransactionAsync(int id, string userId);
     }
 }
