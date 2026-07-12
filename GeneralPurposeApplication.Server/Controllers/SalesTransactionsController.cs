@@ -16,12 +16,10 @@ namespace GeneralPurposeApplication.Server.Controllers
     [ApiController]
     public class SalesTransactionsController: ControllerBase
     {
-        private readonly ISalesTransactionService _salesTransactionService;
         private readonly IMediator _mediator;
 
-        public SalesTransactionsController(ISalesTransactionService salesTransactionService, IMediator mediator)
+        public SalesTransactionsController(IMediator mediator)
         {
-            _salesTransactionService = salesTransactionService;
             _mediator = mediator;
         }
         // GET: api/SalesTransactions

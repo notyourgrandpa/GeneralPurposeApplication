@@ -94,7 +94,6 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IInventoryLogService, InventoryLogService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ISalesTransactionService, SalesTransactionService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
