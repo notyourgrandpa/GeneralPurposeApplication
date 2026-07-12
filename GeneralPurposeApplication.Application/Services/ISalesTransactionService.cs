@@ -11,7 +11,6 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface ISalesTransactionService
     {
-        Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userID);
         Task VoidSalesTransactionAsync(int id, string userId);
     }
 }

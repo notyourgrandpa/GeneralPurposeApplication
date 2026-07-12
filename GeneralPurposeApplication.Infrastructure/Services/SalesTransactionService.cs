@@ -23,64 +23,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _unitOfWork = unitOfWork;
             _inventoryLogService = inventoryLogService;
         }
-
-        public async Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userId)
-        {
-            var productIds = salesTransactionDTO.Items.Select(i => i.ProductId).ToList();
-
-            var validIds = await _unitOfWork.Repository<Product>().GetQueryable()
-                .Where(p => productIds.Contains(p.Id))
-                .Select(p => p.Id)
-                .ToListAsync();
-
-            var invalidIds = productIds.Except(validIds).ToList();
-            if (invalidIds.Any())
-                throw new InvalidOperationException($"Invalid product IDs: {string.Join(", ", invalidIds)}");
-
-            var salesTransaction = new SalesTransaction
-            {
-                CustomerId = salesTransactionDTO.CustomerId,
-                PaymentMethod = salesTransactionDTO.PaymentMethod,
-                ProcessedByUserId = userId,
-                Date = DateTime.UtcNow,
-                TotalAmount = salesTransactionDTO.Items.Sum(i => i.Quantity * i.UnitPrice)
-            };
-
-            foreach (var row in salesTransactionDTO.Items)
-            {
-                SalesTransactionItem salesTransactionItem = new()
-                {
-                    ProductId = row.ProductId,
-                    Quantity = row.Quantity,
-                    UnitPrice = row.UnitPrice,
-                    Subtotal = row.Quantity * row.UnitPrice
-                };
-                salesTransaction.SalesTransactionItems.Add(salesTransactionItem);
-
-                InventoryLogCreateDto inventoryLog = new()
-                {
-                    ProductId = row.ProductId,
-                    Quantity = row.Quantity,
-                    ChangeType = InventoryChangeType.StockOut
-                };
-                await _inventoryLogService.CreateInventoryLogAsync(inventoryLog);
-            }
-
-            await _unitOfWork.Repository<SalesTransaction>().AddAsync(salesTransaction);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return new SalesTransactionsDTO
-            {
-                Id = salesTransaction.Id,
-                TotalAmount = salesTransaction.TotalAmount,
-                PaymentMethod = salesTransaction.PaymentMethod,
-                ProcessedByUserId = salesTransaction.ProcessedByUserId,
-                //ProcessedByUserName = salesTransaction.ProcessedByUser.UserName!,
-                Date = salesTransaction.Date,
-            };
-        }
-        
         public async Task VoidSalesTransactionAsync(int id, string userId)
         {
             var transaction = await _unitOfWork.Repository<SalesTransaction>().GetQueryable().Include(t => t.SalesTransactionItems)
