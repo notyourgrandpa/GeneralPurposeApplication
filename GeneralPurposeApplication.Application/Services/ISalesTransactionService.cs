@@ -11,13 +11,6 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface ISalesTransactionService
     {
-        Task<ApiResult<SalesTransactionsDTO>> GetSalesTransactionsAsync(
-            int pageIndex,
-            int pageSize,
-            string? sortColumn,
-            string? sortOrder,
-            string? filterColumn,
-            string? filterQuery);
         Task<SalesTransactionsDTO> CreateSalesTransactionAsync(SalesTransactionCreateDTO salesTransactionDTO, string userID);
         Task VoidSalesTransactionAsync(int id, string userId);
     }
