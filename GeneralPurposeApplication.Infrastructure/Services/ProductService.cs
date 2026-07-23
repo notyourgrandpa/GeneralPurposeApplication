@@ -1,4 +1,5 @@
-﻿using GeneralPurposeApplication.Application.Common.Paging;
+﻿using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.Common.Paging;
 using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Application.QueryParameters;
 using GeneralPurposeApplication.Application.Services;
@@ -6,6 +7,7 @@ using GeneralPurposeApplication.Domain.Abstractions;
 using GeneralPurposeApplication.Domain.Inventory;
 using GeneralPurposeApplication.Domain.Products;
 using GeneralPurposeApplication.Domain.Specification;
+using GeneralPurposeApplication.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,10 +20,11 @@ namespace GeneralPurposeApplication.Infrastructure.Services
     public class ProductService: IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public ProductService(IUnitOfWork unitOfWork)
+        private readonly ApplicationDbContext _context;
+        public ProductService(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
+            _context = context;
         }
 
         public async Task<Product?> GetProductAsync(int productId)
@@ -76,7 +79,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
 
         public async Task UpdateStockAsync(InventoryLog inventoryLog)
         {
-            Product? product = await _unitOfWork.Repository<Product>().GetByIdAsync(inventoryLog.ProductId);
+            Product? product = await _context.Products.FindAsync(inventoryLog.ProductId);
             if (product == null)
                 throw new InvalidOperationException($"Product {inventoryLog.ProductId} not found.");
 
@@ -92,6 +95,8 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 product.Stock = inventoryLog.Quantity;
 
             product.SetUpdated(DateTime.Now);
+            Console.WriteLine($"Service: {_context.GetHashCode()}");
+
         }
 
         public async Task<bool> IsDupeProduct(Product product)

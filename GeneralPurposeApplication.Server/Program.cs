@@ -74,6 +74,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+builder.Services.AddScoped<IApplicationDbContext>(provider =>
+    provider.GetRequiredService<ApplicationDbContext>());
+
 // Add ASP.NET Core Identity support
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -97,7 +100,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+//builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddScoped<IUserLookupService, UserLookupService>();
 builder.Services.AddScoped<IQueryExecutor, EfQueryExecutor>();
 builder.Services.AddScoped<IFilterBuilder, EfFilterBuilder>();
