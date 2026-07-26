@@ -52,7 +52,8 @@ namespace GeneralPurposeApplication.Application.Inventory_Logs.Queries
                         IsVoided = i.IsVoided,
                         Quantity = i.Quantity,
                         Remarks = i.Remarks,
-                        ProductName = i.Product!.Name
+                        ProductName = i.Product!.Name,
+                        ProductId = i.ProductId
                     })
                     .ToListAsync(), 
                 await inventoryLogs.CountAsync(), 
