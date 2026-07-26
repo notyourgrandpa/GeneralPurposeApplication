@@ -115,8 +115,8 @@ export class InventoryLogsComponent implements OnInit {
     this.productDialogService.open(productId);
   }
 
-  openInventoryLogEditDialog(productId?: number) {
-    const isEdit = !!productId;
+  openInventoryLogEditDialog(inventoryLogId?: number) {
+    const isEdit = !!inventoryLogId;
     if (!this.authService.canEdit('inventory-log')) {
       this.snackBar.open(
         isEdit
@@ -127,7 +127,7 @@ export class InventoryLogsComponent implements OnInit {
 
     const dialogRef = this.dialog.open(InventoryLogEditComponent, {
       width: '600px',
-      data:  productId
+      data: inventoryLogId
     });
 
     dialogRef.afterClosed().subscribe(result => {

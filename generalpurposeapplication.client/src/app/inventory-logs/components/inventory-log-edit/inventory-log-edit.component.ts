@@ -37,11 +37,11 @@ export class InventoryLogEditComponent extends BaseFormComponent implements OnIn
     private productService: ProductService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public productId: number,
+    @Inject(MAT_DIALOG_DATA) public inventoryLogId: number,
     private dialogRef: MatDialogRef<InventoryLogEditComponent>
   ) {
     super();
-    this.id = productId ?? 0
+    this.id = inventoryLogId ?? 0
   }
 
   ngOnInit() {
