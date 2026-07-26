@@ -10,20 +10,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './inventory-log-details.component.css'
 })
 export class InventoryLogDetailsComponent implements OnInit {
-  @Inject(MAT_DIALOG_DATA) public inventoryLogId: number = 0;
+  Id: number;
   inventoryLog? : InventoryLog
 
   constructor(
     private inventoryLogService: InventoryLogService, 
-    private snackbar: MatSnackBar, 
-    private dialog: MatDialog
+    private snackbar: MatSnackBar,
+    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public inventoryLogId: number,
   )
-  {
-
+  { 
+    this.Id = this.inventoryLogId;
   }
 
   ngOnInit(): void {
-    this.getData(this.inventoryLogId);
+    this.getData(this.Id);
   }
 
   getData(id: number): void{

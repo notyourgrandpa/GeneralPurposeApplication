@@ -135,7 +135,7 @@ export class InventoryLogsComponent implements OnInit {
     });
   }
 
-  openInventoryLogDetailsDialog(inventoryLogId: number){
+  openInventoryLogDetailsDialog(inventoryLogId: number) {
     const dialogRef = this.dialog.open(InventoryLogDetailsComponent, {data: inventoryLogId});
   }
 }
