@@ -40,7 +40,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<InventoryLog>> GetInventoryLogAsync(int id)
+        public async Task<ActionResult<InventoryLogDTO>> GetInventoryLogAsync(int id)
         {
             var inventoryLog = await _mediator.Send(new GetInventoryLogQuery { InventoryLogId = id });
 
