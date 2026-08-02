@@ -1,6 +1,8 @@
 ﻿using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Inventory;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Inventory_Logs.Queries
 {
-    public class GetInventoryLogHandler : IRequestHandler<GetInventoryLogQuery, InventoryLog>
+    public class GetInventoryLogHandler : IRequestHandler<GetInventoryLogQuery, InventoryLogDTO>
     {
         private readonly IApplicationDbContext _context;
 
@@ -18,9 +20,21 @@ namespace GeneralPurposeApplication.Application.Inventory_Logs.Queries
             _context = context;
         }
 
-        public async Task<InventoryLog> Handle(GetInventoryLogQuery request, CancellationToken cancellationToken)
+        public async Task<InventoryLogDTO> Handle(GetInventoryLogQuery request, CancellationToken cancellationToken)
         {
-            var inventoryLog = await _context.InventoryLogs.FindAsync(request.InventoryLogId, cancellationToken);
+            var inventoryLog = await _context.InventoryLogs
+                .Include(i => i.Product)
+                .Select(i => new InventoryLogDTO
+                {
+                    Id = i.Id,
+                    ProductName = i.Product!.Name,
+                    Date = i.Date,
+                    ChangeType = i.ChangeType,
+                    IsVoided = i.IsVoided,
+                    Quantity = i.Quantity,
+                    Remarks =  i.Remarks
+                })
+                .FirstOrDefaultAsync(i => i.Id == request.InventoryLogId);
             if (inventoryLog == null)
             {
                 throw new KeyNotFoundException($"Inventory Log {request.InventoryLogId} not found.");
