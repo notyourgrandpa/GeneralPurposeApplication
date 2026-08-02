@@ -136,6 +136,6 @@ export class InventoryLogsComponent implements OnInit {
   }
 
   openInventoryLogDetailsDialog(inventoryLogId: number) {
-    const dialogRef = this.dialog.open(InventoryLogDetailsComponent, {data: inventoryLogId});
+    const dialogRef = this.dialog.open(InventoryLogDetailsComponent, { width: '800px', data: inventoryLogId});
   }
 }
