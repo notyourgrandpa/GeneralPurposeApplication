@@ -68,7 +68,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         {
             var newCategory = await _mediator.Send(new CreateCategoryCommand(category.Name));
 
-            return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
+            return CreatedAtAction("GetCategoryAsync", new { id = newCategory.Id }, newCategory);
         }
 
         // DELETE: api/Categories/5

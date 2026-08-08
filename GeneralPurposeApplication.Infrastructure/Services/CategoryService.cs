@@ -26,7 +26,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             _context = context;
         }
 
-        public async Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue)
+        public async Task<bool> IsDupeField<T>(int categoryId, string fieldName, string fieldValue) where T : class
         {
 
             if (!ApiResult<Category>.IsValidProperty(fieldName, true))
