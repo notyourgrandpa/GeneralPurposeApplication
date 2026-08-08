@@ -1,5 +1,5 @@
 //import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
@@ -8,7 +8,7 @@ import { Category } from '../../models/category';
 import { BaseFormComponent } from '../../../shared/components/base-form.component';
 import { CategoryService } from '../../services/category.service';
 import { CategoryGraphQlService } from '../../services/categories-graphql.service'
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component'
 
@@ -32,11 +32,14 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private categoryService: CategoryService,
-    private categoryGraphQlService: CategoryGraphQlService
+    private categoryGraphQlService: CategoryGraphQlService,
+    @Inject(MAT_DIALOG_DATA) public data: { id: number },
+    private dialogRef: MatDialogRef<CategoryEditComponent>
   ) {
     super();
   }
   ngOnInit() {
+    this.id = this.data.id;
     this.form = this.fb.group({
       name: ['',
         Validators.required,
@@ -46,9 +49,6 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
     this.loadData();
   }
   loadData() {
-    // retrieve the ID from the 'id' parameter
-    var idParam = this.activatedRoute.snapshot.paramMap.get('id');
-    this.id = idParam ? +idParam : 0;
     if (this.id) {
       // EDIT MODE
       // fetch the category from the server
@@ -92,6 +92,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
             next: (result) => {
               console.log("Category " + result.id + " has been created.");
               // go back to categories view
+              this.dialogRef.close(true);
               this.router.navigate(['/categories']);
             },
             error: (error) => console.error(error)

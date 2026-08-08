@@ -46,7 +46,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             {
                 var salesTransactionDto = await _mediator.Send(new CreateSalesTransactionCommand { transactionCreateDTO = salesTransactionLogDto, UserId = User.GetUserId() });
 
-            return CreatedAtAction("GetSalesTransaction", new { id = salesTransactionDto.Id }, salesTransactionDto);
+            return CreatedAtAction("GetSalesTransactionAsync", new { id = salesTransactionDto.Id }, salesTransactionDto);
             }
             catch (DbUpdateException ex)
             {

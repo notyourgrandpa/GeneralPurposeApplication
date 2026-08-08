@@ -1,4 +1,4 @@
-<div class="category-edit">
+<div class="category-edit p-4">
   <h1>{{title}}</h1>
   <p *ngIf="id && !category"><em>Loading...</em></p>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -16,7 +16,7 @@
               type="submit" [disabled]="!form.valid">
         {{ this.id ? "Save" : "Create" }}
       </button>
-      <button mat-flat-button color="secondary"
+      <button mat-flat-button mat-dialog-close color="secondary"
               [routerLink]="['/categories']">
         Cancel
       </button>

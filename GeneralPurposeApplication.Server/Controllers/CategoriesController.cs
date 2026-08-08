@@ -68,7 +68,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         {
             var newCategory = await _mediator.Send(new CreateCategoryCommand(category.Name));
 
-            return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
+            return CreatedAtAction("GetCategoryAsync", new { id = newCategory.Id }, newCategory);
         }
 
         // DELETE: api/Categories/5
@@ -97,7 +97,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             //}
 
             // Alternative approach (using System.Linq.Dynamic.Core)
-            return await _categoryService.IsDupeField(categoryId, fieldName, fieldValue);
+            return await _categoryService.IsDupeField<Category>(categoryId, fieldName, fieldValue);
         }
     }
 }

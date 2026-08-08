@@ -12,6 +12,6 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface ICategoryService
     {
-        Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue);
+        Task<bool> IsDupeField<T>(int categoryId, string fieldName, string fieldValue) where T : class;
     }
 }

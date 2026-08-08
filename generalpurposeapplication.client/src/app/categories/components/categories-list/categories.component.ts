@@ -13,6 +13,7 @@ import { CategoryService } from '../../services/category.service';
 import { CategoryGraphQlService } from '../../services/categories-graphql.service'
 import { MatDialog } from '@angular/material/dialog';
 import { ProductListDialogComponent } from '../../../products/components/product-list-dialog/product-list-dialog.component';
+import { CategoryEditComponent } from '../category-edit/category-edit.component';
 
 @Component({
   selector: 'app-categories',
@@ -113,5 +114,19 @@ export class CategoriesComponent implements OnInit {
         width: '800px',
         data: { categoryId }
       })
+  }
+
+  openCategoryEditDialog(categoryId: number = 0) {
+    const dialogRef = this.dialog.open(CategoryEditComponent,
+      {
+        width: '800px',
+        data: { id: categoryId }
+      });
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      console.log(result);
+      if (result)
+        this.loadData();
+    })
   }
 }
