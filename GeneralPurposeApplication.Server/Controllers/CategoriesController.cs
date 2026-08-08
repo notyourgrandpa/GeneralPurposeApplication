@@ -97,7 +97,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             //}
 
             // Alternative approach (using System.Linq.Dynamic.Core)
-            return await _categoryService.IsDupeField(categoryId, fieldName, fieldValue);
+            return await _categoryService.IsDupeField<Category>(categoryId, fieldName, fieldValue);
         }
     }
 }
