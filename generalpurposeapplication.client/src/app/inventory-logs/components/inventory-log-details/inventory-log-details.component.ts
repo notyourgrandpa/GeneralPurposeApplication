@@ -3,6 +3,7 @@ import { InventoryLogService } from '../../services/inventory-logs.service';
 import { InventoryLog } from '../../models/inventory-logs';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InventoryChangeTypePipe } from '../../../shared/pipes/inventory-change-type.pipe'
 
 @Component({
   selector: 'app-inventory-log-details',
