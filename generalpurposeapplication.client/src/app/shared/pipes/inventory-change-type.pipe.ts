@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'inventoryChangeType'
 })
 export class InventoryChangeTypePipe implements PipeTransform {
-  transform(value: number): string {
+  transform(value?: number): string {
     switch (value) {
       case 1: return 'Stock In';
       case 2: return 'Stock Out';
