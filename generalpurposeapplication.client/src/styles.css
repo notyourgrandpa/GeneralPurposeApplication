@@ -5,6 +5,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 24px !important;
+}
+
 html, body {
   height: 100%;
 }
