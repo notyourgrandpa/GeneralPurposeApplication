@@ -1,36 +1,113 @@
 <ng-container *ngIf="product; else loading">
-  <h2 mat-dialog-title>{{ product.name }}</h2>
 
-  <mat-dialog-content class="product-details">
-    <div class="detail-row">
-      <span class="label">Cost Price:</span>
-      <span>{{ product.costPrice }}</span>
+  <!-- Header -->
+  <div class="px-6 pt-6">
+    <div class="flex items-start justify-between">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-wider text-gray-500">
+          Product Details
+        </p>
+
+        <h2 mat-dialog-title class="!px-0 !pt-1 !pb-0 text-2xl font-semibold text-gray-900">
+          {{ product.name }}
+        </h2>
+      </div>
+
+      <!-- Status -->
+      <span
+        class="rounded-full px-3 py-1 text-xs font-semibold"
+        [ngClass]="product.isActive
+          ? 'bg-green-100 text-green-700'
+          : 'bg-gray-100 text-gray-600'">
+        {{ product.isActive ? 'Active' : 'Inactive' }}
+      </span>
+    </div>
+  </div>
+
+
+  <!-- Content -->
+  <mat-dialog-content class="!px-6 !py-6">
+
+    <!-- Pricing -->
+    <div class="mb-6">
+      <p class="mb-3 text-sm font-semibold text-gray-700">
+        Pricing
+      </p>
+
+      <div class="grid grid-cols-2 gap-4">
+
+        <div class="rounded-xl bg-gray-50 p-4">
+          <p class="text-xs font-medium text-gray-500">
+            Cost Price
+          </p>
+
+          <p class="mt-1 text-xl font-semibold text-gray-900">
+            ₱{{ product.costPrice | number:'1.2-2' }}
+          </p>
+        </div>
+
+        <div class="rounded-xl bg-gray-50 p-4">
+          <p class="text-xs font-medium text-gray-500">
+            Selling Price
+          </p>
+
+          <p class="mt-1 text-xl font-semibold text-gray-900">
+            ₱{{ product.sellingPrice | number:'1.2-2' }}
+          </p>
+        </div>
+
+      </div>
     </div>
 
-    <div class="detail-row">
-      <span class="label">Selling Price:</span>
-      <span>{{ product.sellingPrice }}</span>
+
+    <!-- Inventory -->
+    <div>
+      <p class="mb-3 text-sm font-semibold text-gray-700">
+        Inventory
+      </p>
+
+      <div class="rounded-xl border border-gray-200 p-4">
+
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-gray-500">
+            Current Stock
+          </span>
+
+          <span class="text-lg font-semibold text-gray-900">
+            {{ product.stock }}
+          </span>
+        </div>
+
+      </div>
     </div>
 
-    <div class="detail-row">
-      <span class="label">Status:</span>
-      <span>{{ product.isActive ? 'Active' : 'Inactive' }}</span>
-    </div>
-
-    <div class="detail-row">
-      <span class="label">Stock:</span>
-      <span>{{ product.stock }}</span>
-    </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Close</button>
+
+  <!-- Footer -->
+  <mat-dialog-actions align="end" class="!px-6 !pb-5">
+    <button mat-button mat-dialog-close>
+      Close
+    </button>
   </mat-dialog-actions>
+
 </ng-container>
 
+
+<!-- Loading -->
 <ng-template #loading>
-  <h2 mat-dialog-title>Loading…</h2>
-  <mat-dialog-content>
-    <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
-  </mat-dialog-content>
+
+  <div class="flex min-h-[220px] flex-col items-center justify-center px-6">
+
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="40">
+    </mat-progress-spinner>
+
+    <p class="mt-4 text-sm text-gray-500">
+      Loading product details...
+    </p>
+
+  </div>
+
 </ng-template>
