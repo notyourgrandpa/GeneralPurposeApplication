@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from './../../environments/environment';
 import { LoginRequest } from './login-request';
 import { LoginResult } from './login-result';
@@ -19,12 +21,34 @@ export class AuthService
   public authStatus = this._authStatus.asObservable();
 
   constructor(
-    protected http: HttpClient) {
+    protected http: HttpClient,
+    private router: Router,
+    private snackBar: MatSnackBar) {
   }
 
   isAuthenticated(): boolean {
     const token = this.getToken();
     return token !== null && !this.isTokenExpired(token);
+  }
+
+  /**
+   * Redirects to the login page if the user is not authenticated.
+   * Returns true if authenticated, false otherwise.
+   * Can be used by route guards and by components (e.g. before opening a dialog).
+   */
+  redirectToLoginIfNotAuthenticated(returnUrl: string): boolean {
+    if (this.isAuthenticated()) {
+      return true;
+    }
+    this.snackBar.open('Please log in to continue.', 'Close', {
+      duration: 5000
+    });
+    this.router.navigate(['/login'], {
+      queryParams: {
+        returnUrl
+      }
+    });
+    return false;
   }
 
   getToken(): string | null {

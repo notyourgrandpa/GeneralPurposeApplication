@@ -18,6 +18,7 @@ export const AuthGuard: CanActivateFn = (
     return true;
   }
   // ... otherwise, redirects to the login page
+  authService.redirectToLoginIfNotAuthenticated(state.url);
   return router.createUrlTree(['/login'], {
     queryParams: {
       returnUrl: state.url
