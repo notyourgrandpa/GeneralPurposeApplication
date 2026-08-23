@@ -4,6 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 //import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -14,6 +15,7 @@ import { CategoryGraphQlService } from '../../services/categories-graphql.servic
 import { MatDialog } from '@angular/material/dialog';
 import { ProductListDialogComponent } from '../../../products/components/product-list-dialog/product-list-dialog.component';
 import { CategoryEditComponent } from '../category-edit/category-edit.component';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-categories',
@@ -44,7 +46,9 @@ export class CategoriesComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private categoryGraphQlService: CategoryGraphQlService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private router: Router) {
   }
 
   ngOnInit() {
@@ -117,6 +121,9 @@ export class CategoriesComponent implements OnInit {
   }
 
   openCategoryEditDialog(categoryId: number = 0) {
+    if (!this.authService.redirectToLoginIfNotAuthenticated(this.router.url)) {
+      return;
+    }
     const dialogRef = this.dialog.open(CategoryEditComponent,
       {
         width: '800px',
