@@ -77,7 +77,6 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
           .put(category)
           .subscribe({
             next: (result) => {
-              console.log("Category " + category!.id + " has been updated.");
               this.snackBar.open("Category " + category!.id + " has been updated.", undefined, { duration: 2000 });
               this.dialogRef.close(true);
             },
@@ -90,7 +89,6 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
           .post(category)
           .subscribe({
             next: (result) => {
-              console.log("Category " + result.id + " has been created.");
               // go back to categories view
               this.dialogRef.close(true);
             },
