@@ -22,10 +22,10 @@ export class ProductListComponent implements OnChanges {
     'costPrice',
     'sellingPrice',
     'stock',
-    'isActive',
-    'dateAdded',
-    'lastUpdated'
+    'isActive'
   ];
+
+  private readonly ExtendedColumns: string[] = ['dateAdded', 'lastUpdated'];
   public displayedColumns: string[] = [...this.baseColumns, 'actions'];
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
   public categories?: Observable<Category[]> ;
@@ -69,7 +69,7 @@ export class ProductListComponent implements OnChanges {
   }
 
   private updateDisplayedColumns(): void {
-    this.displayedColumns = this.compact ? [...this.baseColumns] : [...this.baseColumns, 'actions'];
+    this.displayedColumns = this.compact ? [...this.baseColumns] : [...this.baseColumns, ...this.ExtendedColumns, 'actions'];
   }
 
   // debounce filter text changes

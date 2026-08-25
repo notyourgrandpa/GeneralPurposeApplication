@@ -29,12 +29,12 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
   categories?: Category[];
   constructor(
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private categoryService: CategoryService,
     private categoryGraphQlService: CategoryGraphQlService,
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
-    private dialogRef: MatDialogRef<CategoryEditComponent>
+    private dialogRef: MatDialogRef<CategoryEditComponent>,
+    private snackBar: MatSnackBar
   ) {
     super();
   }
@@ -77,9 +77,8 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
           .put(category)
           .subscribe({
             next: (result) => {
-              console.log("Category " + category!.id + " has been updated.");
-              // go back to categories view
-              this.router.navigate(['/categories']);
+              this.snackBar.open("Category " + category!.id + " has been updated.", undefined, { duration: 2000 });
+              this.dialogRef.close(true);
             },
             error: (error) => console.error(error)
           });
@@ -90,10 +89,8 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
           .post(category)
           .subscribe({
             next: (result) => {
-              console.log("Category " + result.id + " has been created.");
               // go back to categories view
               this.dialogRef.close(true);
-              this.router.navigate(['/categories']);
             },
             error: (error) => console.error(error)
           });
