@@ -1,155 +1,425 @@
-<h1>Products</h1>
-<p>Here's a list of products: </p>
-<p *ngIf="!products"><em>Loading...</em></p>
+<div class="products-page">
 
-<!-- FILTER BAR -->
-<div *ngIf="products"
-     class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  <!-- PAGE HEADER -->
+  <div class="page-header">
 
-  <!-- LEFT: Filters -->
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+    <div>
+      <h1>Products</h1>
+      <p class="page-subtitle">
+        Manage your product inventory, pricing, and stock.
+      </p>
+    </div>
 
-    <!-- Search -->
-    <mat-form-field appearance="outline" class="w-full sm:w-64">
-      <mat-label>Search</mat-label>
-      <input matInput #searchInput
-             placeholder="Search products"
-             (keyup)="onFilterTextChanged(searchInput.value)">
-    </mat-form-field>
+    <button
+      *ngIf="!compact"
+      mat-flat-button
+      color="primary"
+      [routerLink]="['/product']">
 
-    <!-- Category -->
-    <mat-form-field appearance="outline" class="w-full sm:w-48">
-      <mat-label>Category</mat-label>
-      <mat-select [value]="selectedCategoryId" (selectionChange)="onCategoryChanged($event.value)">
-        <mat-option [value]="null">All</mat-option>
-        <mat-option *ngFor="let c of categories | async" [value]="c.id">
-          {{ c.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-icon>add</mat-icon>
+      Add Product
 
-    <!-- Status -->
-    <mat-form-field appearance="outline" class="w-full sm:w-40">
-      <mat-label>Status</mat-label>
-      <mat-select (selectionChange)="onStatusChanged($event.value)">
-        <mat-option [value]="null">All</mat-option>
-        <mat-option [value]="true">Active</mat-option>
-        <mat-option [value]="false">Inactive</mat-option>
-      </mat-select>
-    </mat-form-field>
+    </button>
 
   </div>
 
-  <!-- RIGHT: Action -->
-  <button mat-flat-button
-          color="primary"
-          class="self-start sm:self-auto"
-          *ngIf="!compact"
-          [routerLink]="['/product']">
-    Add Product
-  </button>
 
-</div>
+  <!-- FILTER CARD -->
+  <div *ngIf="products" class="filter-card">
 
-<div class="w-full overflow-x-auto">
-  <table mat-table [dataSource]="products"
-         class="mat-elevation-z8"
-         [hidden]="!products"
-         matSort (matSortChange)="loadData()"
-         [matSortActive]="defaultSortColumn"
-         [matSortDirection]="defaultSortOrder">
+    <!-- Search -->
+    <mat-form-field appearance="outline" class="search-field">
 
-    <tr style="display:none!important">
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-        <td mat-cell *matCellDef="let product">
-          {{product.name}}
-        </td>
-      </ng-container>
+      <mat-label>Search products</mat-label>
 
-      <!-- Category Column -->
-      <ng-container matColumnDef="categoryName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-        <td mat-cell *matCellDef="let product">
-          <a [routerLink]="['/category', product.categoryId]" *ngIf="!compact; else compactCategory" >{{product.categoryName}}</a>
-          <ng-template #compactCategory>
-            <p>{{product.categoryName}}</p>
-          </ng-template>
-        </td>
-      </ng-container>
+      <mat-icon matPrefix>search</mat-icon>
 
-      <!-- Stock Column -->
-      <ng-container matColumnDef="stock">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
-        <td mat-cell *matCellDef="let product">
-          {{product.stock}}
-        </td>
-      </ng-container>
+      <input
+        matInput
+        #searchInput
+        placeholder="Search by product name..."
+        (keyup)="onFilterTextChanged(searchInput.value)">
 
-      <!-- Cost Price Column -->
-      <ng-container matColumnDef="costPrice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cost Price</th>
-        <td mat-cell *matCellDef="let product">{{product.costPrice}}</td>
-      </ng-container>
+    </mat-form-field>
 
-      <!-- Selling Price Column -->
-      <ng-container matColumnDef="sellingPrice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Selling Price</th>
-        <td mat-cell *matCellDef="let product">{{product.sellingPrice}}</td>
-      </ng-container>
 
-      <!-- Is Active Column -->
-      <ng-container matColumnDef="isActive">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Active</th>
-        <td mat-cell *matCellDef="let product">
-          <mat-chip-listbox>
-            <mat-chip highlighted
-                      [color]="product.isActive ? 'primary' : 'warn'">
+    <!-- Category -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Category</mat-label>
+
+      <mat-select
+        [value]="selectedCategoryId"
+        (selectionChange)="onCategoryChanged($event.value)">
+
+        <mat-option [value]="null">
+          All Categories
+        </mat-option>
+
+        <mat-option
+          *ngFor="let c of categories | async"
+          [value]="c.id">
+
+          {{ c.name }}
+
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <!-- Status -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Status</mat-label>
+
+      <mat-select
+        (selectionChange)="onStatusChanged($event.value)">
+
+        <mat-option [value]="null">
+          All Statuses
+        </mat-option>
+
+        <mat-option [value]="true">
+          Active
+        </mat-option>
+
+        <mat-option [value]="false">
+          Inactive
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <!-- Clear Filters -->
+    <button
+      mat-button
+      color="primary"
+      class="clear-button">
+
+      <mat-icon>restart_alt</mat-icon>
+      Reset
+
+    </button>
+
+  </div>
+
+
+  <!-- LOADING -->
+  <div *ngIf="!products" class="loading-container">
+
+    <mat-spinner diameter="40"></mat-spinner>
+
+    <p>Loading products...</p>
+
+  </div>
+
+
+  <!-- TABLE CARD -->
+  <div *ngIf="products" class="table-card">
+
+    <div class="table-wrapper">
+
+      <table
+        mat-table
+        [dataSource]="products"
+        matSort
+        (matSortChange)="loadData()"
+        [matSortActive]="defaultSortColumn"
+        [matSortDirection]="defaultSortOrder">
+
+
+        <!-- NAME -->
+        <ng-container matColumnDef="name">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+
+            Product
+
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            <div class="product-name">
+
+              <div class="product-icon">
+                <mat-icon>inventory_2</mat-icon>
+              </div>
+
+              <div>
+                <strong>{{ product.name }}</strong>
+              </div>
+
+            </div>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- CATEGORY -->
+        <ng-container matColumnDef="categoryName">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+
+            Category
+
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            <span class="category-badge">
+              {{ product.categoryName }}
+            </span>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- STOCK -->
+        <ng-container matColumnDef="stock">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+
+            Stock
+
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            <span
+              class="stock-value"
+              [class.low-stock]="product.stock <= 10"
+              [class.out-of-stock]="product.stock === 0">
+
+              {{ product.stock }}
+
+            </span>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- COST PRICE -->
+        <ng-container matColumnDef="costPrice">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+
+            Cost Price
+
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            {{ product.costPrice | currency:'PHP':'symbol':'1.2-2' }}
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- SELLING PRICE -->
+        <ng-container matColumnDef="sellingPrice">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+
+            Selling Price
+
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            <strong>
+              {{ product.sellingPrice | currency:'PHP':'symbol':'1.2-2' }}
+            </strong>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- STATUS -->
+        <ng-container matColumnDef="isActive">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+
+            Status
+
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            <span
+              class="status-badge"
+              [class.active]="product.isActive"
+              [class.inactive]="!product.isActive">
+
+              <span class="status-dot"></span>
+
               {{ product.isActive ? 'Active' : 'Inactive' }}
-            </mat-chip>
-          </mat-chip-listbox>
-        </td>
-      </ng-container>
+
+            </span>
+
+          </td>
+
+        </ng-container>
 
 
-      <!-- Date Added Column -->
-      <ng-container matColumnDef="dateAdded">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Added</th>
-        <td mat-cell *matCellDef="let product">{{product.dateAdded | date:'short'}}</td>
-      </ng-container>
+        <!-- DATE ADDED -->
+        <ng-container matColumnDef="dateAdded">
 
-      <!-- Last Updated Column -->
-      <ng-container matColumnDef="lastUpdated">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</th>
-        <td mat-cell *matCellDef="let product">{{product.lastUpdated | date:'short'}}</td>
-      </ng-container>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let product">
-          <button mat-icon-button color="primary" [routerLink]="['/product', product.id]" matTooltip="Edit">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="onDelete(product.id)" matTooltip="Delete">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-    </tr>
+            Date Added
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            {{ product.dateAdded | date:'MMM d, y' }}
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- LAST UPDATED -->
+        <ng-container matColumnDef="lastUpdated">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+
+            Last Updated
+
+          </th>
+
+          <td mat-cell *matCellDef="let product">
+
+            {{ product.lastUpdated | date:'MMM d, y' }}
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- ACTIONS -->
+        <ng-container matColumnDef="actions">
+
+          <th
+            mat-header-cell
+            *matHeaderCellDef>
+
+            Actions
+
+          </th>
+
+          <td
+            mat-cell
+            *matCellDef="let product"
+            class="actions-cell">
+
+            <button
+              mat-icon-button
+              [routerLink]="['/product', product.id]"
+              matTooltip="Edit product">
+
+              <mat-icon>edit</mat-icon>
+
+            </button>
+
+
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDelete(product.id)"
+              matTooltip="Delete product">
+
+              <mat-icon>delete</mat-icon>
+
+            </button>
+
+          </td>
+
+        </ng-container>
+
+
+        <!-- HEADER -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns">
+
+        </tr>
+
+
+        <!-- ROW -->
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns;">
+
+        </tr>
+
+
+        <!-- NO DATA -->
+        <tr *matNoDataRow>
+
+          <td
+            [attr.colspan]="displayedColumns.length"
+            class="no-data">
+
+            <mat-icon>inventory_2</mat-icon>
+
+            <h3>No products found</h3>
+
+            <p>
+              Try adjusting your search or filters.
+            </p>
+
+          </td>
+
+        </tr>
+
+      </table>
+
+    </div>
+
+
+    <!-- PAGINATION -->
+    <mat-paginator
+      (page)="getData($event)"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 20, 50]"
+      showFirstLastButtons>
+
+    </mat-paginator>
+
+  </div>
+
 </div>
-
-
-
-<!-- Pagination directive -->
-<mat-paginator [hidden]="!products"
-               (page)="getData($event)"
-               [pageSize]="10"
-               [pageSizeOptions]="[10, 20, 50]"
-               showFirstLastButtons>
-
-</mat-paginator>

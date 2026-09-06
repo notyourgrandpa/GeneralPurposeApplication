@@ -3,13 +3,13 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-  <p>
+  <div>
     <mat-error *ngIf="form.invalid && form.hasError('isDupeProduct')">
       <strong>ERROR</strong>:
       A product with the same <i>name</i>, <i>selling price</i>,
       <i>cost price</i> and <i>category</i> already exists.
     </mat-error>
-  </p>
+  </div>
 
   <!-- Name -->
   <mat-form-field>

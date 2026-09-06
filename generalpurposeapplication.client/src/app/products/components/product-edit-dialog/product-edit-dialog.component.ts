@@ -17,13 +17,13 @@ import { ProductGraphQlService } from '../../services/product-graphql.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../categories/services/category.service';
 
-@Component({
-  selector: 'app-product-edit',
-  templateUrl: './product-edit.component.html',
-  styleUrl: './product-edit.component.scss'
-})
 
-export class ProductEditComponent extends BaseFormComponent implements OnInit, OnDestroy {
+@Component({
+  selector: 'app-product-edit-dialog',
+  templateUrl: './product-edit-dialog.component.html',
+  styleUrl: './product-edit-dialog.component.css'
+})
+export class ProductEditDialogComponent extends BaseFormComponent implements OnInit, OnDestroy {
   // the view title
   title?: string;
 
