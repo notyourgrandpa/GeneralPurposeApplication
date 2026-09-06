@@ -13,7 +13,6 @@ import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HealthCheckComponent } from './health-check/health-check.component';
-import { ProductEditComponent } from './products/components/product-edit/product-edit.component';
 import { CategoriesComponent } from './categories/components/categories-list/categories.component';
 import { CategoryEditComponent } from './categories/components/category-edit/category-edit.component';
 import { LoginComponent } from './auth/login.component';
@@ -35,6 +34,7 @@ import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.compo
 import { ProductListComponent } from './products/components/product-list/product-list.component';
 import { ProductListDialogComponent } from './products/components/product-list-dialog/product-list-dialog.component';
 import { InventoryLogDetailsComponent } from './inventory-logs/components/inventory-log-details/inventory-log-details.component';
+import { ProductEditDialogComponent } from './products/components/product-edit-dialog/product-edit-dialog.component';
 
 
 @NgModule({
@@ -45,7 +45,6 @@ import { InventoryLogDetailsComponent } from './inventory-logs/components/invent
     FetchDataComponent,
     HealthCheckComponent,
     ProductListComponent,
-    ProductEditComponent,
     CategoriesComponent,
     CategoryEditComponent,
     LoginComponent,
@@ -59,7 +58,8 @@ import { InventoryLogDetailsComponent } from './inventory-logs/components/invent
     ExpensesComponent,
     ExpenseEditComponent,
     ProductListDialogComponent,
-    InventoryLogDetailsComponent
+    InventoryLogDetailsComponent,
+    ProductEditDialogComponent
   ],
   imports: [
     BrowserModule,

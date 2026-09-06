@@ -1,0 +1,125 @@
+<h1>{{title}}</h1>
+<p *ngIf="id && !product"><em>Loading…</em></p>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <div>
+    <mat-error *ngIf="form.invalid && form.hasError('isDupeProduct')">
+      <strong>ERROR</strong>:
+      A product with the same <i>name</i>, <i>selling price</i>,
+      <i>cost price</i> and <i>category</i> already exists.
+    </mat-error>
+  </div>
+
+  <!-- Name -->
+  <mat-form-field>
+    <mat-label>Name:</mat-label>
+    <input matInput formControlName="name" required
+           placeholder="Type a name">
+    <mat-error *ngFor="let error of getErrors(form.get('name')!,'Name')">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Category -->
+  <mat-form-field *ngIf="categories  | async as result">
+    <mat-label>Select a Category...</mat-label>
+    <mat-select id="categoryId" formControlName="categoryId">
+      <mat-option *ngFor="let category of result"
+                  [value]="category.id">
+        {{category.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngFor="let error of getErrors(form.get('categoryId')!,'Category')">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Cost Price -->
+  <mat-form-field>
+    <mat-label>Cost Price:</mat-label>
+    <input matInput formControlName="costPrice" required
+           placeholder="Insert cost price">
+    <mat-error *ngFor="let error of getErrors(form.get('costPrice')!,'Cost Price',
+               { 'pattern' : 'requires a positive or negative number with 0-2 decimal values.'})">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Selling Price -->
+  <mat-form-field>
+    <mat-label>Selling Price:</mat-label>
+    <input matInput formControlName="sellingPrice" required
+           placeholder="Insert selling price">
+    <mat-error *ngFor="let error of getErrors(form.get('sellingPrice')!,'Selling Price',
+               { 'pattern' : 'requires a positive or negative number with 0-2 decimal values.'})">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Is Active -->
+  <mat-form-field appearance="fill">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="isActive" required>
+      <mat-option [value]="true">Active</mat-option>
+      <mat-option [value]="false">Inactive</mat-option>
+    </mat-select>
+    <mat-error *ngFor="let error of getErrors(form.get('isActive')!,'Status')">
+      {{error}}
+    </mat-error>
+  </mat-form-field>
+
+  <div>
+    <button mat-flat-button color="primary"
+            type="submit"
+            [disabled]="!form.valid">
+      {{ this.id ? "Save" : "Create" }}
+    </button>
+    <button mat-flat-button color="secondary"
+            [routerLink]="['/products']">
+      Cancel
+    </button>
+
+    <button *ngIf="id"
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="onDelete()">
+      Delete
+    </button>
+  </div>
+</form>
+
+
+<!-- Form debug info panel -->
+<!--<div class="info">
+  <div class="info-header">Form Debug Info</div>
+  <div class="info-body">
+    <div class="info-label">
+      Form Value:
+    </div>
+    <div class="info-value">
+      {{ form.value | json }}
+    </div>
+    <hr />
+    <div class="info-label">
+      Form Status:
+    </div>
+    <div class="info-value">
+      {{ form.status | json }}
+    </div>
+  </div>
+</div>-->
+
+
+<!-- Form activity log panel -->
+<!--<div class="info">
+  <div class="info-header">Form Activity Log</div>
+  <div class="info-body">
+    <div class="info-value">
+      <span *ngIf="activityLog"
+            [innerHTML]="activityLog">
+      </span>
+    </div>
+  </div>
+</div>-->
