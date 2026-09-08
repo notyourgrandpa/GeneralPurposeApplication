@@ -3,12 +3,14 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject, debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { Category } from '../../../categories/models/category';
 import { CategoryQueryParams } from '../../../inventory-logs/models/category-query-params';
 import { CategoryService } from '../../../categories/services/category.service';
+import { ProductEditDialogComponent } from '../product-edit-dialog/product-edit-dialog.component';
 
 @Component({
   selector: 'app-product-list-core',
@@ -49,7 +51,9 @@ export class ProductListComponent implements OnChanges {
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService) {
+    private categoryService: CategoryService,
+    private dialog: MatDialog,
+  ) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -174,5 +178,17 @@ export class ProductListComponent implements OnChanges {
   onStatusChanged(status: boolean) {
     this.selectedStatus = status;
     this.loadData();
+  }
+
+  openProductEditDialog(productId: number = 0){
+    console.log("Opening Product Edit Dialog for productId:", productId);
+    this.dialog.open(ProductEditDialogComponent, {
+      width: '600px',
+      data: { productId: productId }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.loadData();
+      }
+    });
   }
 }

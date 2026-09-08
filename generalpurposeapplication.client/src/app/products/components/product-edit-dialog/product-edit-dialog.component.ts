@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, Inject } from '@angular/core';
 //import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
@@ -9,7 +9,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Product } from '../../models/product';
 import { Category } from '../../../categories/models/category';
 import { BaseFormComponent } from '../../../shared/components/base-form.component'
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
 import { ProductService } from '../../services/product.service';
@@ -42,15 +42,19 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
 
   private destroySubject = new Subject();
 
+  dialogRef = inject(MatDialogRef<ProductEditDialogComponent>);
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
     private productGraphQlService: ProductGraphQlService,
     private categoryService: CategoryService,
+    @Inject(MAT_DIALOG_DATA) public data: { productId: number },
     private snackBar: MatSnackBar,
-    private dialog: MatDialog) {
+  ) {
     super();
+    this.id = data.productId ?? 0;
   }
 
   ngOnInit() {
@@ -108,9 +112,6 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
     // load categories
     this.loadCategories();
 
-    // retrieve the ID from the 'id' parameter
-    var idParam = this.activatedRoute.snapshot.paramMap.get('id');
-    this.id = idParam ? +idParam : 0;
     if (this.id) {
       // EDIT MODE
       // fetch the product from the server
@@ -152,9 +153,8 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
           .put(product)
           .subscribe({
             next: (result) => {
-              console.log("Product " + product!.id + " has been updated.");
-              // go back to products view
-              this.router.navigate(['/products']);
+              this.snackBar.open("Product updated successfully.", "Close", { duration: 3000 });
+              this.dialogRef.close(true);
             },
             error: (error) => console.error(error)
           });
@@ -165,9 +165,9 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
           .post(product)
           .subscribe({
             next: (result) => {
-              console.log("Product " + result.id + " has been created.");
+              this.snackBar.open("Product created successfully.", "Close", { duration: 3000 });
               // go back to products view
-              this.router.navigate(['/products']);
+              this.dialogRef.close(true);
             },
             error: (error) => console.error(error)
           });
@@ -178,7 +178,7 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
   onDelete(): void {
     if (!this.id) return;
 
-    this.productService.confirmAndDelete(this.id, '/products');
+    this.productService.confirmAndDelete(this.id, '');
   }
 
   isDupeProduct(): AsyncValidatorFn {
