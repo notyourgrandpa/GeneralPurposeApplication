@@ -14,7 +14,7 @@
       *ngIf="!compact"
       mat-flat-button
       color="primary"
-      [routerLink]="['/product']">
+      (click)="openProductEditDialog()">
 
       <mat-icon>add</mat-icon>
       Add Product
@@ -348,8 +348,8 @@
 
             <button
               mat-icon-button
-              [routerLink]="['/product', product.id]"
-              matTooltip="Edit product">
+              matTooltip="Edit product"
+              (click)="openProductEditDialog(product.id)">
 
               <mat-icon>edit</mat-icon>
 
