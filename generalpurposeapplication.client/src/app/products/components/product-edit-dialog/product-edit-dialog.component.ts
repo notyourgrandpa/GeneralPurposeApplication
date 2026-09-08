@@ -52,6 +52,7 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
     private categoryService: CategoryService,
     @Inject(MAT_DIALOG_DATA) public data: { productId: number },
     private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     super();
     this.id = data.productId ?? 0;
@@ -178,7 +179,23 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
   onDelete(): void {
     if (!this.id) return;
 
-    this.productService.confirmAndDelete(this.id, '');
+    this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Product',
+        message: 'Are you sure you want to delete this product?'
+      }
+    }).afterClosed().subscribe((result) => {
+      if (result) {
+        this.productService.delete(this.id!).subscribe({
+          next: () => {
+            this.snackBar.open("Product deleted successfully.", "Close", { duration: 3000 });
+            this.dialogRef.close(true);
+            this.loadData();
+          },
+          error: (error) => console.error(error)
+        });
+      }
+    });
   }
 
   isDupeProduct(): AsyncValidatorFn {
