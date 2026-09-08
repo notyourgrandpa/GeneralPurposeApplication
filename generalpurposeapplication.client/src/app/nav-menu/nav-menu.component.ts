@@ -67,7 +67,6 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       expanded: false,
       children: [
         { label: 'All Products', icon: 'list', route: '/products' },
-        { label: 'Add Product', icon: 'add', route: '/product' },
         { label: 'Categories', icon: 'category', route: '/categories' },
         { label: 'Inventory Logs', icon: 'receipt_long', route: '/inventory-logs' },
         { label: 'Sales Transactions', icon: 'receipt_long', route: '/sales-transactions' },
