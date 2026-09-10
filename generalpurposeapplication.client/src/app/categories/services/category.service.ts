@@ -5,7 +5,7 @@ import { Observable, filter, switchMap, tap, catchError, of } from 'rxjs';
 import { Category } from '../models/category';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryQueryParams } from '../../inventory-logs/models/category-query-params';
 
@@ -87,6 +87,11 @@ export class CategoryService
     return this.http.delete<Category>(url);
   }
 
+  archive(id: number){
+    var url = this.getUrl("api/Categories/Archive/" + id);
+    return this.http.delete<Category>(url);
+  }
+
   isDupeField(categoryId: number, fieldName: string, fieldValue: string):
     Observable<boolean> {
     var params = new HttpParams()
@@ -98,19 +103,43 @@ export class CategoryService
   }
 
   confirmAndDelete(id: number, redirectTo?: string, reloadCallback?: () => void): void {
+    this.confirm(
+      this.delete(id),
+      'Delete Category',
+      'Are you sure you want to delete this category?',
+      'Category deleted successfully',
+      'Failed to delete the category',
+      redirectTo,
+      reloadCallback
+    )
+  }
+
+  confirmAndArchive(id: number, redirectTo?: string, reloadCallback?: () => void): void {
+    this.confirm(
+      this.archive(id),
+      'Archive Category',
+      'Are you sure you want to archive this category?',
+      'Category archived successfully',
+      'Failed to archive the category',
+      redirectTo,
+      reloadCallback
+    )
+  }
+
+  confirm(action: Observable<any>, title: string, message:string, succcessMesage: string, errorMessage: string, redirectTo?: string, reloadCallback?: () => void): void{
     this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: 'Delete Category',
-        message: 'Are you sure you want to delete this category?'
+        title: title,
+        message: message
       }
     }).afterClosed().pipe(
       filter(result => result === true),
-      switchMap(() => this.delete(id)),
-      tap(() => {
-        this.snackBar.open('Category deleted successfully.', 'Close', { duration: 3000 });
+      switchMap(() => action),
+      tap(() =>{
+        this.snackBar.open(succcessMesage, 'Close', { duration: 3000 })
 
-        if (redirectTo) {
-          this.router.navigate([redirectTo]);
+        if(redirectTo){
+          this.router.navigate([redirectTo])
         }
 
         if (reloadCallback) {
@@ -118,8 +147,7 @@ export class CategoryService
         }
       }),
       catchError(err => {
-        this.snackBar.open('Failed to delete the category.', 'Close', { duration: 3000 });
-        console.error('Delete failed', err);
+        this.snackBar.open(errorMessage, 'Close', { duration: 3000 });
         return of(null);
       })
     ).subscribe();

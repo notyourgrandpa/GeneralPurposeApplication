@@ -11,6 +11,8 @@ import { Category } from '../../../categories/models/category';
 import { CategoryQueryParams } from '../../../inventory-logs/models/category-query-params';
 import { CategoryService } from '../../../categories/services/category.service';
 import { ProductEditDialogComponent } from '../product-edit-dialog/product-edit-dialog.component';
+import { AuthService } from '../../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list-core',
@@ -52,7 +54,9 @@ export class ProductListComponent implements OnChanges {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
+    private authService: AuthService,
     private dialog: MatDialog,
+    private router: Router
   ) {
   }
 
@@ -167,6 +171,9 @@ export class ProductListComponent implements OnChanges {
   }
 
   onDelete(id: number): void {
+    if(!this.authService.redirectToLoginIfNotAuthenticated(this.router.url)){
+      return;
+    }
     this.productService.confirmAndDelete(id, undefined, () => this.loadData());
   }
 
@@ -181,7 +188,10 @@ export class ProductListComponent implements OnChanges {
   }
 
   openProductEditDialog(productId: number = 0){
-    console.log("Opening Product Edit Dialog for productId:", productId);
+    if(!this.authService.redirectToLoginIfNotAuthenticated(this.router.url)){
+      return;
+    }
+  
     this.dialog.open(ProductEditDialogComponent, {
       width: '600px',
       data: { productId: productId }
