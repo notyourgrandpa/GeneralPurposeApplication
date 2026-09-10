@@ -81,6 +81,16 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
+        // DELETE: api/Categories/Archive/5
+        [Authorize(Roles = "Administrator")]
+        [HttpDelete("Archive/{id}")]
+        public async Task<IActionResult> ArchiveCategoryAsync(int id)
+        {
+            await _mediator.Send(new ArchiveCategoryCommand(id));
+
+            return NoContent();
+        }
+
         [HttpPost]
         [Route("IsDupeField")]
         public async Task<bool> IsDupeField(int categoryId, string fieldName, string fieldValue)
