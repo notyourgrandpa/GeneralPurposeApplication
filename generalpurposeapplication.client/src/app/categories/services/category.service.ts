@@ -88,7 +88,7 @@ export class CategoryService
   }
 
   archive(id: number){
-    var url = this.getUrl("api/Categories/archive/" + id);
+    var url = this.getUrl("api/Categories/Archive/" + id);
     return this.http.delete<Category>(url);
   }
 
