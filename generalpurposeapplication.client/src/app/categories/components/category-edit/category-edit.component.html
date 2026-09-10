@@ -11,23 +11,34 @@
         {{error}}
       </mat-error>
     </mat-form-field>
-    <div>
-      <button mat-flat-button color="primary"
+    <div class="flex justify-between">
+      <div class="flex">
+        <button mat-flat-button color="primary"
               type="submit" [disabled]="!form.valid">
-        {{ this.id ? "Save" : "Create" }}
-      </button>
-      <button mat-flat-button mat-dialog-close color="secondary"
-              [routerLink]="['/categories']">
-        Cancel
-      </button>
+          {{ this.id ? "Save" : "Create" }}
+        </button>
+        <button mat-flat-button mat-dialog-close color="secondary"
+                [routerLink]="['/categories']">
+          Cancel
+        </button>
+      </div>
 
-      <button *ngIf="id"
-              mat-flat-button
-              color="warn"
-              type="button"
-              (click)="onDelete()">
-        Delete
-      </button>
+      <div class="flex">
+        <button class="mr-1"*ngIf="id"
+                mat-flat-button
+                color="warn"
+                type="button"
+                (click)="onArchive()">
+          Archive
+        </button>
+        <button *ngIf="id"
+                mat-flat-button
+                color="warn"
+                type="button"
+                (click)="onDelete()">
+          Delete
+        </button>
+      </div>
     </div>
   </form>
 </div>

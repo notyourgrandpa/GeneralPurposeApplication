@@ -116,4 +116,9 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
     if (!this.id) return;
     this.categoryService.confirmAndDelete(this.id, '/categories');
   }
+
+  onArchive():void{
+    if(!this.id) return;
+    this.categoryService.confirmAndArchive(this.id, '/categories');
+  }
 }
