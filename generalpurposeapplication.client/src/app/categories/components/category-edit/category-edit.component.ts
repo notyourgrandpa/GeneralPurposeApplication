@@ -78,6 +78,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
           .subscribe({
             next: (result) => {
               this.snackBar.open("Category " + category!.id + " has been updated.", undefined, { duration: 2000 });
+              console.log("fire");
               this.dialogRef.close(true);
             },
             error: (error) => console.error(error)
@@ -114,11 +115,27 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
 
   onDelete(): void {
     if (!this.id) return;
-    this.categoryService.confirmAndDelete(this.id, '/categories');
+
+    this.categoryService
+      .confirmAndDelete(this.id)
+      .subscribe(result => {
+        console.log(result);
+        if (result) {
+          this.dialogRef.close(true);
+        }
+      });
   }
 
-  onArchive():void{
-    if(!this.id) return;
-    this.categoryService.confirmAndArchive(this.id, '/categories');
+  onArchive(): void {
+    if (!this.id) return;
+
+    this.categoryService
+      .confirmAndArchive(this.id)
+      .subscribe(result => {
+        console.log(result);
+        if (result) {
+          this.dialogRef.close(true);
+        }
+      });
   }
 }

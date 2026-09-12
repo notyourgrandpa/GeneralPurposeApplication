@@ -21,9 +21,9 @@ export class ExpensesService extends BaseService<ExpensesModel> {
     let url = this.getUrl("api/expenses");
     return this.http.post<ExpensesModel>(url, item);
   }
-  override delete(id: number): Observable<ExpensesModel> {
+  override delete(id: number): Observable<void> {
     let url = this.getUrl("api/expenses/" + id);
-    return this.http.delete<ExpensesModel>(url);
+    return this.http.delete<void>(url);
   }
   constructor(http: HttpClient)
   {

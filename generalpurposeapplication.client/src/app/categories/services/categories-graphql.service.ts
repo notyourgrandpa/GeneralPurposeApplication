@@ -134,7 +134,7 @@ export class CategoryGraphQlService
       result.data.addCategory));
   }
 
-  override delete(id: number): Observable<Category> {
+  override delete(id: number): Observable<void> {
     throw new Error('Method not implemented.');
   }
 

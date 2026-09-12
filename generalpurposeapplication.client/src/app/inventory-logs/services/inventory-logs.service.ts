@@ -63,9 +63,9 @@ export class InventoryLogService extends BaseService<InventoryLog>{
     );
   }
 
-  override delete(id: number): Observable<InventoryLog> {
+  override delete(id: number): Observable<void> {
     var url = this.getUrl("api/inventoryLogs/" + id);
-    return this.http.delete<InventoryLog>(url);
+    return this.http.delete<void>(url);
   }
 
   voidInventoryLog(id: number):Observable<InventoryLog> {

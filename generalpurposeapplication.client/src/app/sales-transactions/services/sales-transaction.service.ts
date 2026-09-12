@@ -43,9 +43,9 @@ export class SalesTransactionService extends BaseService<SalesTransaction> {
     var url = this.getUrl("api/salesTransactions");
     return this.http.post<SalesTransaction>(url, item);
   }
-  override delete(id: number): Observable<SalesTransaction> {
+  override delete(id: number): Observable<void> {
     var url = this.getUrl("api/salesTransactions/" + id);
-    return this.http.delete<SalesTransaction>(url);
+    return this.http.delete<void>(url);
   }
 
   confirmAndDelete(id: number, redirectTo?: string, reloadCallback?: () => void): void {
