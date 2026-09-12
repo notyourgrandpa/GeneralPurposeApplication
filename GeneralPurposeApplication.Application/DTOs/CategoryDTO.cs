@@ -10,6 +10,7 @@ namespace GeneralPurposeApplication.Application.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
+        public bool IsActive { get; set; }
         public int TotalProducts { get; set; }
     }
 }

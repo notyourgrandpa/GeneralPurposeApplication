@@ -55,6 +55,7 @@ namespace GeneralPurposeApplication.Application.Categories.Queries
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    IsActive = x.IsActive,
                     TotalProducts = x.Products.Count()
                 })
                 .ToListAsync(cancellationToken);

@@ -25,6 +25,7 @@ import { AuthService } from '../../../auth/auth.service';
 export class CategoriesComponent implements OnInit {
   public displayedColumns: string[] = [
     'name',
+    'isActive',
     'totalProducts',
     'action'
   ];
