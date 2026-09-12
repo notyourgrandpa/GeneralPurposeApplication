@@ -17,6 +17,7 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.IsActive).HasDefaultValue(true);
 
             //UNIQUE constraint
             builder.HasIndex(x => x.Name).IsUnique();
