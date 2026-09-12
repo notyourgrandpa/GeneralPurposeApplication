@@ -23,10 +23,10 @@ namespace GeneralPurposeApplication.Application.Categories.Commands
 
             if (category == null)
             {
-                throw new KeyNotFoundException($"Category { request.Id } not found.");
+                throw new KeyNotFoundException($"Category {request.Id} not found.");
             }
 
-            category.IsArchived = true;
+            category.IsActive = false;
 
             await _context.SaveChangesAsync();
 

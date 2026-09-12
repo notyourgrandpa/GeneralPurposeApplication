@@ -8,7 +8,7 @@ namespace GeneralPurposeApplication.Domain.Categories
 
         public required string Name { get; set; }
 
-        public bool IsArchived { get; set; } = false;
+        public bool IsActive { get; set; } = false;
 
         public ICollection<Product> Products { get; set; } = new List<Product>();
     }
