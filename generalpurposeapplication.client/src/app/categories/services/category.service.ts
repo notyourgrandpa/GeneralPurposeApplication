@@ -82,14 +82,14 @@ export class CategoryService
     return this.http.post<Category>(url, item);
   }
 
-  delete(id: number): Observable<Category> {
+  delete(id: number): Observable<void> {
     var url = this.getUrl("api/Categories/" + id);
-    return this.http.delete<Category>(url);
+    return this.http.delete<void>(url);
   }
 
-  archive(id: number){
+  archive(id: number): Observable<void> {
     var url = this.getUrl("api/Categories/Archive/" + id);
-    return this.http.delete<Category>(url);
+    return this.http.delete<void>(url);
   }
 
   isDupeField(categoryId: number, fieldName: string, fieldValue: string):
@@ -102,55 +102,66 @@ export class CategoryService
     return this.http.post<boolean>(url, null, { params });
   }
 
-  confirmAndDelete(id: number, redirectTo?: string, reloadCallback?: () => void): void {
-    this.confirm(
-      this.delete(id),
+  confirmAndDelete(id: number): Observable<void | null> {
+    return this.confirm(
+      () => this.delete(id),
       'Delete Category',
       'Are you sure you want to delete this category?',
-      'Category deleted successfully',
-      'Failed to delete the category',
-      redirectTo,
-      reloadCallback
-    )
+      'Category deleted successfully.',
+      'Failed to delete the category.'
+    );
   }
 
-  confirmAndArchive(id: number, redirectTo?: string, reloadCallback?: () => void): void {
-    this.confirm(
-      this.archive(id),
+  confirmAndArchive(id: number): Observable<void | null> {
+    return this.confirm(
+      () => this.archive(id),
       'Archive Category',
       'Are you sure you want to archive this category?',
-      'Category archived successfully',
-      'Failed to archive the category',
-      redirectTo,
-      reloadCallback
-    )
+      'Category archived successfully.',
+      'Failed to archive the category.'
+    );
   }
 
-  confirm(action: Observable<any>, title: string, message:string, succcessMesage: string, errorMessage: string, redirectTo?: string, reloadCallback?: () => void): void{
-    this.dialog.open(ConfirmDialogComponent, {
+  confirm<T>(
+    action: () => Observable<T>,
+    title: string,
+    message: string,
+    successMessage: string,
+    errorMessage: string
+  ): Observable<T | null> {
+
+    return this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: title,
-        message: message
+        title,
+        message
       }
-    }).afterClosed().pipe(
+    })
+    .afterClosed()
+    .pipe(
       filter(result => result === true),
-      switchMap(() => action),
-      tap(() =>{
-        this.snackBar.open(succcessMesage, 'Close', { duration: 3000 })
 
-        if(redirectTo){
-          this.router.navigate([redirectTo])
-        }
+      switchMap(() => action()),
 
-        if (reloadCallback) {
-          reloadCallback();
-        }
+      tap(() => {
+        this.snackBar.open(
+          successMessage,
+          'Close',
+          { duration: 3000 }
+        );
       }),
+
       catchError(err => {
-        this.snackBar.open(errorMessage, 'Close', { duration: 3000 });
+        this.snackBar.open(
+          errorMessage,
+          'Close',
+          { duration: 3000 }
+        );
+
+        console.error(err);
+
         return of(null);
       })
-    ).subscribe();
+    );
   }
 
 }

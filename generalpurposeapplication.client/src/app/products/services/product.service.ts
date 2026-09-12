@@ -87,9 +87,9 @@ export class ProductService
     return this.http.post<Product>(url, item);
   }
 
-  delete(id: number): Observable<Product> {
+  delete(id: number): Observable<void> {
     var url = this.getUrl("api/products/" + id);
-    return this.http.delete<Product>(url);
+    return this.http.delete<void>(url);
   }
 
   isDupeProduct(item: Product): Observable<boolean> {

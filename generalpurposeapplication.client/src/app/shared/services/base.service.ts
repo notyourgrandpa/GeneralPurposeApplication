@@ -16,7 +16,7 @@ export abstract class BaseService<T> {
   abstract get(id: number): Observable<T>;
   abstract put(item: T): Observable<T>;
   abstract post(item: T): Observable<T>;
-  abstract delete(id: number): Observable<T>;
+  abstract delete(id: number): Observable<void>;
   protected getUrl(url: string) {
     return environment.baseUrl + url;
   }

@@ -110,7 +110,7 @@ export class CategoriesComponent implements OnInit {
 
   onDelete(id: number): void {
     if (!id) return;
-    this.categoryService.confirmAndDelete(id, undefined, () => this.loadData());
+    this.categoryService.confirmAndDelete(id);
   }
 
   viewCategoryProducts(categoryId: number) {

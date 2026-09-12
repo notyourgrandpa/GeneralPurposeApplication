@@ -165,7 +165,7 @@ export class ProductGraphQlService
       result.data.addProduct));
   }
 
-  override delete(id: number): Observable<Product> {
+  override delete(id: number): Observable<void> {
     throw new Error('Method not implemented.');
   }
 
