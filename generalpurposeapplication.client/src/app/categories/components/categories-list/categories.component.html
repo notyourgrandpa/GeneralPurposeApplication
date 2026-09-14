@@ -1,82 +1,90 @@
-<h1>Categories</h1>
-<p>Here's a list of Categories: </p>
-<p *ngIf="!categories"><em>Loading...</em></p>
-
-<button mat-flat-button color="primary"
+<div class="flex justify-between">
+  <div class="flex flex-col">
+    <h1 class="!font-extrabold !text-[25px]">Categories</h1>
+    <p class="">Manage your product categories...</p>
+  </div>
+  <p *ngIf="!categories"><em>Loading...</em></p>
+  <button mat-flat-button color="primary"
         class="btn-add" *ngIf="categories" (click)="openCategoryEditDialog()">
-  Add a new Category
-</button>
+    <mat-icon>add</mat-icon>Add a new Category
+  </button>
+</div>
 
-<mat-form-field [hidden]="!categories">
-  <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
-         placeholder="Filter by name (or part of it)...">
-</mat-form-field>
+<div>
+  <mat-form-field class="filter-card" [hidden]="!categories">
+    <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
+          placeholder="Filter by name (or part of it)...">
+  </mat-form-field>
+</div>
 
-<table mat-table [dataSource]="categories"
+<div class="table-card">
+  <table mat-table [dataSource]="categories"
        class="mat-elevation-z8"
        [hidden]="!categories"
        matSort (matSortChange)="loadData()"
        [matSortActive]="defaultSortColumn"
        [matSortDirection]="defaultSortOrder">
 
-  <tr style="display:none!important">
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let category">{{category.name}}</td>
-    </ng-container>
+    <tr style="display:none!important">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let category">{{category.name}}</td>
+      </ng-container>
 
-    <!-- IsActive Column -->
-    <ng-container matColumnDef="isActive">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
-      <td mat-cell *matCellDef="let category">
-        <span
-          class="status-badge"
-          [class.active]="category.isActive"
-          [class.inactive]="!category.isActive">
+      <!-- IsActive Column -->
+      <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+        <td mat-cell *matCellDef="let category">
+          <span
+            class="status-badge"
+            [class.active]="category.isActive"
+            [class.inactive]="!category.isActive">
 
-          <span class="status-dot"></span>
+            <span class="status-dot"></span>
 
-          {{ category.isActive ? 'Active' : 'Inactive' }}
+            {{ category.isActive ? 'Active' : 'Inactive' }}
 
-        </span>
-      </td>
-    </ng-container>
+          </span>
+        </td>
+      </ng-container>
 
-    <!-- Total Products Column -->
-    <ng-container matColumnDef="totalProducts">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Products</th>
-      <td mat-cell *matCellDef="let category">
-        {{category.totalProducts}}
-        <button mat-icon-button color="warn" (click)="viewCategoryProducts(category.id)" matTooltip="Open Category Products">
-          <mat-icon>assignment</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <!-- Total Products Column -->
+      <ng-container matColumnDef="totalProducts">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Products</th>
+        <td mat-cell *matCellDef="let category">
+          {{category.totalProducts}}
+          <button mat-icon-button color="warn" (click)="viewCategoryProducts(category.id)" matTooltip="Open Category Products">
+            <mat-icon>assignment</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <!-- Action Column -->
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let category">
-        <button mat-icon-button color="primary" (click)="openCategoryEditDialog(category.id)" matTooltip="Edit">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="onDelete(category.id)" matTooltip="Delete">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-  </tr>
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let category">
+          <button mat-icon-button color="primary" (click)="openCategoryEditDialog(category.id)" matTooltip="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(category.id)" matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+    </tr>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 
-<!-- Pagination directive -->
-<mat-paginator [hidden]="!categories"
-               (page)="getData($event)"
-               [pageSize]="10"
-               [pageSizeOptions]="[10, 20, 50]"
-               showFirstLastButtons>
+  <!-- Pagination directive -->
+  <mat-paginator [hidden]="!categories"
+                (page)="getData($event)"
+                [pageSize]="10"
+                [pageSizeOptions]="[10, 20, 50]"
+                showFirstLastButtons>
 
-</mat-paginator>
+  </mat-paginator>
+
+</div>
