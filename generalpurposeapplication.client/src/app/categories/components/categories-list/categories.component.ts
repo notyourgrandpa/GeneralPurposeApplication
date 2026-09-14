@@ -1,14 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-//import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-//import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
-
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
 import { CategoryGraphQlService } from '../../services/categories-graphql.service'
@@ -49,7 +45,9 @@ export class CategoriesComponent implements OnInit {
     private categoryGraphQlService: CategoryGraphQlService,
     private dialog: MatDialog,
     private authService: AuthService,
-    private router: Router) {
+    private router: Router,
+
+  ) {
   }
 
   ngOnInit() {
@@ -110,7 +108,14 @@ export class CategoriesComponent implements OnInit {
 
   onDelete(id: number): void {
     if (!id) return;
-    this.categoryService.confirmAndDelete(id);
+    this.categoryService
+      .confirmAndDelete(id)
+      .subscribe({
+        next: (result) =>{
+          this.loadData();
+        }
+      })
+
   }
 
   viewCategoryProducts(categoryId: number) {
