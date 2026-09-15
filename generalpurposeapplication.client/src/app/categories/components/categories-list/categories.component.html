@@ -1,7 +1,7 @@
-<div class="flex justify-between">
-  <div class="flex flex-col">
-    <h1 class="!font-extrabold !text-[25px]">Categories</h1>
-    <p class="">Manage your product categories...</p>
+<div class="flex justify-between items-start mb-6">
+  <div>
+    <h1 class="!font-extrabold !text-[27px] !m-0">Categories</h1>
+    <p class="text-gray-500 !mt-1">Manage your product categories...</p>
   </div>
   <p *ngIf="!categories"><em>Loading...</em></p>
   <button mat-flat-button color="primary"
@@ -10,14 +10,14 @@
   </button>
 </div>
 
-<div>
-  <mat-form-field class="filter-card" [hidden]="!categories">
+<div class="bg-white border rounded-lg mb-4 p-3">
+  <mat-form-field class="w-full rounded-l" [hidden]="!categories">
     <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
           placeholder="Filter by name (or part of it)...">
   </mat-form-field>
 </div>
 
-<div class="table-card">
+<div class="bg-white border border-gray-300 rounded-2xl overflow-hidden">
   <table mat-table [dataSource]="categories"
        class="mat-elevation-z8"
        [hidden]="!categories"
