@@ -1,5 +1,5 @@
 //import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
@@ -27,13 +27,15 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
   id?: number;
   // the categories array for the select
   categories?: Category[];
+
+  dialogRef = inject(MatDialogRef<CategoryEditComponent>);
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private categoryService: CategoryService,
     private categoryGraphQlService: CategoryGraphQlService,
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
-    private dialogRef: MatDialogRef<CategoryEditComponent>,
     private snackBar: MatSnackBar
   ) {
     super();
@@ -120,7 +122,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
       .confirmAndDelete(this.id)
       .subscribe(result => {
         console.log(result);
-        if (result) {
+        if (result == null) {
           this.dialogRef.close(true);
         }
       });
@@ -132,8 +134,7 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
     this.categoryService
       .confirmAndArchive(this.id)
       .subscribe(result => {
-        console.log(result);
-        if (result) {
+        if (result == null) {
           this.dialogRef.close(true);
         }
       });
