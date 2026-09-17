@@ -128,15 +128,27 @@ export class CategoryEditComponent extends BaseFormComponent implements OnInit{
       });
   }
 
-  onArchive(): void {
+  onToggleArchive(): void {
     if (!this.id) return;
 
-    this.categoryService
+    if(this.category?.isActive){
+      this.categoryService
       .confirmAndArchive(this.id)
       .subscribe(result => {
         if (result == null) {
           this.dialogRef.close(true);
         }
       });
+    }
+    else{
+      this.categoryService
+      .confirmAndUnarchive(this.id)
+      .subscribe(result => {
+        if (result == null) {
+          this.dialogRef.close(true);
+        }
+      });
+    }
+
   }
 }

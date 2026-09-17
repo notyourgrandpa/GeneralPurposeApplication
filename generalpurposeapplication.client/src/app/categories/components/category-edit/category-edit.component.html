@@ -28,8 +28,8 @@
                 mat-flat-button
                 color="warn"
                 type="button"
-                (click)="onArchive()">
-          Archive
+                (click)="onToggleArchive()">
+          {{ this.category?.isActive ? "Archive" : "Unarchive" }}
         </button>
         <button *ngIf="id"
                 mat-flat-button

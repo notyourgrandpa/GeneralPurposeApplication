@@ -89,7 +89,12 @@ export class CategoryService
 
   archive(id: number): Observable<void> {
     var url = this.getUrl("api/Categories/Archive/" + id);
-    return this.http.delete<void>(url);
+    return this.http.post<void>(url, null);
+  }
+
+  unarchive(id: number): Observable<void> {
+    const url = this.getUrl("api/Categories/Unarchive/" + id);
+    return this.http.post<void>(url, null);
   }
 
   isDupeField(categoryId: number, fieldName: string, fieldValue: string):
@@ -119,6 +124,16 @@ export class CategoryService
       'Are you sure you want to archive this category?',
       'Category archived successfully.',
       'Failed to archive the category.'
+    );
+  }
+
+  confirmAndUnarchive(id: number): Observable<void | null> {
+    return this.confirm(
+      () => this.unarchive(id),
+      'Unarchive Category',
+      'Are you sure you want to unarchive this category?',
+      'Category Unarchived successfully.',
+      'Failed to Unarchive the category.'
     );
   }
 
