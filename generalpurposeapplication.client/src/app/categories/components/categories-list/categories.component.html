@@ -10,8 +10,8 @@
   </button>
 </div>
 
-<div class="bg-white border rounded-lg mb-4 p-3">
-  <mat-form-field class="w-full rounded-l" [hidden]="!categories">
+<div class="bg-white rounded-lg border p-3 mb-4">
+  <mat-form-field class="w-full rounded-l" [hidden]="!categories" appearance="outline">
     <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
           placeholder="Filter by name (or part of it)...">
   </mat-form-field>

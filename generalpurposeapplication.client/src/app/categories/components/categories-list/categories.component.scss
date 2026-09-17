@@ -11,7 +11,6 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-
 /* ROW */
 
 .mat-mdc-row {
@@ -52,42 +51,6 @@
 
 .product-icon mat-icon {
   color: #2563eb;
-}
-
-
-/* =========================
-   CATEGORY
-========================= */
-
-.category-badge {
-  display: inline-flex;
-
-  padding: 5px 10px;
-
-  border-radius: 999px;
-
-  background: #f3f4f6;
-
-  font-size: 12px;
-
-  color: #4b5563;
-}
-
-
-/* =========================
-   STOCK
-========================= */
-
-.stock-value {
-  font-weight: 600;
-}
-
-.low-stock {
-  color: #d97706;
-}
-
-.out-of-stock {
-  color: #dc2626;
 }
 
 
