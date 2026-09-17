@@ -81,15 +81,26 @@ namespace GeneralPurposeApplication.Server.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Categories/Archive/5
+        // POST: api/Categories/Archive/5
         [Authorize(Roles = "Administrator")]
-        [HttpDelete("Archive/{id}")]
+        [HttpPost("Archive/{id}")]
         public async Task<IActionResult> ArchiveCategoryAsync(int id)
         {
             await _mediator.Send(new ArchiveCategoryCommand(id));
 
             return NoContent();
         }
+
+        // POST: api/Categories/Unarchive/5
+        [Authorize(Roles = "Administrator")]
+        [HttpPost("Unarchive/{id}")]
+        public async Task<IActionResult> UnarchiveCategoryAsync(int id)
+        {
+            await _mediator.Send(new UnarchiveCategoryCommand(id));
+
+            return NoContent();
+        }
+
 
         [HttpPost]
         [Route("IsDupeField")]
