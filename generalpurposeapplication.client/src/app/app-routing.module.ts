@@ -16,6 +16,7 @@ import { SalesTransactionEditComponent } from './sales-transactions/components/s
 import { ExpensesComponent } from './expenses/expenses-list/expenses.component';
 import { ExpenseEditComponent } from './expenses/expense-edit/expense-edit.component';
 import { ProductEditDialogComponent } from './products/components/product-edit-dialog/product-edit-dialog.component';
+import { DataMaintenanceComponent } from './administration/components/data-maintenance/data-maintenance.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'expenses', component: ExpensesComponent },
   { path: 'expense', component: ExpenseEditComponent, canActivate: [AuthGuard] },
   { path: 'expense/:id', component: ExpenseEditComponent, canActivate: [AuthGuard] },
+  { path: 'data-maintainance', component: DataMaintenanceComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
