@@ -80,7 +80,8 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       children: [
         { label: 'Profile', icon: 'person', route: '/settings/profile' },
         { label: 'Preferences', icon: 'tune', route: '/settings/preferences' },
-        { label: 'Security', icon: 'security', route: '/settings/security' }
+        { label: 'Security', icon: 'security', route: '/settings/security' },
+        { label: 'Data Maintainance', icon: 'data_array', route: '/data-maintainance'}
       ]
     }
   ];

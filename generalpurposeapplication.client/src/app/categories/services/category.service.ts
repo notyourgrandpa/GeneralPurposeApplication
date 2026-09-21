@@ -39,8 +39,8 @@ export class CategoryService
       .set("sortDirection", sortOrder);
     if (filterColumn && filterQuery) {
       params = params
-        .set("filterColumn", filterColumn)
-        .set("filterQuery", filterQuery);
+        .set("filters[0].field", filterColumn)
+        .set("filters[0].value", filterQuery);
     }
     return this.http.get<ApiResult<Category>>(url, { params });
   }
