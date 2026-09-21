@@ -46,7 +46,7 @@
                          (click)="navigate(item.route!)">
 
             <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-            <span matListItemTitle>{{ item.label }}</span>
+            <span matListItemTitle class="!text-[14px]">{{ item.label }}</span>
             <mat-icon matListItemMeta *ngIf="isActive(item.route!)" class="active-indicator">
               chevron_right
             </mat-icon>
@@ -61,7 +61,7 @@
                            (click)="toggleSubmenu(item)">
 
               <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-              <span matListItemTitle>{{ item.label }}</span>
+              <span matListItemTitle class="!text-[14px]">{{ item.label }}</span>
               <mat-icon matListItemMeta
                         class="expand-icon"
                         [@rotate]="item.expanded ? 'expanded' : 'collapsed'">
@@ -82,7 +82,7 @@
                                (click)="navigate(child.route!)">
 
                   <mat-icon matListItemIcon class="submenu-icon">{{ child.icon }}</mat-icon>
-                  <span matListItemTitle>{{ child.label }}</span>
+                  <span matListItemTitle class="!text-[14px]">{{ child.label }}</span>
                   <mat-icon matListItemMeta *ngIf="isActive(child.route!)" class="active-indicator">
                     chevron_right
                   </mat-icon>
