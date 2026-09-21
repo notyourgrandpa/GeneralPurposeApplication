@@ -13,7 +13,6 @@ using GeneralPurposeApplication.Application.Services;
 
 namespace GeneralPurposeApplication.Server.Controllers
 {
-    //[Authorize(Roles = "Administrator")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class SeedController : ControllerBase
@@ -26,6 +25,7 @@ namespace GeneralPurposeApplication.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Import()
         {
             var seedResult = await _seedService.Import();
