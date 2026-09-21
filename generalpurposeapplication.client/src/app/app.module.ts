@@ -35,8 +35,6 @@ import { ProductListComponent } from './products/components/product-list/product
 import { ProductListDialogComponent } from './products/components/product-list-dialog/product-list-dialog.component';
 import { InventoryLogDetailsComponent } from './inventory-logs/components/inventory-log-details/inventory-log-details.component';
 import { ProductEditDialogComponent } from './products/components/product-edit-dialog/product-edit-dialog.component';
-import { SettingsComponent } from './settings/settings/settings.component';
-
 
 @NgModule({
   declarations: [
@@ -61,7 +59,6 @@ import { SettingsComponent } from './settings/settings/settings.component';
     ProductListDialogComponent,
     InventoryLogDetailsComponent,
     ProductEditDialogComponent,
-    SettingsComponent
   ],
   imports: [
     BrowserModule,
