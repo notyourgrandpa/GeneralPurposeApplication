@@ -14,6 +14,7 @@
   <mat-form-field class="w-full rounded-l" [hidden]="!categories" appearance="outline">
     <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
           placeholder="Filter by name (or part of it)...">
+    <mat-icon matIconPrefix>search</mat-icon>
   </mat-form-field>
 </div>
 
