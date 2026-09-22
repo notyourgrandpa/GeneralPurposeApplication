@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AdministrationService } from '../../services/administration.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-data-maintenance',
@@ -7,7 +9,25 @@ import { Component } from '@angular/core';
 })
 export class DataMaintenanceComponent {
 
-  constructor(){
+  constructor(
+    private adminService: AdministrationService,
+    private snackBar: MatSnackBar
+  ){
 
+  }
+
+  onImport(){
+    console.log("wtf");
+    this.adminService
+    .importData()
+    .subscribe({
+      next: (result) => {
+        console.log(result);
+        this.snackBar.open(`Imported ${result.categories} categories and ${result.products} products.`);
+      },
+      error: (error) =>{
+        this.snackBar.open(error);
+      }
+    })
   }
 }
