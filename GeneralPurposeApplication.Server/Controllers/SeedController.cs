@@ -24,7 +24,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             _seedService = seedService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Import()
         {
