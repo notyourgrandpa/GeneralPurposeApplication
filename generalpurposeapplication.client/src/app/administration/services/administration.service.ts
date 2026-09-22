@@ -18,8 +18,11 @@ export class AdministrationService{
         return environment.baseUrl + url;
     }
 
-    importData(): Observable<ImportDataResult>{
+    importData(file: File): Observable<ImportDataResult>{
         const url = this.getUrl("api/seed/import");
-        return this.http.post<ImportDataResult>(url, null);
+
+        const formData = new FormData();
+        formData.append('file', file);
+        return this.http.post<ImportDataResult>(url, formData);
     }
 }

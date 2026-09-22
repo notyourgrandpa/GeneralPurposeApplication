@@ -17,6 +17,7 @@ using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Domain.Products;
 using GeneralPurposeApplication.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace GeneralPurposeApplication.Infrastructure.Services
 {
@@ -112,16 +113,14 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 await _context.SaveChangesAsync();
         }
 
-        public async Task<SeedResultDTO> Import()
+        public async Task<SeedResultDTO> Import(Stream fileStream)
         {
             try
             {
                 // Prevents non-development environments from running this method
                 if (!_env.IsDevelopment())
                     throw new SecurityException("Not allowed");
-                var path = Path.Combine(_env.ContentRootPath, "Data/Source/pinoy_products.xlsx");
-                using var stream = System.IO.File.OpenRead(path);
-                using var excelPackage = new ExcelPackage(stream);
+                using var excelPackage = new ExcelPackage(fileStream);
                 var worksheet = excelPackage.Workbook.Worksheets[0];
                 var nEndRow = worksheet.Dimension.End.Row;
                 var numberOfCategoriesAdded = 0;

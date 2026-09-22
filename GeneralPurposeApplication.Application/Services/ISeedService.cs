@@ -9,7 +9,7 @@ namespace GeneralPurposeApplication.Application.Services
 {
     public interface ISeedService
     {
-        Task<SeedResultDTO> Import();
+        Task<SeedResultDTO> Import(Stream fileStream);
         Task CreateDefaultUser();
     }
 }
