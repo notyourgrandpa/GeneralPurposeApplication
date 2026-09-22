@@ -155,7 +155,17 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     await _context.SaveChangesAsync();
 
                 // Create a lookup dictionary containing all the cities already existing into the Database (it will be empty on first run). 
-                var existingKeys = _context.Products.AsNoTracking().ToHashSet();
+                var existingKeys = _context.Products
+                    .AsNoTracking()
+                    .Select(p => new 
+                        {
+                            Name = p.Name, 
+                            CategoryId = p.CategoryId, 
+                            CostPrice = p.CostPrice, 
+                            SellingPrice = p.SellingPrice
+                        }
+                    ) 
+                    .ToHashSet();
 
                 for (int nRow = 2; nRow <= nEndRow; nRow++)
                 {
@@ -170,7 +180,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     // Retrieve category Id by categoryName
                     var categoryId = categoriesByName[categoryName].Id;
 
-                    var key = new Product 
+                    var key = new 
                     { 
                         Name = name, 
                         CategoryId = categoryId,
@@ -178,11 +188,19 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                         SellingPrice = sellingPrice,
                     };
 
+                    var product = new Product
+                    {
+                        Name = name,
+                        CategoryId = categoryId,
+                        CostPrice = costPrice,
+                        SellingPrice = sellingPrice
+                    };
+
                     if (existingKeys.Contains(key))
                         continue;
 
-                    key.SetCreated(DateTime.UtcNow);
-                    await _context.Products.AddAsync(key);
+                    product.SetCreated(DateTime.UtcNow);
+                    await _context.Products.AddAsync(product);
                     numberOfProductsAdded++;
                 }
 
