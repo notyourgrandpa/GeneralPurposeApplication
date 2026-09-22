@@ -17,6 +17,7 @@ using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Categories;
 using GeneralPurposeApplication.Domain.Products;
 using GeneralPurposeApplication.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace GeneralPurposeApplication.Infrastructure.Services
 {
@@ -112,16 +113,14 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 await _context.SaveChangesAsync();
         }
 
-        public async Task<SeedResultDTO> Import()
+        public async Task<SeedResultDTO> Import(Stream fileStream)
         {
             try
             {
                 // Prevents non-development environments from running this method
                 if (!_env.IsDevelopment())
                     throw new SecurityException("Not allowed");
-                var path = Path.Combine(_env.ContentRootPath, "Data/Source/pinoy_products.xlsx");
-                using var stream = System.IO.File.OpenRead(path);
-                using var excelPackage = new ExcelPackage(stream);
+                using var excelPackage = new ExcelPackage(fileStream);
                 var worksheet = excelPackage.Workbook.Worksheets[0];
                 var nEndRow = worksheet.Dimension.End.Row;
                 var numberOfCategoriesAdded = 0;
@@ -155,7 +154,17 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     await _context.SaveChangesAsync();
 
                 // Create a lookup dictionary containing all the cities already existing into the Database (it will be empty on first run). 
-                var existingKeys = _context.Products.AsNoTracking().ToHashSet();
+                var existingKeys = _context.Products
+                    .AsNoTracking()
+                    .Select(p => new 
+                        {
+                            Name = p.Name, 
+                            CategoryId = p.CategoryId, 
+                            CostPrice = p.CostPrice, 
+                            SellingPrice = p.SellingPrice
+                        }
+                    ) 
+                    .ToHashSet();
 
                 for (int nRow = 2; nRow <= nEndRow; nRow++)
                 {
@@ -170,7 +179,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     // Retrieve category Id by categoryName
                     var categoryId = categoriesByName[categoryName].Id;
 
-                    var key = new Product 
+                    var key = new 
                     { 
                         Name = name, 
                         CategoryId = categoryId,
@@ -178,11 +187,19 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                         SellingPrice = sellingPrice,
                     };
 
+                    var product = new Product
+                    {
+                        Name = name,
+                        CategoryId = categoryId,
+                        CostPrice = costPrice,
+                        SellingPrice = sellingPrice
+                    };
+
                     if (existingKeys.Contains(key))
                         continue;
 
-                    key.SetCreated(DateTime.UtcNow);
-                    await _context.Products.AddAsync(key);
+                    product.SetCreated(DateTime.UtcNow);
+                    await _context.Products.AddAsync(product);
                     numberOfProductsAdded++;
                 }
 

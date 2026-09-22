@@ -24,11 +24,15 @@ namespace GeneralPurposeApplication.Server.Controllers
             _seedService = seedService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult> Import()
+        public async Task<ActionResult> Import(IFormFile file)
         {
-            var seedResult = await _seedService.Import();
+            if (file == null || file.Length == 0)
+                return BadRequest("No file was uploaded.");
+
+            await using var stream = file.OpenReadStream();
+            var seedResult = await _seedService.Import(stream);
 
             return Ok(seedResult);
         }
