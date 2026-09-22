@@ -23,10 +23,10 @@ export class DataMaintenanceComponent {
     .subscribe({
       next: (result) => {
         console.log(result);
-        this.snackBar.open(`Imported ${result.categories} categories and ${result.products} products.`);
+        this.snackBar.open(`Imported ${result.categories} categories and ${result.products} products.`, "Ok", { duration: 3000 });
       },
       error: (error) =>{
-        this.snackBar.open(error);
+        this.snackBar.open(error, "Ok", { duration: 5000 });
       }
     })
   }
