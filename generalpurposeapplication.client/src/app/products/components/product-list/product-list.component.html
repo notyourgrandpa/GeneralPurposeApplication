@@ -109,7 +109,7 @@
 
 
   <!-- LOADING -->
-  <div *ngIf="!products" class="loading-container">
+  <div *ngIf="loading" class="loading-container">
 
     <mat-spinner diameter="40"></mat-spinner>
 
@@ -119,7 +119,7 @@
 
 
   <!-- TABLE CARD -->
-  <div *ngIf="products" class="table-card">
+  <div *ngIf="!loading" class="table-card">
 
     <div class="table-wrapper">
 
@@ -413,11 +413,12 @@
 
     <!-- PAGINATION -->
     <mat-paginator
-      (page)="getData($event)"
-      [pageSize]="10"
+      [length]="totalCount"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
       [pageSizeOptions]="[10, 20, 50]"
+      (page)="getData($event)"
       showFirstLastButtons>
-
     </mat-paginator>
 
   </div>

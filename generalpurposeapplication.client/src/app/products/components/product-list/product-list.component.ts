@@ -32,6 +32,7 @@ export class ProductListComponent implements OnChanges {
   private readonly ExtendedColumns: string[] = ['dateAdded', 'lastUpdated'];
   public displayedColumns: string[] = [...this.baseColumns, 'actions'];
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
+  public loading = false;
   public categories?: Observable<Category[]> ;
   @Input() categoryId?: number;
   @Input() compact = false;
@@ -46,7 +47,10 @@ export class ProductListComponent implements OnChanges {
   defaultFilterColumn: string = "name";
   filterQuery?: string;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  public pageIndex = 0;
+  public pageSize = 10;
+  public totalCount = 0;
+
   @ViewChild(MatSort) sort!: MatSort;
 
   filterTextChanged: Subject<string> = new Subject<string>();
@@ -93,6 +97,7 @@ export class ProductListComponent implements OnChanges {
   }
 
   loadData(query?: string) {
+    this.loading = true;
     var pageEvent = new PageEvent();
     pageEvent.pageIndex = this.defaultPageIndex;
     pageEvent.pageSize = this.defaultPageSize;
@@ -101,60 +106,55 @@ export class ProductListComponent implements OnChanges {
   }
 
   getData(event: PageEvent) {
-    var sortColumn = (this.sort)
+    const sortColumn = this.sort
       ? this.sort.active
       : this.defaultSortColumn;
-    var sortOrder = (this.sort)
+
+    const sortOrder = this.sort
       ? this.sort.direction
       : this.defaultSortOrder;
-    var filterColumn = (this.filterQuery)
+
+    const filterColumn = this.filterQuery
       ? this.defaultFilterColumn
       : undefined;
-    var filterQuery = (this.filterQuery)
+
+    const filterQuery = this.filterQuery
       ? this.filterQuery
       : undefined;
 
     const categoryId = this.selectedCategoryId ?? undefined;
     const status = this.selectedStatus ?? undefined;
+
     const productQueryParams: ProductQueryParams = {
       pageIndex: event.pageIndex,
       pageSize: event.pageSize,
-      filterColumn: filterColumn,
-      filterQuery: filterQuery,
+      filterColumn,
+      filterQuery,
       filter: {
-        categoryId: categoryId,
+        categoryId,
         isActive: status
       },
       sort: sortColumn,
       direction: sortOrder
-    }
+    };
+
+    this.loading = true;
 
     this.productService.getProducts(productQueryParams).subscribe({
       next: (result) => {
-        this.paginator.length = result.totalCount,
-        this.paginator.pageIndex = result.pageIndex,
-        this.paginator.pageSize = result.pageSize,
-        this.products = new MatTableDataSource<Product>(result.data);
-      },
-      error: (error) => console.log(error)
-    })
+        this.products.data = result.data;
 
-    //this.productService.getData(
-    //  event.pageIndex,
-    //  event.pageSize,
-    //  sortColumn,
-    //  sortOrder,
-    //  filterColumn,
-    //  filterQuery)
-    //  .subscribe({
-    //    next: (result) => {
-    //      this.paginator.length = result.totalCount;
-    //      this.paginator.pageIndex = result.pageIndex;
-    //      this.paginator.pageSize = result.pageSize;
-    //      this.products = new MatTableDataSource<Product>(result.data);
-    //    },
-    //    error: (error) => console.error(error)
-    //  });
+        this.pageIndex = result.pageIndex;
+        this.pageSize = result.pageSize;
+        this.totalCount = result.totalCount;
+
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.loading = false;
+      }
+    });
   }
 
   loadCategories(){
