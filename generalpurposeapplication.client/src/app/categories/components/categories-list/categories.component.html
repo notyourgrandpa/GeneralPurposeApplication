@@ -80,9 +80,11 @@
   </table>
 
   <!-- Pagination directive -->
-  <mat-paginator [hidden]="!categories"
+  <mat-paginator
                 (page)="getData($event)"
-                [pageSize]="10"
+                [pageSize]="pageSize"
+                [pageIndex]="pageIndex"
+                [length]="totalCount"
                 [pageSizeOptions]="[10, 20, 50]"
                 showFirstLastButtons>
 
