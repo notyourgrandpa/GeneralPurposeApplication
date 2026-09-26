@@ -1,6 +1,5 @@
 <h1>Inventory Logs</h1>
 <p>Here's a list of inventoryLogs: </p>
-<p *ngIf="!inventoryLogs"><em>Loading...</em></p>
 
 <button mat-flat-button color="primary"
         class="btn-add" *ngIf="inventoryLogs" (click)="openInventoryLogEditDialog()">
@@ -12,7 +11,11 @@
          placeholder="Filter by name (or part of it)...">
 </mat-form-field>
 
-<div class="w-full overflow-x-auto">
+<div *ngIf="isLoading" class="justify-center items-center flex flex-col diamete">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
+<div *ngIf="!isLoading" class="w-full overflow-x-auto">
   <table mat-table [dataSource]="inventoryLogs"
        class="mat-elevation-z8"
        [hidden]="!inventoryLogs"
@@ -106,13 +109,15 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row [class.voided]="row.isVoided" *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-</div>
 
 <!-- Pagination directive -->
 <mat-paginator [hidden]="!inventoryLogs"
                (page)="getData($event)"
-               [pageSize]="10"
+               [pageSize]="pageSize"
+               [pageIndex]="pageIndex"
+               [length]="totalCount"
                [pageSizeOptions]="[10, 20, 50]"
                showFirstLastButtons>
 
 </mat-paginator>
+</div>
