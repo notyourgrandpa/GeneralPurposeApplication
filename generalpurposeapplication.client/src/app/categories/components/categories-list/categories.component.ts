@@ -26,6 +26,7 @@ export class CategoriesComponent implements OnInit {
     'action'
   ];
   public categories: MatTableDataSource<Category> = new MatTableDataSource<Category>([]);
+  isLoading = true;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -78,6 +79,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   getData(event: PageEvent) {
+    this.isLoading = true;
     console.log('PAGINATOR EVENT:', event);
 
     const sortColumn = this.sort
@@ -103,12 +105,16 @@ export class CategoriesComponent implements OnInit {
       filterQuery)
       .subscribe({
         next: (result) => {
+          this.isLoading = false;
           this.categories.data = result.data
           this.totalCount = result.totalCount;
           this.pageIndex = result.pageIndex;
           this.pageSize = result.pageSize;
         },
-        error: (error) => console.error(error)
+        error: (error) => {
+          this.isLoading = false;
+          console.error(error);
+        }
       });
   }
 

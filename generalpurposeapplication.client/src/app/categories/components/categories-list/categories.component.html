@@ -3,7 +3,6 @@
     <h1 class="!font-extrabold !text-[27px] !m-0">Categories</h1>
     <p class="text-gray-500 !mt-1">Manage your product categories...</p>
   </div>
-  <p *ngIf="!categories"><em>Loading...</em></p>
   <button mat-flat-button color="primary"
         class="btn-add" *ngIf="categories" (click)="openCategoryEditDialog()">
     <mat-icon>add</mat-icon>Add a new Category
@@ -18,7 +17,17 @@
   </mat-form-field>
 </div>
 
-<div class="bg-white border border-gray-300 rounded-2xl overflow-hidden">
+<!-- LOADING -->
+  <div *ngIf="isLoading" class="loading-container">
+
+    <mat-spinner diameter="40"></mat-spinner>
+
+    <p>Loading categories...</p>
+
+  </div>
+
+
+<div *ngIf="!isLoading" class="bg-white border border-gray-300 rounded-2xl overflow-hidden">
   <table mat-table [dataSource]="categories"
        class="mat-elevation-z8"
        [hidden]="!categories"
