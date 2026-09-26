@@ -5,17 +5,44 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('./assets/fonts/PlusJakartaSans-VariableFont_wght.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.mat-typography {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-text-button,
+.mat-mdc-form-field,
+.mat-mdc-input-element,
+.mat-mdc-select,
+.mat-mdc-option,
+.mat-mdc-table,
+.mat-mdc-dialog-container,
+.mat-mdc-menu-item {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
 .mat-mdc-dialog-container .mdc-dialog__surface {
   border-radius: 24px !important;
 }
 
-html, body {
-  height: 100%;
-}
-
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 table {
