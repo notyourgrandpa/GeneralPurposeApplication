@@ -15,7 +15,7 @@
   <mat-spinner diameter="40"></mat-spinner>
 </div>
 
-<div *ngIf="!isLoading" class="w-full overflow-x-auto">
+<div *ngIf="!isLoading" class="bg-white border border-gray-300 rounded-2xl overflow-hidden">
   <table mat-table [dataSource]="inventoryLogs"
        class="mat-elevation-z8"
        [hidden]="!inventoryLogs"
