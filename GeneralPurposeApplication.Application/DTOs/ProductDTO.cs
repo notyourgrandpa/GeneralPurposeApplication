@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneralPurposeApplication.Domain.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace GeneralPurposeApplication.Application.DTOs
         public decimal SellingPrice { get; set; }
         public int Stock { get; set; }
         public bool IsActive { get; set; }
+        public UnitOfMeasure Unit { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime LastUpdated { get; set; }
     }
