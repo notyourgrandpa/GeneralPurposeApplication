@@ -22,6 +22,7 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence.Configurations
             builder.Property(x => x.SellingPrice).HasColumnType("decimal(10,2)");
             builder.Property(x => x.IsActive);
             builder.Property(x => x.DateAdded);
+            builder.Property(x => x.Unit);
             builder.Property(x => x.LastUpdated);
             builder
                 .HasOne(x => x.Category)
