@@ -79,6 +79,8 @@ namespace GeneralPurposeApplication.Application.Products.Queries
                 ("stock", "desc") => products.OrderByDescending(p => p.Stock),
                 ("isActive", "asc") => products.OrderBy(p => p.IsActive),
                 ("isActive", "desc") => products.OrderByDescending(p => p.IsActive),
+                ("unit", "asc") => products.OrderBy(p => p.Unit),
+                ("unit", "desc") => products.OrderByDescending(p => p.Unit),
                 ("dateAdded", "asc") => products.OrderBy(p => p.DateAdded),
                 ("dateAdded", "desc") => products.OrderByDescending(p => p.DateAdded),
                 ("lastUpdated", "asc") => products.OrderBy(p => p.LastUpdated),
@@ -100,6 +102,7 @@ namespace GeneralPurposeApplication.Application.Products.Queries
                         SellingPrice = p.SellingPrice,
                         Stock = p.Stock,
                         IsActive = p.IsActive,
+                        Unit = p.Unit,
                         DateAdded = p.DateAdded,
                         LastUpdated = p.LastUpdated
                     })
