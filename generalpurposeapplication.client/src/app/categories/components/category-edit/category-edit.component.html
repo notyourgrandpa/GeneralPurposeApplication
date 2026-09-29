@@ -1,64 +1,87 @@
 <div class="category-edit p-4">
-  <h1>{{title}}</h1>
-  <p *ngIf="id && !category"><em>Loading...</em></p>
+  <h1>{{ title }}</h1>
+
+  <p *ngIf="id && !category">
+    <em>Loading...</em>
+  </p>
+
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <!-- Name -->
+
     <mat-form-field>
       <mat-label>Name:</mat-label>
-      <input matInput formControlName="name" required
-             placeholder="Type a name">
-      <mat-error *ngFor="let error of getErrors(form.get('name')!,'Name')">
-        {{error}}
+
+      <input
+        matInput
+        formControlName="name"
+        required
+        placeholder="Type a name"
+      >
+
+      <mat-error *ngFor="let error of getErrors(form.get('name')!, 'Name')">
+        {{ error }}
       </mat-error>
     </mat-form-field>
-    <div class="flex justify-between">
-      <div class="flex">
-        <button mat-flat-button color="primary"
-              type="submit" [disabled]="!form.valid">
-          {{ this.id ? "Save" : "Create" }}
+
+    <div class="flex items-center justify-between">
+
+      <div>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid">
+          {{ id ? 'Save changes' : 'Create category' }}
         </button>
-        <button mat-flat-button mat-dialog-close color="secondary"
-                [routerLink]="['/categories']">
+        
+        <button
+          mat-button
+          type="button"
+          [routerLink]="['/categories']">
           Cancel
         </button>
       </div>
 
-      <div class="flex">
-        <button class="mr-1"*ngIf="id"
-                mat-flat-button
-                color="warn"
-                type="button"
-                (click)="onToggleArchive()">
-          {{ this.category?.isActive ? "Archive" : "Unarchive" }}
-        </button>
-        <button *ngIf="id"
-                mat-flat-button
-                color="warn"
-                type="button"
-                (click)="onDelete()">
-          Delete
-        </button>
-      </div>
-    </div>
-  </form>
-</div>
+      <button
+        *ngIf="id"
+        mat-icon-button
+        type="button"
+        [matMenuTriggerFor]="actionsMenu"
+        aria-label="Category actions">
+        <mat-icon>more_vert</mat-icon>
+      </button>
 
-<!-- Form debug info panel -->
-<!--<div class="info">
-  <div class="info-header">Form Debug Info</div>
-  <div class="info-body">
-    <div class="info-label">
-      Form Value:
     </div>
-    <div class="info-value">
-      {{ form.value | json }}
-    </div>
-    <hr />
-    <div class="info-label">
-      Form Status:
-    </div>
-    <div class="info-value">
-      {{ form.status | json }}
-    </div>
-  </div>
-</div>-->
+
+  </form>
+
+  <!-- Keep menu outside the form -->
+  <mat-menu #actionsMenu="matMenu">
+
+    <button
+      mat-menu-item
+      type="button"
+      (click)="onToggleArchive()">
+
+      <mat-icon>
+        {{ category?.isActive ? 'archive' : 'unarchive' }}
+      </mat-icon>
+
+      <span>
+        {{ category?.isActive ? 'Archive' : 'Unarchive' }}
+      </span>
+
+    </button>
+
+    <button
+      mat-menu-item
+      type="button"
+      class="text-red-600"
+      (click)="onDelete()">
+
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+
+    </button>
+
+  </mat-menu>
+</div>
