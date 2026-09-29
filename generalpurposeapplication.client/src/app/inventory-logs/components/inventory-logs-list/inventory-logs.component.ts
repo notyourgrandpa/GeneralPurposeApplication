@@ -28,6 +28,7 @@ export class InventoryLogsComponent implements OnInit {
   ];
 
   public inventoryLogs!: MatTableDataSource<InventoryLog>;
+  isLoading = true;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -36,6 +37,10 @@ export class InventoryLogsComponent implements OnInit {
 
   defaultFilterColumn: string = "date";
   filterQuery?: string;
+
+  public pageIndex = 0;
+  public pageSize = 10;
+  public totalCount = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -75,6 +80,7 @@ export class InventoryLogsComponent implements OnInit {
   }
 
   getData(event: PageEvent) {
+    this.isLoading = true;
     var sortColumn = (this.sort)
       ? this.sort.active
       : this.defaultSortColumn;
@@ -97,12 +103,16 @@ export class InventoryLogsComponent implements OnInit {
       filterQuery)
       .subscribe({
         next: (result) => {
-          this.paginator.length = result.totalCount;
-          this.paginator.pageIndex = result.pageIndex;
-          this.paginator.pageSize = result.pageSize;
+          this.isLoading = false;
+          this.totalCount = result.totalCount;
+          this.pageIndex = result.pageIndex;
+          this.pageSize = result.pageSize;
           this.inventoryLogs = new MatTableDataSource<InventoryLog>(result.data);
         },
-        error: (error) => console.error(error)
+        error: (error) => {
+          this.isLoading = false;
+          console.error(error)
+        }
       });
   }
 

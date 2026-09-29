@@ -25,7 +25,8 @@ export class CategoriesComponent implements OnInit {
     'totalProducts',
     'action'
   ];
-  public categories!: MatTableDataSource<Category>;
+  public categories: MatTableDataSource<Category> = new MatTableDataSource<Category>([]);
+  isLoading = true;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -35,7 +36,10 @@ export class CategoriesComponent implements OnInit {
   defaultFilterColumn: string = "name";
   filterQuery?: string;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  public pageIndex = 0;
+  public pageSize = 10;
+  public totalCount = 0;
+
   @ViewChild(MatSort) sort!: MatSort;
 
   filterTextChanged: Subject<string> = new Subject<string>();
@@ -75,10 +79,14 @@ export class CategoriesComponent implements OnInit {
   }
 
   getData(event: PageEvent) {
-    var sortColumn = (this.sort)
+    this.isLoading = true;
+    console.log('PAGINATOR EVENT:', event);
+
+    const sortColumn = this.sort
       ? this.sort.active
       : this.defaultSortColumn;
-    var sortOrder = (this.sort)
+
+    const sortOrder = this.sort
       ? this.sort.direction
       : this.defaultSortOrder;
     var filterColumn = (this.filterQuery)
@@ -97,12 +105,16 @@ export class CategoriesComponent implements OnInit {
       filterQuery)
       .subscribe({
         next: (result) => {
-          this.paginator.length = result.totalCount;
-          this.paginator.pageIndex = result.pageIndex;
-          this.paginator.pageSize = result.pageSize;
-          this.categories = new MatTableDataSource<Category>(result.data);
+          this.isLoading = false;
+          this.categories.data = result.data
+          this.totalCount = result.totalCount;
+          this.pageIndex = result.pageIndex;
+          this.pageSize = result.pageSize;
         },
-        error: (error) => console.error(error)
+        error: (error) => {
+          this.isLoading = false;
+          console.error(error);
+        }
       });
   }
 

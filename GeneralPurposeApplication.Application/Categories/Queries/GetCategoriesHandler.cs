@@ -60,7 +60,7 @@ namespace GeneralPurposeApplication.Application.Categories.Queries
                 })
                 .ToListAsync(cancellationToken);
 
-            return new PagingResult<CategoryDTO>(items, query.PageIndex, query.PageSize, items.Count());
+            return new PagingResult<CategoryDTO>(items, query.PageIndex, query.PageSize, await categoriesQuery.CountAsync());
         }
     }
 }
