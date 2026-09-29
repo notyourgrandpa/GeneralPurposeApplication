@@ -58,6 +58,15 @@
       </mat-error>
     </mat-form-field>
 
+    <mat-form-field *ngIf="units | async as result">
+      <mat-label>Unit</mat-label>
+      <mat-select id="unit" formControlName="unit">
+        <mat-option *ngFor="let unit of result" [value]="unit.value">
+          {{unit.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <!-- Is Active -->
     <mat-form-field appearance="fill">
       <mat-label>Status</mat-label>

@@ -29,6 +29,7 @@ namespace GeneralPurposeApplication.Application.Products.Commands
             product.CostPrice = request.ProductUpdateDTO.CostPrice;
             product.SellingPrice = request.ProductUpdateDTO.SellingPrice;
             product.IsActive = request.ProductUpdateDTO.IsActive;
+            product.Unit = request.ProductUpdateDTO.Unit;
             product.CategoryId = request.ProductUpdateDTO.CategoryId;
             product.SetUpdated(DateTime.UtcNow);
 
