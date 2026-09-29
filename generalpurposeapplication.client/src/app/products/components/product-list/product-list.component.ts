@@ -29,7 +29,7 @@ export class ProductListComponent implements OnChanges {
     'isActive'
   ];
 
-  private readonly ExtendedColumns: string[] = ['dateAdded', 'lastUpdated'];
+  private readonly ExtendedColumns: string[] = ['unit','dateAdded', 'lastUpdated'];
   public displayedColumns: string[] = [...this.baseColumns, 'actions'];
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
   public loading = false;
