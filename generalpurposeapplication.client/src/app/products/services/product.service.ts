@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BaseService, ApiResult } from '../../shared/services/base.service';
 import { Observable, catchError, filter, of, switchMap, tap } from 'rxjs';
 import { Product } from '../models/product';
-import { Category } from '../../categories/models/category';
+import { Unit } from '../models/unit';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,6 +44,12 @@ export class ProductService
         .set("filterQuery", filterQuery);
     }
     return this.http.get<ApiResult<Product>>(url, { params });
+  }
+
+  getUnits(): Observable<Unit[]>{
+    const url = this.getUrl("api/units");
+
+    return this.http.get<Unit[]>(url);
   }
 
   getProducts(params: ProductQueryParams): Observable<ApiResult<Product>> {

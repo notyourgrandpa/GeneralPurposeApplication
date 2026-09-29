@@ -7,6 +7,7 @@ import { map, takeUntil } from 'rxjs/operators';
 
 //import { environment } from '../../environments/environment';
 import { Product } from '../../models/product';
+import { Unit } from '../../models/unit';
 import { Category } from '../../../categories/models/category';
 import { BaseFormComponent } from '../../../shared/components/base-form.component'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -36,6 +37,7 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
 
   // the countries observable for the select (using async pipe)
   categories?: Observable<Category[]>;
+  units?: Observable<Unit[]>;
 
   // Activity Log (for debugging purposes)
   //activityLog: string = '';
@@ -64,7 +66,8 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
       categoryId: new FormControl('', Validators.required),
       costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
-      isActive: new FormControl('', Validators.required)
+      isActive: new FormControl('', Validators.required),
+      unit: new FormControl('', Validators.required)
     }, null, this.isDupeProduct());
 
     // react to form changes
@@ -112,6 +115,7 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
 
     // load categories
     this.loadCategories();
+    this.loadUnits();
 
     if (this.id) {
       // EDIT MODE
@@ -139,6 +143,11 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
       .pipe(map(x => x.data));
   }
 
+  loadUnits(){
+    this.units = this.productService.getUnits();
+    console.log(this.units);
+  }
+
   onSubmit() {
     var product = (this.id) ? this.product : <Product>{};
     if (product) {
@@ -147,6 +156,7 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
       product.costPrice = +this.form.controls['costPrice'].value;
       product.sellingPrice = +this.form.controls['sellingPrice'].value;
       product.isActive = this.form.controls['isActive'].value;
+      product.unit = this.form.controls['unit'].value;
 
       if (this.id) {
         // EDIT mode

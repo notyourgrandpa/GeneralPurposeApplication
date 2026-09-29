@@ -29,6 +29,7 @@ namespace GeneralPurposeApplication.Application.Products.Commands
                 SellingPrice = request.ProductCreateDTO.SellingPrice,
                 Stock = 0,
                 IsActive = request.ProductCreateDTO.IsActive,
+                Unit = request.ProductCreateDTO.Unit
             };
             product.SetCreated(DateTime.UtcNow);
             product.SetUpdated(DateTime.UtcNow);

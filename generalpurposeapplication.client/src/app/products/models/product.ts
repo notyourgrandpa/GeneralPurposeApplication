@@ -9,4 +9,5 @@ export interface Product {
   isActive: boolean;
   dateAdded: Date;
   lastUpdated: Date;
+  unit: number;
 }
