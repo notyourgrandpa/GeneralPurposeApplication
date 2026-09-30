@@ -8,9 +8,14 @@
           Product Details
         </p>
 
-        <h2 mat-dialog-title class="!px-0 !pt-1 !pb-0 text-2xl font-semibold text-gray-900">
-          {{ product.name }} - {{ product.unitName }}
-        </h2>
+        <div class="flex items-center">
+          <h2 mat-dialog-title class="!px-0 !pt-1 !pb-0 text-2xl font-semibold text-gray-900">
+            {{ product.name }}
+          </h2>
+          <span class="bg-gray-300 rounded-2xl px-2 ml-1 text-[10px]">
+            {{ product.unitName }}
+          </span>
+        </div>
       </div>
 
       <!-- Status -->
