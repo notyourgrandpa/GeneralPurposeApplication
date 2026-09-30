@@ -44,7 +44,7 @@ namespace GeneralPurposeApplication.Server.Controllers
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProductAsync(int id)
+        public async Task<ActionResult<ProductDTO>> GetProductAsync(int id)
         {
             return await _mediator.Send(new GetProductQuery { Id = id });
         }

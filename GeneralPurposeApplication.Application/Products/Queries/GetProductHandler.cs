@@ -1,4 +1,5 @@
 ﻿using GeneralPurposeApplication.Application.Common.Interfaces;
+using GeneralPurposeApplication.Application.DTOs;
 using GeneralPurposeApplication.Domain.Products;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Products.Queries
 {
-    public class GetProductHandler : IRequestHandler<GetProductQuery, Product>
+    public class GetProductHandler : IRequestHandler<GetProductQuery, ProductDTO>
     {
         private readonly IApplicationDbContext _context;
 
@@ -20,15 +21,30 @@ namespace GeneralPurposeApplication.Application.Products.Queries
             _context = context;
         }
 
-        public async Task<Product> Handle(GetProductQuery request, CancellationToken cancellationToken = default)
+        public async Task<ProductDTO> Handle(GetProductQuery request, CancellationToken cancellationToken = default)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var product = await _context.Products
+                .Include(x => x.Category)
+                .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if(product == null)
             {
                 throw new KeyNotFoundException($"Product {request.Id} not found!");
             }
-            return product;
+
+
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                SellingPrice = product.SellingPrice,
+                CostPrice = product.CostPrice,
+                IsActive = product.IsActive,
+                UnitName = product.Unit.ToString(),
+                CategoryId = product.CategoryId,
+                CategoryName = product.Category!.Name,
+                Stock = product.Stock
+            };
         }
     }
 }

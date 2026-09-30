@@ -1,4 +1,5 @@
-﻿using GeneralPurposeApplication.Domain.Products;
+﻿using GeneralPurposeApplication.Application.DTOs;
+using GeneralPurposeApplication.Domain.Products;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeneralPurposeApplication.Application.Products.Queries
 {
-    public class GetProductQuery: IRequest<Product>
+    public class GetProductQuery: IRequest<ProductDTO>
     {
         public int Id { get; set; }
     }
