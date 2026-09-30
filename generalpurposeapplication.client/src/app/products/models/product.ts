@@ -10,4 +10,5 @@ export interface Product {
   dateAdded: Date;
   lastUpdated: Date;
   unit: number;
+  unitName: string;
 }
