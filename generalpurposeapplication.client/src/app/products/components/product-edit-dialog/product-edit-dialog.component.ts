@@ -22,7 +22,7 @@ import { CategoryService } from '../../../categories/services/category.service';
 @Component({
   selector: 'app-product-edit-dialog',
   templateUrl: './product-edit-dialog.component.html',
-  styleUrl: './product-edit-dialog.component.css'
+  styleUrl: './product-edit-dialog.component.scss'
 })
 export class ProductEditDialogComponent extends BaseFormComponent implements OnInit, OnDestroy {
   // the view title

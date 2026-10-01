@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@use '@angular/material' as mat;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -21,6 +22,23 @@ body {
 .mat-typography {
   font-family: "Plus Jakarta Sans", sans-serif;
 }
+
+
+
+$theme: mat.define-light-theme((
+  color: (
+    primary: mat.define-palette(mat.$deep-purple-palette),
+    accent: mat.define-palette(mat.$amber-palette, A200, A100, A400),
+  ),
+  typography: mat.define-typography-config(
+    $font-family: '"Plus Jakarta Sans", sans-serif',
+  ),
+  density: 0,
+));
+
+@include mat.core();
+
+@include mat.all-component-themes($theme);
 
 .mat-mdc-button,
 .mat-mdc-raised-button,

@@ -6,7 +6,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-data-maintenance',
   templateUrl: './data-maintenance.component.html',
-  styleUrl: './data-maintenance.component.css'
+  styleUrl: './data-maintenance.component.scss'
 })
 export class DataMaintenanceComponent {
   selectedFile: File | null = null;

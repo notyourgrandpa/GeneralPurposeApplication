@@ -32,33 +32,33 @@
 						],
 						"tsConfig": "tsconfig.app.json",
 						"assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
-            ],
+							"src/favicon.ico",
+							"src/assets",
+							"src/manifest.webmanifest"
+						],
 						"styles": [
-              "src/styles.css",
+							"src/styles.scss",
 							"@angular/material/prebuilt-themes/deeppurple-amber.css"
 						],
 						"scripts": []
 					},
 					"configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "1mb",
-                  "maximumError": "2mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "8kb"
-                }
-              ],
-              "outputHashing": "all",
-              "serviceWorker": "ngsw-config.json"
-            },
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "1mb",
+									"maximumError": "2mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "6kb",
+									"maximumError": "8kb"
+								}
+							],
+							"outputHashing": "all",
+							"serviceWorker": "ngsw-config.json"
+						},
 						"development": {
 							"optimization": false,
 							"extractLicenses": false,
@@ -103,12 +103,12 @@
 						],
 						"tsConfig": "tsconfig.spec.json",
 						"assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
-            ],
+							"src/favicon.ico",
+							"src/assets",
+							"src/manifest.webmanifest"
+						],
 						"styles": [
-							"src/styles.css"
+							"src/styles.scss"
 						],
 						"scripts": [],
 						"karmaConfig": "karma.conf.js"
@@ -116,8 +116,8 @@
 				}
 			}
 		}
-  },
-  "cli": {
-    "analytics": "b1ffbf53-b101-496e-ac8e-9447323db140"
-  }
+	},
+	"cli": {
+		"analytics": "b1ffbf53-b101-496e-ac8e-9447323db140"
+	}
 }
