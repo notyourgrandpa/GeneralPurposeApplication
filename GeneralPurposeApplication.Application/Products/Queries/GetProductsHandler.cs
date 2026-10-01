@@ -103,6 +103,7 @@ namespace GeneralPurposeApplication.Application.Products.Queries
                         Stock = p.Stock,
                         IsActive = p.IsActive,
                         Unit = p.Unit,
+                        UnitName = p.Unit.ToString(),
                         DateAdded = p.DateAdded,
                         LastUpdated = p.LastUpdated
                     })
