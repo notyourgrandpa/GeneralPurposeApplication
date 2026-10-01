@@ -8,7 +8,7 @@ import { InventoryChangeTypePipe } from '../../../shared/pipes/inventory-change-
 @Component({
   selector: 'app-inventory-log-details',
   templateUrl: './inventory-log-details.component.html',
-  styleUrl: './inventory-log-details.component.css'
+  styleUrl: './inventory-log-details.component.scss'
 })
 export class InventoryLogDetailsComponent implements OnInit {
   Id: number;
