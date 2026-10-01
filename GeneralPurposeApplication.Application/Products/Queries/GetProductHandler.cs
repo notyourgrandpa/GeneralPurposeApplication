@@ -41,6 +41,7 @@ namespace GeneralPurposeApplication.Application.Products.Queries
                 CostPrice = product.CostPrice,
                 IsActive = product.IsActive,
                 UnitName = product.Unit.ToString(),
+                Unit = product.Unit,
                 CategoryId = product.CategoryId,
                 CategoryName = product.Category!.Name,
                 Stock = product.Stock
