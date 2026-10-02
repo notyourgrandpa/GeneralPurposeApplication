@@ -36,6 +36,7 @@ import { ProductListDialogComponent } from './products/components/product-list-d
 import { InventoryLogDetailsComponent } from './inventory-logs/components/inventory-log-details/inventory-log-details.component';
 import { ProductEditDialogComponent } from './products/components/product-edit-dialog/product-edit-dialog.component';
 import { DataMaintenanceComponent } from './administration/components/data-maintenance/data-maintenance.component';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -84,11 +85,19 @@ import { DataMaintenanceComponent } from './administration/components/data-maint
     ConnectionServiceModule,
     GraphQLModule
   ],
-  providers: [{
+  providers: [
+    {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-  }],
+    },
+    {
+    provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+    useValue: {
+      appearance: 'outline'
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
