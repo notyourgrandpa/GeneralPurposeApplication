@@ -18,6 +18,7 @@ namespace GeneralPurposeApplication.Application.DTOs
         public decimal CostPrice { get; set; }
         public decimal SellingPrice { get; set; }
         public int Stock { get; set; }
+        public int MinimumStock { get; set; }
         public bool IsActive { get; set; }
         public string UnitName { get; set; } = String.Empty;
         public UnitOfMeasure Unit { get; set; }

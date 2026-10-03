@@ -29,7 +29,8 @@ namespace GeneralPurposeApplication.Application.Products.Commands
                 SellingPrice = request.ProductCreateDTO.SellingPrice,
                 Stock = 0,
                 IsActive = request.ProductCreateDTO.IsActive,
-                Unit = request.ProductCreateDTO.Unit
+                Unit = request.ProductCreateDTO.Unit,
+                MinimumStock = request.ProductCreateDTO.MinimumStock
             };
             product.SetCreated(DateTime.UtcNow);
             product.SetUpdated(DateTime.UtcNow);

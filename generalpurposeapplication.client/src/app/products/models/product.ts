@@ -6,6 +6,7 @@ export interface Product {
   costPrice: number;
   sellingPrice: number;
   stock: number;
+  minimumStock: number; 
   isActive: boolean;
   dateAdded: Date;
   lastUpdated: Date;

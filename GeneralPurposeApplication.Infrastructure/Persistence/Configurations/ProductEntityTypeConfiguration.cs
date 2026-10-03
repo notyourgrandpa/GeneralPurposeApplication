@@ -24,6 +24,8 @@ namespace GeneralPurposeApplication.Infrastructure.Persistence.Configurations
             builder.Property(x => x.DateAdded);
             builder.Property(x => x.Unit);
             builder.Property(x => x.LastUpdated);
+            builder.Property(x => x.Stock);
+            builder.Property(x => x.MinimumStock);
             builder
                 .HasOne(x => x.Category)
                 .WithMany(x => x.Products)
