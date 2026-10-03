@@ -67,7 +67,8 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
       costPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       sellingPrice: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]+(\.[0-9]{1,2})?$/)]),
       isActive: new FormControl('', Validators.required),
-      unit: new FormControl('', Validators.required)
+      unit: new FormControl('', Validators.required),
+      minimumStock: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]),
     }, null, this.isDupeProduct());
 
     // react to form changes
@@ -157,6 +158,7 @@ export class ProductEditDialogComponent extends BaseFormComponent implements OnI
       product.sellingPrice = +this.form.controls['sellingPrice'].value;
       product.isActive = this.form.controls['isActive'].value;
       product.unit = this.form.controls['unit'].value;
+      product.minimumStock = +this.form.controls['minimumStock'].value;
 
       if (this.id) {
         // EDIT mode

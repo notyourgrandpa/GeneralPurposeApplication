@@ -67,6 +67,17 @@
       </mat-select>
     </mat-form-field>
 
+    <!-- Minimum Stock -->
+    <mat-form-field>
+      <mat-label>Minimum Stock:</mat-label>
+      <input matInput formControlName="minimumStock" required
+            placeholder="Insert minimum stock">
+      <mat-error *ngFor="let error of getErrors(form.get('minimumStock')!,'Minimum Stock',
+                { 'pattern' : 'requires a positive or negative number with 0-2 decimal values.'})">
+        {{error}}
+      </mat-error>
+    </mat-form-field>
+
     <!-- Is Active -->
     <mat-form-field>
       <mat-label>Status</mat-label>

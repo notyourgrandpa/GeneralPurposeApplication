@@ -44,7 +44,8 @@ namespace GeneralPurposeApplication.Application.Products.Queries
                 Unit = product.Unit,
                 CategoryId = product.CategoryId,
                 CategoryName = product.Category!.Name,
-                Stock = product.Stock
+                Stock = product.Stock,
+                MinimumStock = product.MinimumStock,
             };
         }
     }

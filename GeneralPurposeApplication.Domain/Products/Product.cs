@@ -15,6 +15,7 @@ namespace GeneralPurposeApplication.Domain.Products
         public DateTime DateAdded { get; private set; }
         public DateTime LastUpdated { get; private set; }
         public int Stock { get; set; } = 0;
+        public int MinimumStock { get; set; } = 0;
         public UnitOfMeasure Unit { get; set; }
         public Category? Category { get; set; }
         public ICollection<InventoryLog> InventoryLogs { get; set; } = new List<InventoryLog>();

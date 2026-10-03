@@ -31,6 +31,7 @@ namespace GeneralPurposeApplication.Application.Products.Commands
             product.IsActive = request.ProductUpdateDTO.IsActive;
             product.Unit = request.ProductUpdateDTO.Unit;
             product.CategoryId = request.ProductUpdateDTO.CategoryId;
+            product.MinimumStock = request.ProductUpdateDTO.MinimumStock;
             product.SetUpdated(DateTime.UtcNow);
 
             await _context.SaveChangesAsync();
