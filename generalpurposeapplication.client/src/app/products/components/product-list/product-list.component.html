@@ -1,3 +1,8 @@
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  rel="stylesheet"
+/>
+
 <div class="products-page">
 
   <!-- PAGE HEADER -->
@@ -199,16 +204,18 @@
           </th>
 
           <td mat-cell *matCellDef="let product">
-
-            <span
-              class="stock-value"
-              [class.low-stock]="product.stock <= 10"
-              [class.out-of-stock]="product.stock === 0">
-
+            <span class="font-bold stock-cell">
+              <mat-icon style="width: 14px; height: 14px; font-size: 14px;"
+                *ngIf="product.stock <= product.minimumStock"
+                [matTooltip]="product.stock === 0 ? 'Out of stock' : 'Low stock'"
+                [class.text-red-400]="product.stock === 0"
+                [class.text-orange-400]="product.stock > 0 && product.stock <= product.minimumStock"
+                fontSet="material-symbols-outlined"
+              >
+                {{ product.stock === 0 ? 'cancel' : 'warning' }}
+              </mat-icon>
               {{ product.stock }}
-
             </span>
-
           </td>
 
         </ng-container>
