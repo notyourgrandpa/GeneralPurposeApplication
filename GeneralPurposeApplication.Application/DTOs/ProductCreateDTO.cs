@@ -10,6 +10,7 @@ namespace GeneralPurposeApplication.Application.DTOs
     public class ProductCreateDTO
     {
         public string Name { get; set; } = null!;
+        public string ProductCode { get; set; } = null!;
         public int CategoryId { get; set; }
         public decimal CostPrice { get; set; }
         public decimal SellingPrice { get; set; }

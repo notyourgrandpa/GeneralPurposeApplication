@@ -25,6 +25,7 @@ namespace GeneralPurposeApplication.Server.Data.GraphQL
             var product = new Product()
             {
                 Name = productDTO.Name,
+                ProductCode = productDTO.ProductCode,
                 SellingPrice = productDTO.SellingPrice,
                 CostPrice = productDTO.CostPrice,
                 IsActive = productDTO.IsActive,

@@ -24,6 +24,7 @@ namespace GeneralPurposeApplication.Application.Products.Commands
             Product product = new Product
             {
                 Name = request.ProductCreateDTO.Name,
+                ProductCode = request.ProductCreateDTO.ProductCode,
                 CategoryId = request.ProductCreateDTO.CategoryId,
                 CostPrice = request.ProductCreateDTO.CostPrice,
                 SellingPrice = request.ProductCreateDTO.SellingPrice,

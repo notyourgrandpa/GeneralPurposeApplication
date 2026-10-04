@@ -8,6 +8,7 @@ namespace GeneralPurposeApplication.Domain.Products
     {
         public int Id { get; set; }
         public required string Name { get; set; }
+        public required string ProductCode { get; set; }
         public int CategoryId { get; set; }
         public decimal CostPrice { get; set; }
         public decimal SellingPrice { get; set; }
