@@ -13,4 +13,5 @@ export interface ProductQueryParams {
 export interface ProductFilter{
   categoryId?: number;
   isActive?: boolean;
+  unitId?: number;
 }

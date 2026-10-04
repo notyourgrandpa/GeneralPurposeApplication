@@ -67,6 +67,10 @@ export class ProductService
       httpParams = httpParams.set('categoryId', params.filter.categoryId);
     }
 
+    if (params.filter?.unitId != null) {
+      httpParams = httpParams.set('unitId', params.filter.unitId);
+    }
+
     if (params.filter?.isActive != null) {
       httpParams = httpParams.set('isActive', params.filter.isActive);
     }

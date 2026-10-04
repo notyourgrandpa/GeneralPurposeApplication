@@ -13,6 +13,7 @@ import { CategoryService } from '../../../categories/services/category.service';
 import { ProductEditDialogComponent } from '../product-edit-dialog/product-edit-dialog.component';
 import { AuthService } from '../../../auth/auth.service';
 import { Router } from '@angular/router';
+import { Unit } from '../../models/unit';
 
 @Component({
   selector: 'app-product-list-core',
@@ -34,10 +35,12 @@ export class ProductListComponent implements OnChanges {
   public products: MatTableDataSource<Product> = new MatTableDataSource<Product>([]);
   public loading = false;
   public categories?: Observable<Category[]> ;
+  public units?: Observable<Unit[]>;
   @Input() categoryId?: number;
   @Input() compact = false;
   selectedCategoryId: number | null = null;
   selectedStatus: boolean | null = null;
+  selectedUnit: number | null = null;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -78,6 +81,7 @@ export class ProductListComponent implements OnChanges {
     this.updateDisplayedColumns();
     this.loadData();
     this.loadCategories();
+    this.loadUnits();
   }
 
   private updateDisplayedColumns(): void {
@@ -124,6 +128,8 @@ export class ProductListComponent implements OnChanges {
 
     const categoryId = this.selectedCategoryId ?? undefined;
     const status = this.selectedStatus ?? undefined;
+    const unitId = this.selectedUnit ?? undefined;
+    console.log(`getData called with pageIndex: ${event.pageIndex}, pageSize: ${event.pageSize}, sortColumn: ${sortColumn}, sortOrder: ${sortOrder}, filterColumn: ${filterColumn}, filterQuery: ${filterQuery}, categoryId: ${categoryId}, status: ${status}, unitId: ${unitId}`);
 
     const productQueryParams: ProductQueryParams = {
       pageIndex: event.pageIndex,
@@ -132,7 +138,8 @@ export class ProductListComponent implements OnChanges {
       filterQuery,
       filter: {
         categoryId,
-        isActive: status
+        isActive: status,
+        unitId
       },
       sort: sortColumn,
       direction: sortOrder
@@ -170,6 +177,10 @@ export class ProductListComponent implements OnChanges {
       .pipe(map(x => x.data));
   }
 
+  loadUnits(){
+    this.units = this.productService.getUnits();
+  }
+
   onDelete(id: number): void {
     if(!this.authService.redirectToLoginIfNotAuthenticated(this.router.url)){
       return;
@@ -186,6 +197,12 @@ export class ProductListComponent implements OnChanges {
     this.selectedStatus = status;
     this.loadData();
   }
+
+  onUnitChanged(unitId: number) {
+    this.selectedUnit = unitId;
+    this.loadData();
+  }
+
 
   openProductEditDialog(productId: number = 0){
     if(!this.authService.redirectToLoginIfNotAuthenticated(this.router.url)){

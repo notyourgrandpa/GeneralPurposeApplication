@@ -39,6 +39,11 @@ namespace GeneralPurposeApplication.Application.Products.Queries
                 products = products.Where(p => p.IsActive == query.IsActive);
             }
 
+            if (query.UnitId != null)
+            {
+                products = products.Where(p => ((int)p.Unit) == query.UnitId);
+            }
+
             // For dynamic filtering
             //Expression<Func<Product, bool>>? predicate = null;
             //if (query.FilterColumn != null && query.FilterQuery != null) 
