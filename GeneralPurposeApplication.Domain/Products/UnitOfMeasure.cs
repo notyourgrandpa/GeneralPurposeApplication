@@ -8,6 +8,7 @@ namespace GeneralPurposeApplication.Domain.Products
 {
     public enum UnitOfMeasure
     {
+        Unspecified = 0,
         Piece = 1,
         Bottle = 2,
         Pack = 3,
