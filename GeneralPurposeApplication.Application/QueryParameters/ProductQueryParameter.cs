@@ -10,5 +10,6 @@ namespace GeneralPurposeApplication.Application.QueryParameters
     {
         public int? CategoryId { get; set; }
         public bool? IsActive { get; set; }
+        public int? UnitId { get; set; }
     }
 }

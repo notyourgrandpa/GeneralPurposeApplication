@@ -174,7 +174,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     var categoryName = row[nRow, 2].GetValue<string>();
                     var costPrice =  row[nRow, 3].GetValue<decimal>();
                     var sellingPrice = row[nRow, 4].GetValue<decimal>();
-                    //var isActive = row[nRow, 5].GetValue<bool>();
+                    var productCode = row[nRow, 5].GetValue<string>() ?? string.Empty;
 
                     // Retrieve category Id by categoryName
                     var categoryId = categoriesByName[categoryName].Id;
@@ -190,6 +190,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                     var product = new Product
                     {
                         Name = name,
+                        ProductCode = productCode,
                         CategoryId = categoryId,
                         CostPrice = costPrice,
                         SellingPrice = sellingPrice

@@ -98,6 +98,26 @@
 
     </mat-form-field>
 
+    <!-- Unit -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Unit</mat-label>
+
+      <mat-select
+        (selectionChange)="onUnitChanged($event.value)">
+
+        <mat-option [value]="null">
+          All Units
+        </mat-option>
+
+        <mat-option *ngFor="let u of units | async" [value]="u.value">
+          {{ u.name }}
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
 
     <!-- Clear Filters -->
     <button

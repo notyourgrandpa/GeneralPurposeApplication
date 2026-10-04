@@ -37,6 +37,7 @@ namespace GeneralPurposeApplication.Infrastructure.Services
             var product = new Product
             {
                 Name = productCreateDTO.Name,
+                ProductCode = productCreateDTO.ProductCode,
                 CostPrice = productCreateDTO.CostPrice,
                 SellingPrice = productCreateDTO.SellingPrice,
                 IsActive = productCreateDTO.IsActive,
