@@ -93,7 +93,7 @@ namespace GeneralPurposeApplication.Server.Controllers
             return await _productService.ProductExistsAsync(id);
         }
 
-        [HttpGet("IsDupeProduct")]
+        [Route("IsDupeProduct")]
         public async Task<bool> IsDupeProduct(Product product)
         {
             return await _productService.IsDupeProduct(product);
