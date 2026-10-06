@@ -51,10 +51,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeneralPurposeApplication.Application\GeneralPurposeApplication.Application.csproj" />
-	  <ProjectReference Include="..\generalpurposeapplication.client\generalpurposeapplication.client.esproj"
-					Condition="'$(DockerBuild)' != 'true'">
-		  <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-	  </ProjectReference>
+    <ProjectReference Include="..\generalpurposeapplication.client\generalpurposeapplication.client.esproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\GeneralPurposeApplication.Domain\GeneralPurposeApplication.Domain.csproj" />
     <ProjectReference Include="..\GeneralPurposeApplication.Infrastructure\GeneralPurposeApplication.Infrastructure.csproj" />
   </ItemGroup>
