@@ -1,0 +1,28 @@
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: GeneralPurposeApplication.Server/Dockerfile
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=host.docker.internal,1433;Database=GeneralPurposeApplication;User Id=GeneralPurposeApplication;Password=Minecraft0998;Integrated Security=False;MultipleActiveResultSets=True;TrustServerCertificate=True"
+
+      JwtSettings__Issuer: "12345678-Grandpa"
+      JwtSettings__Audience: "12345678-Grandpa-Users"
+      JwtSettings__ExpirationTimeInMinutes: "60"
+      JwtSettings__SecurityKey: "12345678-Grandpa-Secret_Key-12345678"
+
+  frontend:
+    build:
+      context: ./GeneralPurposeApplication.Client
+      dockerfile: Dockerfile
+
+    ports:
+      - "4200:80"
+
+    depends_on:
+      - backend
