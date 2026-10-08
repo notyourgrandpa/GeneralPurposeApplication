@@ -1,15 +1,32 @@
 services:
 
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "${DB_SA_PASSWORD}"
+
+    ports:
+      - "1434:1433"
+
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
   backend:
     build:
       context: .
       dockerfile: GeneralPurposeApplication.Server/Dockerfile
 
+    depends_on:
+      - db
+
     ports:
       - "8080:8080"
 
     environment:
-      ConnectionStrings__DefaultConnection: "Server=host.docker.internal,1433;Database=GeneralPurposeApplication;User Id=GeneralPurposeApplication;Password=${DB_PASSWORD};Integrated Security=False;MultipleActiveResultSets=True;TrustServerCertificate=True"
+      ConnectionStrings__DefaultConnection: "Server=db,1433;Database=GeneralPurposeApplication;User Id=sa;Password=${DB_SA_PASSWORD};Integrated Security=False;MultipleActiveResultSets=True;TrustServerCertificate=True"
 
       JwtSettings__Issuer: "12345678-Grandpa"
       JwtSettings__Audience: "12345678-Grandpa-Users"
@@ -26,3 +43,6 @@ services:
 
     depends_on:
       - backend
+
+volumes:
+  sqlserver_data:
