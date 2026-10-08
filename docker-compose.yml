@@ -9,12 +9,12 @@ services:
       - "8080:8080"
 
     environment:
-      ConnectionStrings__DefaultConnection: "Server=host.docker.internal,1433;Database=GeneralPurposeApplication;User Id=GeneralPurposeApplication;Password=Minecraft0998;Integrated Security=False;MultipleActiveResultSets=True;TrustServerCertificate=True"
+      ConnectionStrings__DefaultConnection: "Server=host.docker.internal,1433;Database=GeneralPurposeApplication;User Id=GeneralPurposeApplication;Password=${DB_PASSWORD};Integrated Security=False;MultipleActiveResultSets=True;TrustServerCertificate=True"
 
       JwtSettings__Issuer: "12345678-Grandpa"
       JwtSettings__Audience: "12345678-Grandpa-Users"
       JwtSettings__ExpirationTimeInMinutes: "60"
-      JwtSettings__SecurityKey: "12345678-Grandpa-Secret_Key-12345678"
+      JwtSettings__SecurityKey: "${JWT_SECURITY_KEY}"
 
   frontend:
     build:
