@@ -33,6 +33,9 @@ services:
       JwtSettings__ExpirationTimeInMinutes: "60"
       JwtSettings__SecurityKey: "${JWT_SECURITY_KEY}"
 
+      DefaultPasswords__RegisteredUser: "${DEFAULT_PASSWORD_USER}"
+      DefaultPasswords__Administrator: "${DEFAULT_PASSWORD_ADMIN}"
+
   frontend:
     build:
       context: ./GeneralPurposeApplication.Client
