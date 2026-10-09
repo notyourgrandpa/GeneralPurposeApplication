@@ -208,6 +208,11 @@ app.MapGet("/api/broadcast/update2", async (IHubContext<HealthCheckHub> hub) =>
     return Results.Text("Update message sent.");
 });
 
+app.MapGet("/api/ready", () => Results.Ok(new
+{
+    Status = "Healthy"
+}));
+
 if (app.Environment.IsDevelopment())
 {
     app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api"), appBuilder =>

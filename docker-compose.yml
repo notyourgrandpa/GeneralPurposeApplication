@@ -1,5 +1,26 @@
 services:
 
+  db-health:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - db
+    environment:
+      SQLCMDPASSWORD: "${DB_SA_PASSWORD}"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        until /opt/mssql-tools/bin/sqlcmd \
+          -S db,1433 \
+          -U sa \
+          -Q "SELECT 1" \
+          -b -l 3 >/dev/null 2>&1; do
+          echo "Waiting for SQL Server..."
+          sleep 3
+        done
+        echo "SQL Server is ready."
+    restart: "no"
+
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
 
@@ -20,7 +41,8 @@ services:
       dockerfile: GeneralPurposeApplication.Server/Dockerfile
 
     depends_on:
-      - db
+      db-health:
+        condition: service_completed_successfully
 
     ports:
       - "8080:8080"
@@ -40,12 +62,11 @@ services:
     build:
       context: ./GeneralPurposeApplication.Client
       dockerfile: Dockerfile
-
     ports:
       - "4200:80"
-
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
 
 volumes:
   sqlserver_data:
