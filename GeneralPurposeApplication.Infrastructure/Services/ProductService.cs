@@ -96,7 +96,6 @@ namespace GeneralPurposeApplication.Infrastructure.Services
                 product.Stock = inventoryLog.Quantity;
 
             product.SetUpdated(DateTime.Now);
-            Console.WriteLine($"Service: {_context.GetHashCode()}");
 
         }
 
