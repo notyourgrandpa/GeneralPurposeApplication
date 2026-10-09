@@ -82,3 +82,5 @@ obj/
 /GeneralPurposeApplication.Server/appsettings.json
 /generalpurposeapplication.client/package-lock.json
 /.env
+.env.*
+!.env.example

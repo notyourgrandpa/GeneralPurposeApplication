@@ -1,0 +1,14 @@
+services:
+  db:
+    ports: !reset []
+
+  backend:
+    ports: !reset []
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      RunningInDocker: "true"
+      AllowedCORS: "${ALLOWED_CORS_ORIGIN}"
+
+  frontend:
+    ports: !override
+      - "127.0.0.1:8081:80"
