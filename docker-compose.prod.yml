@@ -1,14 +1,39 @@
 services:
   db:
     ports: !reset []
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   backend:
     ports: !reset []
+    restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       RunningInDocker: "true"
       AllowedCORS: "${ALLOWED_CORS_ORIGIN}"
+      DataProtection__KeysPath: "/app/keys"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    volumes:
+      - dataprotection_keys:/app/keys
 
   frontend:
     ports: !override
       - "127.0.0.1:8081:80"
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  dataprotection_keys:

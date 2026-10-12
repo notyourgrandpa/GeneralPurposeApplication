@@ -36,6 +36,7 @@ namespace GeneralPurposeApplication.Tests
                 CostPrice = 1,
                 SellingPrice = 1,
                 IsActive = true,
+                ProductCode = "Product-123",
                 Name = "TestProduct1"
             });
             context.SaveChanges();

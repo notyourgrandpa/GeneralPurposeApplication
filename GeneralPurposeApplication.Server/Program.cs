@@ -28,6 +28,8 @@ using GeneralPurposeApplication.Infrastructure.Persistence.Querying;
 using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Filtering;
 using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Sorting;
 using GeneralPurposeApplication.Application.Categories.Queries;
+using Microsoft.AspNetCore.DataProtection;
+using Path = System.IO.Path;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -146,6 +148,19 @@ builder.Services.AddGraphQLServer()
    .AddMutationType<Mutation>()
    .AddFiltering()
    .AddSorting();
+
+var keysPath = builder.Configuration["DataProtection:KeysPath"] ?? "keys";
+
+if (!Path.IsPathRooted(keysPath))
+{
+    keysPath = Path.Combine(builder.Environment.ContentRootPath, keysPath);
+}
+
+Directory.CreateDirectory(keysPath);
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
+    .SetApplicationName("KitaPOS");
 
 var app = builder.Build();
 
