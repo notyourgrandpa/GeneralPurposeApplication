@@ -78,3 +78,27 @@ table {
 .mdc-notched-outline__notch {
   border-right: none;
 }
+
+.mat-mdc-header-row {
+  background: #f9fafb !important;
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600 !important;
+  color: #374151 !important;
+
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+
+.mat-mdc-row {
+  transition: background 0.15s ease !important;
+}
+
+.mat-mdc-row:hover {
+  background: #f9fafb !important;
+}
+
+.mat-mdc-cell {
+  border-bottom: 1px solid #f1f5f9 !important;
+}

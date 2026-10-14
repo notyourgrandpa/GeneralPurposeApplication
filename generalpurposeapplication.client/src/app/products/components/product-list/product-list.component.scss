@@ -92,36 +92,6 @@ table {
   min-width: 1000px;
 }
 
-
-/* HEADER */
-
-.mat-mdc-header-row {
-  background: #f9fafb;
-}
-
-.mat-mdc-header-cell {
-  font-weight: 600;
-  color: #374151;
-
-  border-bottom: 1px solid #e5e7eb;
-}
-
-
-/* ROW */
-
-.mat-mdc-row {
-  transition: background 0.15s ease;
-}
-
-.mat-mdc-row:hover {
-  background: #f9fafb;
-}
-
-.mat-mdc-cell {
-  border-bottom: 1px solid #f1f5f9;
-}
-
-
 /* =========================
    PRODUCT NAME
 ========================= */
