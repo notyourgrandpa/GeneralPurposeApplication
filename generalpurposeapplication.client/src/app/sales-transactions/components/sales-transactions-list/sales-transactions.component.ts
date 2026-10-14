@@ -24,6 +24,7 @@ export class SalesTransactionsComponent implements OnInit {
   ]
 
   public salesTransactions!: MatTableDataSource<SalesTransaction>;
+  isLoading: boolean = true;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -32,9 +33,13 @@ export class SalesTransactionsComponent implements OnInit {
   public defaultSortOrder: 'asc' | 'desc' = 'asc';
 
   defaultFilterColumn = "date";
+
+  pageIndex: number = 0;
+  pageSize: number = 10;
+  totalCount: number = 0;
+
   filterQuery?: string;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   filterTextChanged: Subject<string> = new Subject<string>();
@@ -83,12 +88,16 @@ export class SalesTransactionsComponent implements OnInit {
       filterQuery)
       .subscribe({
         next: (result) => {
-          this.paginator.length = result.totalCount;
-          this.paginator.pageIndex = result.pageIndex;
-          this.paginator.pageSize = result.pageSize;
+          this.isLoading = false;
+          this.totalCount  = result.totalCount;
+          this.pageIndex = result.pageIndex;
+          this.pageSize = result.pageSize;
           this.salesTransactions = new MatTableDataSource<SalesTransaction>(result.data);
         },
-        error: (error) => console.error(error)
+        error: (error) => {
+          this.isLoading = false;
+          console.error(error)
+        }
       });
   }
 
