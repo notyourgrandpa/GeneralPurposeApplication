@@ -28,23 +28,30 @@ using GeneralPurposeApplication.Infrastructure.Persistence.Querying;
 using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Filtering;
 using GeneralPurposeApplication.Infrastructure.Persistence.Querying.Sorting;
 using GeneralPurposeApplication.Application.Categories.Queries;
+using Microsoft.AspNetCore.DataProtection;
+using Path = System.IO.Path;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Adds Serilog support
-builder.Host.UseSerilog((ctx, lc) => lc
-   .ReadFrom.Configuration(ctx.Configuration)
-   .WriteTo.MSSqlServer(connectionString:
-               ctx.Configuration.GetConnectionString("DefaultConnection"),
-           restrictedToMinimumLevel: LogEventLevel.Information,
-           sinkOptions: new MSSqlServerSinkOptions
-           {
-               TableName = "LogEvents",
-               AutoCreateSqlTable = true
-           }
-           )
-   .WriteTo.Console()
-   );
+builder.Host.UseSerilog((ctx, lc) =>
+{
+    lc.ReadFrom.Configuration(ctx.Configuration)
+      .WriteTo.Console();
+
+    if (!ctx.Configuration.GetValue<bool>("SkipSqlLogging"))
+    {
+        lc.WriteTo.MSSqlServer(
+            connectionString: ctx.Configuration.GetConnectionString("DefaultConnection"),
+            restrictedToMinimumLevel: LogEventLevel.Information,
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                TableName = "LogEvents",
+                AutoCreateSqlTable = true
+            }
+        );
+    }
+});
 
 // Add services to the container.
 builder.Services.AddHealthChecks()
@@ -146,6 +153,19 @@ builder.Services.AddGraphQLServer()
    .AddMutationType<Mutation>()
    .AddFiltering()
    .AddSorting();
+
+var keysPath = builder.Configuration["DataProtection:KeysPath"] ?? "keys";
+
+if (!Path.IsPathRooted(keysPath))
+{
+    keysPath = Path.Combine(builder.Environment.ContentRootPath, keysPath);
+}
+
+Directory.CreateDirectory(keysPath);
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
+    .SetApplicationName("KitaPOS");
 
 var app = builder.Build();
 

@@ -1,4 +1,13 @@
-bin/
-obj/
-.vs/
-.git/
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/.angular/
+**/.vs/
+**/.git/
+**/TestResults/
+**/coverage/
+.vscode/
+.env
+.env.*
+!.env.example
