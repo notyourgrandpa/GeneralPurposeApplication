@@ -59,9 +59,6 @@ describe('ProductListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
-    component.paginator = jasmine.createSpyObj(
-      "MatPaginator", ["length", "pageIndex", "pageSize"]
-    );
     fixture.detectChanges();
   });
   it('should create', () => {

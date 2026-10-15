@@ -21,6 +21,9 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
 
     volumes:
       - dataprotection_keys:/app/keys
@@ -34,6 +37,18 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
+  migrate:
+    build:
+      context: .
+      dockerfile: GeneralPurposeApplication.Infrastructure/Dockerfile.migrations
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=db,1433;Database=GeneralPurposeApplication;User Id=sa;Password=${DB_SA_PASSWORD};TrustServerCertificate=True"
+    command:
+      - "--connection"
+      - "Server=db,1433;Database=GeneralPurposeApplication;User Id=sa;Password=${DB_SA_PASSWORD};TrustServerCertificate=True"
+    depends_on:
+      db-health:
+        condition: service_completed_successfully
+    restart: "no"
 volumes:
   dataprotection_keys:

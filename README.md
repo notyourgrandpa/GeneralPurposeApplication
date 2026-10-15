@@ -70,6 +70,7 @@ A collection of applications I develop.
 - [User Guide](GUIDE.md)
 - [FAQ](FAQ.md)
 - [Troubleshooting](TROUBLESHOOTING.md)
+- [Docker](DOCKER.md)
   
 ## Getting Started  
 1. Clone the repository:  

@@ -34,19 +34,24 @@ using Path = System.IO.Path;
 var builder = WebApplication.CreateBuilder(args);
 
 // Adds Serilog support
-builder.Host.UseSerilog((ctx, lc) => lc
-   .ReadFrom.Configuration(ctx.Configuration)
-   .WriteTo.MSSqlServer(connectionString:
-               ctx.Configuration.GetConnectionString("DefaultConnection"),
-           restrictedToMinimumLevel: LogEventLevel.Information,
-           sinkOptions: new MSSqlServerSinkOptions
-           {
-               TableName = "LogEvents",
-               AutoCreateSqlTable = true
-           }
-           )
-   .WriteTo.Console()
-   );
+builder.Host.UseSerilog((ctx, lc) =>
+{
+    lc.ReadFrom.Configuration(ctx.Configuration)
+      .WriteTo.Console();
+
+    if (!ctx.Configuration.GetValue<bool>("SkipSqlLogging"))
+    {
+        lc.WriteTo.MSSqlServer(
+            connectionString: ctx.Configuration.GetConnectionString("DefaultConnection"),
+            restrictedToMinimumLevel: LogEventLevel.Information,
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                TableName = "LogEvents",
+                AutoCreateSqlTable = true
+            }
+        );
+    }
+});
 
 // Add services to the container.
 builder.Services.AddHealthChecks()
