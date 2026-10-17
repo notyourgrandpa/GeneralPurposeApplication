@@ -56,12 +56,14 @@ namespace GeneralPurposeApplication.Infrastructure.Services
         public async Task<bool> IsDupeProduct(Product product)
         {
             return await _unitOfWork.Repository<Product>().AnyAsync(
-                e => (e.Name == product.Name
+                e => ((e.Name == product.Name
                 && e.CategoryId == product.CategoryId
                 && e.SellingPrice == product.SellingPrice
                 && e.CostPrice == product.CostPrice
+                && e.Unit == product.Unit
                 && e.Id != product.Id)
-                || (e.ProductCode == product.ProductCode)
+                || (e.ProductCode == product.ProductCode
+                && e.Id != product.Id))
             );
         }
 
