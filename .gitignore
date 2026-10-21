@@ -84,3 +84,4 @@ obj/
 /.env
 .env.*
 !.env.example
+**/keys/
