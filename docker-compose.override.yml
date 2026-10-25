@@ -1,6 +1,0 @@
-services:
-  backend:
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      AllowedCORS: "http://localhost:4200"
-      RunningInDocker: "true"
